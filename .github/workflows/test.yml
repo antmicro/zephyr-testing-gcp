@@ -1,0 +1,153 @@
+name: test
+on: [push]
+
+jobs:
+  generate-sha:
+    container: ubuntu:bionic
+    runs-on: [self-hosted, Linux, X64]
+    outputs:
+      matrix: ${{ steps.generate-sha.outputs.matrix }}
+    steps:
+    - name: Install dependencies
+      run: |
+        apt-get update -qq
+        apt install -y git
+    - name: Checkout tools repo
+      uses: actions/checkout@v2
+      with:
+        repository: zephyrproject-rtos/zephyr
+        path: zephyr
+        fetch-depth: 0
+    - name: Generate matrix
+      id: generate-sha
+      run: |
+        matrix=$(git -C zephyr log -n 10 --format='"%H",' | tr '\n' ' ')
+        # Delete last character
+        matrix="${matrix%?}"
+        # Add [ ]
+        matrix="[${matrix}]"
+        echo "::set-output name=matrix::$matrix"
+        echo "matrix: $matrix"
+    - name: Upload load graphs
+      uses: actions/upload-artifact@v2
+      with:
+        name: plots
+        path: |
+          **/plot_*.svg
+  run-job:
+    container: ubuntu:bionic
+    runs-on: [self-hosted, Linux, X64]
+    needs: [generate-sha]
+    strategy:
+      matrix:
+        SHA: ${{ fromJson(needs.generate-sha.outputs.matrix) }}
+      fail-fast:
+        false
+    steps:
+    - run: |
+        if [[ $(( $RANDOM % 100 )) -gt 70 ]]; then
+          exit 1
+        fi
+        echo "${{ matrix.SHA }}" > ${{ matrix.SHA }}.txt
+      id: success
+      continue-on-error: true
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ matrix.SHA }}.txt
+        path: |
+          **/${{ matrix.SHA }}.txt
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: plots
+        path: |
+          **/plot_*.svg
+
+  run-job-2:
+    container: ubuntu:bionic
+    runs-on: [self-hosted, Linux, X64]
+    needs: [generate-sha, run-job]
+    strategy:
+      fail-fast: false
+      matrix:
+        SHA: ${{ fromJson(needs.generate-sha.outputs.matrix) }}
+    steps:
+    - name: Download binaries
+      uses: actions/download-artifact@v2
+      with:
+        name: ${{ matrix.SHA }}.txt
+      continue-on-error: true
+
+    - run: |
+        if [[ $(( $RANDOM % 100 )) -gt 60 ]]; then
+          exit 1
+        fi
+        if [ -f ${{ matrix.SHA }}.txt ]; then
+          sha=$(cat ${{ matrix.SHA }}.txt | tr -d '\n')
+          sha="${sha}-done"
+          echo $sha > ${{ matrix.SHA }}.txt
+        fi
+      continue-on-error: true
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ matrix.SHA }}.txt
+        path: |
+          **/${{ matrix.SHA }}.txt
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: plots
+        path: |
+          **/plot_*.svg
+  results:
+    container: ubuntu:bionic
+    runs-on: [self-hosted, Linux, X64]
+    needs: [run-job-2]
+    env:
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
+    steps:
+    - name: Download binaries
+      uses: actions/download-artifact@v2
+      with:
+        path: results
+    - name: Install dependencies
+      run: |
+        apt-get update -qq
+        apt install -y curl gnupg
+        echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+        curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
+        apt -qqy update && apt -qqy install google-cloud-cli
+
+    - run: |
+        ls -la results
+        cat results/*/*.txt
+        cat results/*/*.txt > result.txt
+        gsutil cp result.txt gs://gcp-distributed-job-test-bucket
+    - name: Find artifacts that are no longer needed
+      id: get-artifacts-to-delete
+      run: |
+        artifacts=$(find ./results -type d -name '*.txt' -exec basename {} \;)
+        echo $artifacts
+        artifacts="${artifacts//'%'/'%25'}"
+        artifacts="${artifacts//$'\n'/'%0A'}"
+        artifacts="${artifacts//$'\r'/'%0D'}"
+        echo ::set-output name=artifacts::$artifacts
+        echo $artifacts
+    - name: Delete Old Artifacts
+      uses: geekyeggo/delete-artifact@v1
+      with:
+        name: ${{ steps.get-artifacts-to-delete.outputs.artifacts }}
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: result
+        path: |
+          **/result.txt
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: plots
+        path: |
+          **/plot_*.svg

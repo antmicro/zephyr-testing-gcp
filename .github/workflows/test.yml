@@ -43,16 +43,16 @@ jobs:
         false
     steps:
     - uses: actions/checkout@v2
-    - name: Checkout tools repo
-      uses: actions/checkout@v2
-      with:
-        repository: zephyrproject-rtos/zephyr
-        path: zephyr
-        ref: ${{ matrix.SHA }}
-    - run: |
+    - name: Prepare zephyr
+      run: |
+        ./scripts/prepare_zephyr.sh
+    - name: Prepare environment
+      run: |
         ./scripts/prepare_environment.sh
+      continue-on-error: true
+    - name: Build boards
+      run: |
         ./scripts/build.py
-      id: success
       continue-on-error: true
     - name: Upload artifacts
       uses: actions/upload-artifact@v2

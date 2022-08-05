@@ -42,7 +42,7 @@ jobs:
       fail-fast:
         false
     steps:
-    - run: pwd && ls -la
+    - run: ./scripts/test.py
       #scripts/test.py ${{ matrix.SHA }}
       id: success
       continue-on-error: true

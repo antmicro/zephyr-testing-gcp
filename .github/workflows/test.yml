@@ -59,16 +59,9 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: ${{ matrix.SHA }}.txt
+        name: ${{ matrix.SHA }}
         path: |
-          **/${{ matrix.SHA }}.txt
-    - name: Upload artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: plots
-        path: |
-          **/plot_*.svg
-
+          artifacts/*
   simulate:
     runs-on: ubuntu-20.04
     needs: [generate-sha, build]
@@ -83,23 +76,20 @@ jobs:
     - name: Download binaries
       uses: actions/download-artifact@v2
       with:
-        name: ${{ matrix.SHA }}.txt
+        name: ${{ matrix.SHA }}
       continue-on-error: true
     - run: |
         ./scripts/download_renode.sh
       continue-on-error: true
+    - run: |
+        ./scripts/simulate.py
+      continue-on-error: true
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: ${{ matrix.SHA }}.txt
+        name: ${{ matrix.SHA }}
         path: |
-          **/${{ matrix.SHA }}.txt
-    - name: Upload artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: plots
-        path: |
-          **/plot_*.svg
+          artifacts/*
   results:
     runs-on: ubuntu-20.04
     needs: [simulate]

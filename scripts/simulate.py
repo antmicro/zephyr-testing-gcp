@@ -568,16 +568,6 @@ if __name__ == '__main__':
             print("error: zephyr not found")
             sys.exit(1)
 
-    # Create a 'version' of CI script to determine later if we want to rebuild
-    # boards with 'NOT BUILT' status. If nothing in the CI had changed,
-    # presumably trying to rebuild them doesn't make sense and is a waste of
-    # time.
-    with open('.ci.yml') as f:
-        ci_contents = f.read().encode()
-    with open('artifacts/ci.version', 'w') as f:
-        build_version = hashlib.sha256(ci_contents).hexdigest()
-        f.write(build_version)
-
     # Skipping simulation is possible if:
     # - local and remote Renode version are the same
     # - FORCE_SIM env variable has *not* been set
@@ -594,14 +584,6 @@ if __name__ == '__main__':
     download_artifacts = zephyr_commit_remote == zephyr_commit
     download_artifacts = download_artifacts and not os.getenv('FORCE_BUILD', False)
 
-    # We want to try to rebuild samples with 'NOT BUILT' status if:
-    # - local and remote CI version are *not* the same
-    # - FORCE_SKIP_NOT_BUILT has *not* been set
-    # where CI version is a sha256 calculated from the CI script
-    build_remote_version = get_remote_version('ci')
-    skip_not_built = build_remote_version == build_version
-    skip_not_built = skip_not_built or os.getenv('FORCE_SKIP_NOT_BUILT', False)
-
     sample_name, sample_path = get_sample_name_path()
     zephyr_boards = get_boards()
     flat_boards = flatten(zephyr_boards)
@@ -616,12 +598,12 @@ if __name__ == '__main__':
         boards_to_run = list(filter(lambda x: all(map(lambda y: y not in x.name, omit_board)), boards_to_run))
     else:
         boards_to_run = selected_platforms
+    boards_to_run = ['96b_aerocore2'] # Test
 
     total_boards = len(boards_to_run)
     sim_jobs = int(os.getenv('SIM_JOBS', 1))
 
-    with parallel_backend('multiprocessing', n_jobs=sim_jobs):
-        results = Parallel()(delayed(loop_wrapper)(b, i, total_boards, dashboard_json, sample_name, sample_path, download_artifacts, skip_not_built, stage='sim') for i, b in enumerate(boards_to_run, start=1))
+    results = [loop_wrapper(b, i, total_boards, dashboard_json, sample_name, sample_path, download_artifacts, False, stage='sim') for i, b in enumerate(boards_to_run, start=1)]
 
     # if boards are selected manually from the cmdline, append their names to
     # the final json file

@@ -440,13 +440,12 @@ if __name__ == '__main__':
     else:
         boards_to_run = selected_platforms
 
-    boards_to_run = ['atsamd20_xpro']
+    boards_to_run = ['96b_aerocore2'] # Test
 
     total_boards = len(boards_to_run)
     build_jobs = int(os.getenv('BUILD_JOBS', 1))
 
-    with parallel_backend('multiprocessing', n_jobs=build_jobs):
-        Parallel()(delayed(loop_wrapper)(b, i, total_boards, dashboard_json, sample_name, sample_path, download_artifacts, skip_not_built) for i, b in enumerate(boards_to_run, start=1))
+    [loop_wrapper(b, i, total_boards, dashboard_json, sample_name, sample_path, download_artifacts, skip_not_built) for i, b in enumerate(boards_to_run, start=1)]
 
     # if boards are selected manually from the cmdline, append their names to
     # the final json file

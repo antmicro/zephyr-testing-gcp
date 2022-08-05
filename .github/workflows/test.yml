@@ -9,8 +9,8 @@ jobs:
     steps:
     - name: Install dependencies
       run: |
-        apt-get update -qq
-        apt install -y git
+        sudo apt-get update -qq
+        sudo apt install -y git
     - name: Checkout tools repo
       uses: actions/checkout@v2
       with:
@@ -108,11 +108,11 @@ jobs:
         path: results
     - name: Install dependencies
       run: |
-        apt-get update -qq
-        apt install -y curl gnupg
+        sudo apt-get update -qq
+        sudo apt install -y curl gnupg
         echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
-        curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
-        apt -qqy update && apt -qqy install google-cloud-cli
+        curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
+        sudo apt -qqy update && sudo apt -qqy install google-cloud-cli
 
     - run: |
         ls -la results

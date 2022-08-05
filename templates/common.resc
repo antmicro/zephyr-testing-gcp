@@ -1,0 +1,20 @@
+logFile $ORIGIN/../../monitor.txt True
+
+using sysbus
+$name?="{{zephyr_platform}}"
+mach create $name
+
+machine LoadPlatformDescription $ORIGIN/{{zephyr_platform}}-{{sample_name}}.repl
+
+showAnalyzer {{uart_name}}
+{{uart_name}} RecordToAsciinema $ORIGIN/{{zephyr_platform}}-{{sample_name}}-asciinema
+
+macro reset
+"""
+    sysbus LoadELF $ORIGIN/{{zephyr_platform}}-zephyr-{{sample_name}}.elf
+    {%- if script is not none %}
+    {{ script }}
+    {%- endif %}
+"""
+
+runMacro $reset

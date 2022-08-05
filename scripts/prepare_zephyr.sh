@@ -1,5 +1,5 @@
 pip uninstall -y devicetree
-west init zephyrproject 1>artifacts/build.log 2>&1
+west init zephyrproject # 1>artifacts/build.log 2>&1
 cd zephyrproject/zephyr
 git checkout ${ZEPHYR_VERSION}
 git apply ../../patches/zephyr/*.patch

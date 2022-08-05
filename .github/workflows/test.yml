@@ -20,7 +20,7 @@ jobs:
     - name: Generate matrix
       id: generate-sha
       run: |
-        matrix=$(git -C zephyr log -n 1 --format='"%H",' | tr '\n' ' ')
+        matrix=$(git -C zephyr log -n 2 --format='"%H",' | tr '\n' ' ')
         # Delete last character
         matrix="${matrix%?}"
         # Add [ ]
@@ -48,7 +48,7 @@ jobs:
       with:
         repository: zephyrproject-rtos/zephyr
         path: zephyr
-        fetch-depth: 0
+        ref: ${{ matrix.SHA }}
     - run: ./scripts/test.py ${{ matrix.SHA }}
       id: success
       continue-on-error: true

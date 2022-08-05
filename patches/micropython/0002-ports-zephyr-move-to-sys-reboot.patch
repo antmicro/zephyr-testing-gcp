@@ -1,0 +1,25 @@
+From fb81f55a5a9358e10a1cb9ad6744a7c2a711edb2 Mon Sep 17 00:00:00 2001
+From: Filip Kokosinski <fkokosinski@antmicro.com>
+Date: Tue, 18 Jan 2022 09:28:30 +0100
+Subject: [PATCH] ports/zephyr: move to sys/reboot
+
+---
+ ports/zephyr/modmachine.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/ports/zephyr/modmachine.c b/ports/zephyr/modmachine.c
+index adec9160b..bc984d1b6 100644
+--- a/ports/zephyr/modmachine.c
++++ b/ports/zephyr/modmachine.c
+@@ -28,7 +28,7 @@
+ 
+ #include <stdint.h>
+ #include <stdio.h>
+-#include <power/reboot.h>
++#include <sys/reboot.h>
+ 
+ #include "py/obj.h"
+ #include "py/runtime.h"
+-- 
+2.30.2
+

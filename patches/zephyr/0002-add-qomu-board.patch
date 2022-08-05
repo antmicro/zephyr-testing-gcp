@@ -1,0 +1,200 @@
+commit 12df2bc4ee0a62fa547d0416abb3432ddc16ac63
+Author: Michal Sieron <msieron@antmicro.com>
+Date:   Mon Jun 6 17:03:06 2022 +0200
+
+    boards: arm: Add Qomu board
+
+diff --git a/boards/arm/qomu/CMakeLists.txt b/boards/arm/qomu/CMakeLists.txt
+new file mode 100644
+index 0000000000..cc2cb8fc04
+--- /dev/null
++++ b/boards/arm/qomu/CMakeLists.txt
+@@ -0,0 +1,5 @@
++# Copyright (c) 2022 Antmicro <www.antmicro.com>
++# SPDX-License-Identifier: Apache-2.0
++
++zephyr_library_sources(../quick_feather/board.c)
++zephyr_include_directories(../quick_feather/)
+diff --git a/boards/arm/qomu/Kconfig b/boards/arm/qomu/Kconfig
+new file mode 100644
+index 0000000000..c06e73df40
+--- /dev/null
++++ b/boards/arm/qomu/Kconfig
+@@ -0,0 +1,10 @@
++# Quick Feather board
++
++# Copyright (c) 2020 Antmicro <www.antmicro.com>
++# SPDX-License-Identifier: Apache-2.0
++
++config BOARD_INIT_PRIORITY
++	int
++	default KERNEL_INIT_PRIORITY_DEFAULT
++	help
++	  Board initialization priority.
+diff --git a/boards/arm/qomu/Kconfig.board b/boards/arm/qomu/Kconfig.board
+new file mode 100644
+index 0000000000..e9aaf69c8a
+--- /dev/null
++++ b/boards/arm/qomu/Kconfig.board
+@@ -0,0 +1,8 @@
++# Quick Feather board
++
++# Copyright (c) 2022 Antmicro <www.antmicro.com>
++# SPDX-License-Identifier: Apache-2.0
++
++config BOARD_QOMU
++	bool "QuickLogic Qomu target"
++	depends on SOC_EOS_S3
+diff --git a/boards/arm/qomu/Kconfig.defconfig b/boards/arm/qomu/Kconfig.defconfig
+new file mode 100644
+index 0000000000..6ac2fd4285
+--- /dev/null
++++ b/boards/arm/qomu/Kconfig.defconfig
+@@ -0,0 +1,20 @@
++# QuickLogic Qomu board
++
++# Copyright (c) 2022 Antmicro <www.antmicro.com>
++# SPDX-License-Identifier: Apache-2.0
++
++if BOARD_QOMU
++
++config BOARD
++	default "qomu"
++
++config UART_PL011
++	default n
++
++config UART_INTERRUPT_DRIVEN
++	default n
++
++config UART_USBSERIAL
++	default y
++
++endif # BOARD_QOMU
+diff --git a/boards/arm/qomu/qomu.dts b/boards/arm/qomu/qomu.dts
+new file mode 100644
+index 0000000000..e57e98a9dd
+--- /dev/null
++++ b/boards/arm/qomu/qomu.dts
+@@ -0,0 +1,70 @@
++/*
++ * Copyright (c) 2020 Antmicro <www.antmicro.com>
++ *
++ * SPDX-License-Identifier: Apache-2.0
++ */
++
++/dts-v1/;
++#include <quicklogic/quicklogic_eos_s3.dtsi>
++
++/ {
++	model = "QuickLogic Qomu board";
++	compatible = "quicklogic,eos_s3";
++
++	chosen {
++		zephyr,sram = &sram0;
++		zephyr,console = &uart1;
++		zephyr,shell-uart = &uart1;
++		zephyr,uart-pipe = &uart1;
++	};
++
++	aliases {
++		led0 = &blue_led;
++		led1 = &green_led;
++		led2 = &red_led;
++		sw0 = &button0;
++	};
++
++	leds {
++		compatible = "gpio-leds";
++		blue_led: led_0 {
++			gpios = <&gpio 4 GPIO_ACTIVE_HIGH>;
++			label = "LED 0";
++		};
++
++		green_led: led_1 {
++			gpios = <&gpio 5 GPIO_ACTIVE_HIGH>;
++			label = "LED 1";
++		};
++
++		red_led: led_2 {
++			gpios = <&gpio 6 GPIO_ACTIVE_HIGH>;
++			label = "LED 2";
++		};
++	};
++
++	buttons {
++		compatible = "gpio-keys";
++		button0: button_0 {
++			gpios = <&gpio 0 (GPIO_PULL_UP | GPIO_ACTIVE_LOW)>;
++			label = "User Push Button 0";
++		};
++	};
++
++	fpga0: fpga {
++		status = "okay";
++	};
++};
++
++&cpu0 {
++	clock-frequency = <61440000>;
++};
++
++&gpio {
++	status = "okay";
++};
++
++&uart1 {
++	status = "okay";
++	current-speed = <115200>;
++};
+diff --git a/boards/arm/qomu/qomu.yaml b/boards/arm/qomu/qomu.yaml
+new file mode 100644
+index 0000000000..9ed10212dd
+--- /dev/null
++++ b/boards/arm/qomu/qomu.yaml
+@@ -0,0 +1,12 @@
++identifier: qomu
++name: QuickLogic Qomu
++type: mcu
++arch: arm
++toolchain:
++  - zephyr
++  - gnuarmemb
++  - xtools
++testing:
++  ignore_tags:
++    - net
++    - bluetooth
+diff --git a/boards/arm/qomu/qomu_defconfig b/boards/arm/qomu/qomu_defconfig
+new file mode 100644
+index 0000000000..4f16984128
+--- /dev/null
++++ b/boards/arm/qomu/qomu_defconfig
+@@ -0,0 +1,27 @@
++# Copyright (c) 2022 Antmicro <www.antmicro.com>
++# SPDX-License-Identifier: Apache-2.0
++
++CONFIG_ARM_MPU=n
++CONFIG_SOC_EOS_S3=y
++CONFIG_BOARD_QOMU=y
++
++# system clock
++CONFIG_SYS_CLOCK_HW_CYCLES_PER_SEC=61440000
++CONFIG_CORTEX_M_SYSTICK=y
++
++# console
++CONFIG_SERIAL=y
++CONFIG_CONSOLE=y
++CONFIG_UART_CONSOLE=y
++
++# EOS S3 Configuration Manager copies software from external flash to MCU
++# memory using preconfigured DMA and execute it there.
++# Thus we do not use flash directly.
++
++CONFIG_XIP=n
++CONFIG_FLASH=n
++CONFIG_FLASH_SIZE=0
++CONFIG_FLASH_BASE_ADDRESS=0x0
++
++# GPIO
++CONFIG_GPIO=y

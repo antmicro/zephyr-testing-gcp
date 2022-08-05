@@ -1,0 +1,382 @@
+commit 94792bd6bc5fcab81a97b5dfb3e1b280a9f26f46
+Author: Michal Sieron <msieron@antmicro.com>
+Date:   Mon Jun 6 17:02:36 2022 +0200
+
+    drivers: serial: Add initial usbserial support
+    
+    USB interface that may be used to send messages from a USB host to
+    the M4 processor in the S3B, and vice-versa.
+
+diff --git a/drivers/serial/CMakeLists.txt b/drivers/serial/CMakeLists.txt
+index f06224b2e4..34a661e2bf 100644
+--- a/drivers/serial/CMakeLists.txt
++++ b/drivers/serial/CMakeLists.txt
+@@ -31,6 +31,7 @@ zephyr_library_sources_ifdef(CONFIG_UART_STM32 uart_stm32.c)
+ zephyr_library_sources_ifdef(CONFIG_UART_SAM0 uart_sam0.c)
+ zephyr_library_sources_ifdef(CONFIG_UART_PSOC6 uart_psoc6.c)
+ zephyr_library_sources_ifdef(CONFIG_UART_PL011 uart_pl011.c)
++zephyr_library_sources_ifdef(CONFIG_UART_USBSERIAL uart_usbserial.c)
+ zephyr_library_sources_ifdef(CONFIG_UART_RV32M1_LPUART uart_rv32m1_lpuart.c)
+ zephyr_library_sources_ifdef(CONFIG_UART_RPI_PICO uart_rpi_pico.c)
+ zephyr_library_sources_ifdef(CONFIG_UART_LITEUART uart_liteuart.c)
+diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
+index 8e6501adc4..014574b67d 100644
+--- a/drivers/serial/Kconfig
++++ b/drivers/serial/Kconfig
+@@ -161,6 +161,8 @@ source "drivers/serial/Kconfig.psoc6"
+ 
+ source "drivers/serial/Kconfig.pl011"
+ 
++source "drivers/serial/Kconfig.usbserial"
++
+ source "drivers/serial/Kconfig.rv32m1_lpuart"
+ 
+ source "drivers/serial/Kconfig.rpi_pico"
+diff --git a/drivers/serial/Kconfig.usbserial b/drivers/serial/Kconfig.usbserial
+new file mode 100644
+index 0000000000..85f226a2ef
+--- /dev/null
++++ b/drivers/serial/Kconfig.usbserial
+@@ -0,0 +1,11 @@
++# QuickFeather USBserialport_S3B configuration option
++
++# Copyright (c) 2022 Antmicro <www.antmicro.com>
++# SPDX-License-Identifier: Apache-2.0
++
++config UART_USBSERIAL
++	bool "USBserialport_S3B serial driver"
++	depends on SOC_EOS_S3
++	select SERIAL_HAS_DRIVER
++	help
++	  This option enables USBserialport_S3B serial driver.
+diff --git a/drivers/serial/uart_usbserial.c b/drivers/serial/uart_usbserial.c
+new file mode 100644
+index 0000000000..fa0800a0c8
+--- /dev/null
++++ b/drivers/serial/uart_usbserial.c
+@@ -0,0 +1,293 @@
++/*
++ * Copyright (c) 2022 Antmicro <www.antmicro.com>
++ *
++ * SPDX-License-Identifier: Apache-2.0
++ */
++
++#define DT_DRV_COMPAT quicklogic,usbserial
++
++#include <zephyr/kernel.h>
++#include <zephyr/arch/cpu.h>
++#include <zephyr/init.h>
++#include <zephyr/irq.h>
++#include <zephyr/device.h>
++#include <zephyr/drivers/uart.h>
++#include <zephyr/types.h>
++#include <stdio.h>
++
++#define PERIPH_BASE           (0x40000000)
++#define FPGA_PERIPH_BASE      (PERIPH_BASE + 0x00020000)
++
++/* start of eoss3_hal_fpga_usbserial.h */
++#define USBSERIAL_TX_FIFOSIZE (512)
++#define USBSERIAL_RX_FIFOSIZE (512)
++
++#define USBSERIAL_RX_BUFSIZE (256)
++
++#define FPGA_USBSERIAL_ID_VALUE         0xA5BD
++#define FPGA_USBSERIAL_REV_NUM          0x0100
++
++/* USB-Serial FIFO status values */
++#define FPGA_USBSERIAL_TX_FIFO_FULL          (0x00)    // 0000 Full
++#define FPGA_USBSERIAL_TX_FIFO_EMPTY         (0x01)    // 0001 Empty
++#define FPGA_USBSERIAL_TX_FIFO_GT_HALF       (0x02)    // 0010 Room for more than 1/2
++#define FPGA_USBSERIAL_TX_FIFO_GT_QUARTER    (0x03)    // 0011 Room for more than 1/4
++#define FPGA_USBSERIAL_TX_FIFO_LT_QUARTER    (0x04)    // 0100 Room for less than 1/4
++#define FPGA_USBSERIAL_TX_FIFO_32_TO_63      (0x0A)    // 1010 Room for 32 to 63
++#define FPGA_USBSERIAL_TX_FIFO_16_TO_31      (0x0B)    // 1011 Room for 16 to 31
++#define FPGA_USBSERIAL_TX_FIFO_8_TO_15       (0x0C)    // 1100 Room for 8 to 15
++#define FPGA_USBSERIAL_TX_FIFO_4_TO_7        (0x0D)    // 1101 Room for 4 to 7
++#define FPGA_USBSERIAL_TX_FIFO_GE_2          (0x0E)    // 1110 Room for atleast 2
++#define FPGA_USBSERIAL_TX_FIFO_GE_1          (0x0F)    // 1111 Room for atleast 1
++
++typedef struct fpga_usbserial_regs {
++	uint32_t device_id;
++	uint32_t rev_num;
++	uint16_t scratch_reg;
++	uint16_t reserved1;
++	uint32_t clock_select;
++	uint32_t usbpid;
++	uint32_t reserved2[11];
++	unsigned u2m_fifo_flags : 4;
++	unsigned reserved3 :28;
++	unsigned rdata : 8;
++	unsigned reserved4 : 24;
++	uint32_t reserved5[14];
++	unsigned m2u_fifo_flags : 4;
++	unsigned reserved6 :28;
++	unsigned wdata : 8;
++	unsigned reserved7 : 24;
++	uint32_t reserved8[14];
++	unsigned u2m_fifo_int_en : 1;
++	unsigned reserved9 : 31;
++} fpga_usbserial_regs_t;
++
++void HAL_usbserial_init(bool fUseInterrupt);
++uint32_t HAL_usbserial_ipid(void);
++uint32_t HAL_usbserial_dataavailable(void);
++int HAL_usbserial_getc(void);
++void HAL_usbserial_putc(char c);
++void HAL_usbserial_txbuf(const uint8_t *buf, size_t len);
++int HAL_usbserial_tx_is_fifo_full(void);
++int HAL_usbserial_tx_is_fifo_empty(void);
++void HAL_usbserial_init2(bool fUseInterrupt, bool fUse72MHz, uint32_t usbpid);
++int HAL_usbserial_tx_is_fifo_half_empty(void);
++int HAL_usbserial_tx_get_fifo_status(void);
++int HAL_usbserial_tx_get_fifo_space_available(void);
++void HAL_usbserial_i2s_init(bool fUseInterrupt, bool fUse72MHz, uint32_t usbpid,uint32_t usb_ipid);
++
++/* end of eoss3_hal_fpga_usbserial.h */
++
++/* start of eoss3_hal_fpga_usbserial.c */
++
++//------------- Pointer to registers ---------------------//
++volatile fpga_usbserial_regs_t* pusbserial_regs = (fpga_usbserial_regs_t*)(FPGA_PERIPH_BASE);
++
++// void HAL_usbserial_init(bool fUseInterrupt) {
++// 	HAL_usbserial_init2(fUseInterrupt, false, 0x6141);
++// }
++// //This can take product as USB and IP id differnt from it
++// static void HAL_usbserial_init_common(bool fUseInterrupt, bool fUse72MHz, uint32_t usbpid, uint32_t usb_ipid ) {
++// 	// Setup FPGA clocks
++//
++// 	// Enable 12MHz clock on C16
++// 	S3x_Clk_Set_Rate(S3X_FB_16_CLK, 12000*1000);
++// 	S3x_Clk_Enable(S3X_FB_16_CLK);
++//
++// 	// Setup the clock select register
++// 	if (fUse72MHz) {
++// 		pusbserial_regs->clock_select = 1;// Write 1 to Offset 0x0C to enable 1.5 divider (72/1.5 = 48MHz)
++// 	} else {
++// 		pusbserial_regs->clock_select = 0;// Write 0 to Offset 0x0C to use input clock as is
++// 	}
++// 	// Set the USB product ID
++// 	pusbserial_regs->usbpid = usbpid;
++//
++// 	// Enable 48MHz/72MHz clock on C21
++// 	if (fUse72MHz) {
++// 		S3x_Clk_Set_Rate(S3X_FB_21_CLK, 72000*1000);
++// 	} else {
++// 		S3x_Clk_Set_Rate(S3X_FB_21_CLK, 48000*1000);
++// 	}
++// 	S3x_Clk_Enable(S3X_FB_21_CLK);
++//
++// 	// Confirm expected IP is loaded
++// 	// configASSERT(HAL_usbserial_ipid() == usb_ipid);
++// 	// if(usb_ipid == 0xA5BD) {
++// 	// 	configASSERT(pusbserial_regs->rev_num == 0x0200);
++// 	// }
++// }
++// //This is init (USBserial + I2S). So, the IP id is different
++// void HAL_usbserial_i2s_init(bool fUseInterrupt, bool fUse72MHz, uint32_t usbpid,uint32_t usb_ipid ) {
++//
++// 	HAL_usbserial_init_common(fUseInterrupt,fUse72MHz,usbpid, usb_ipid);
++// 		return;
++// }
++// //This is init USBserial only
++// void HAL_usbserial_init2(bool fUseInterrupt, bool fUse72MHz, uint32_t usbpid) {
++//
++// 	HAL_usbserial_init_common(fUseInterrupt, fUse72MHz, usbpid, 0xA5BD);
++// 		return;
++// }
++
++int HAL_usbserial_getc(void) {
++	if (pusbserial_regs->u2m_fifo_flags == 0) {
++		return EOF;
++	} else {
++		return pusbserial_regs->rdata;
++	}
++}
++
++void HAL_usbserial_putc(char c) {
++	// Wait for room in Tx FIFO
++	while(pusbserial_regs->m2u_fifo_flags == 0)
++		;
++	pusbserial_regs->wdata = c;
++}
++
++void HAL_usbserial_txbuf(const uint8_t *buf, size_t len)
++{
++	int i;
++
++	for(i=0; i<len; i++)
++		HAL_usbserial_putc(buf[i]);
++}
++
++uint32_t HAL_usbserial_ipid(void) {
++	return pusbserial_regs->device_id;
++}
++
++uint32_t HAL_usbserial_dataavailable(void) {
++	return pusbserial_regs->u2m_fifo_flags;
++}
++
++/* Return 1 if FIFO available space is less than 1/4
++ * (FIFO is more than 3/4 full)
++ */
++int HAL_usbserial_tx_is_fifo_full(void)
++{
++	if (pusbserial_regs->m2u_fifo_flags == FPGA_USBSERIAL_TX_FIFO_LT_QUARTER)
++		return 1;
++	else
++		return 0;
++}
++
++/* Return 1 if FIFO is empty
++ */
++int HAL_usbserial_tx_is_fifo_empty(void)
++{
++	if (pusbserial_regs->m2u_fifo_flags == FPGA_USBSERIAL_TX_FIFO_EMPTY)
++		return 1;
++	else
++		return 0;
++}
++
++/* Return 1 if FIFO is atleast half empty
++ */
++int HAL_usbserial_tx_is_fifo_half_empty(void)
++{
++	if (pusbserial_regs->m2u_fifo_flags == FPGA_USBSERIAL_TX_FIFO_GT_HALF)
++		return 1;
++	else
++		return 0;
++}
++
++/* Returns FIFO status value, refer the eoss3_hal_fpga_usbserial.h header file for definitions */
++int HAL_usbserial_tx_get_fifo_status(void)
++{
++	return pusbserial_regs->m2u_fifo_flags ;
++}
++
++/* Returns FIFO status value, refer the eoss3_hal_fpga_usbserial.h header file for definitions */
++int HAL_usbserial_tx_get_fifo_space_available(void)
++{
++	int ret = pusbserial_regs->m2u_fifo_flags ;
++	switch (ret)
++	{
++	case FPGA_USBSERIAL_TX_FIFO_FULL: // (0x00) // 0000 Full
++		return 0;
++	case FPGA_USBSERIAL_TX_FIFO_EMPTY: // (0x01) // 0001 Empty
++		return USBSERIAL_TX_FIFOSIZE;
++	case FPGA_USBSERIAL_TX_FIFO_GT_HALF: // (0x02) // 0010 Room for more than 1/2
++		return (USBSERIAL_TX_FIFOSIZE/2);
++	case FPGA_USBSERIAL_TX_FIFO_GT_QUARTER: // (0x03) // 0011 Room for more than 1/4
++		return (USBSERIAL_TX_FIFOSIZE/4);
++	case FPGA_USBSERIAL_TX_FIFO_LT_QUARTER: // (0x04) // 0100 Room for less than 1/4
++		return 32;
++	case FPGA_USBSERIAL_TX_FIFO_32_TO_63: // (0x0A) // 1010 Room for 32 to 63
++		return 32;
++	case FPGA_USBSERIAL_TX_FIFO_16_TO_31: // (0x0B) // 1011 Room for 16 to 31
++		return 16;
++	case FPGA_USBSERIAL_TX_FIFO_8_TO_15: // (0x0C) // 1100 Room for 8 to 15
++		return 8;
++	case FPGA_USBSERIAL_TX_FIFO_4_TO_7: // (0x0D) // 1101 Room for 4 to 7
++		return 4;
++	case FPGA_USBSERIAL_TX_FIFO_GE_2: // (0x0E) // 1110 Room for atleast 2
++		return 2;
++	case FPGA_USBSERIAL_TX_FIFO_GE_1: // (0x0F) // 1111 Room for atleast 1
++		return 1;
++	default:
++		return 0;
++	}
++}
++
++/* end of eoss3_hal_fpga_usbserial.c */
++
++/**
++ * @brief Output a character in polled mode.
++ *
++ * Writes data to tx register. Waits for space if transmitter is full.
++ *
++ * @param dev UART device struct
++ * @param c Character to send
++ */
++static void uart_usbserial_poll_out(const struct device *dev, unsigned char c)
++{
++	/* wait for space */
++	while (HAL_usbserial_tx_is_fifo_full()) {
++	}
++
++	HAL_usbserial_putc(c);
++}
++
++/**
++ * @brief Poll the device for input.
++ *
++ * @param dev UART device struct
++ * @param c Pointer to character
++ *
++ * @return 0 if a character arrived, -1 if the input buffer if empty.
++ */
++static int uart_usbserial_poll_in(const struct device *dev, unsigned char *c)
++{
++	int maybe_c = HAL_usbserial_getc();
++	if (maybe_c == EOF)
++	{
++		return -1;
++	}
++	else
++	{
++		*c = maybe_c;
++		return 0;
++	}
++}
++
++static const struct uart_driver_api uart_usbserial_driver_api = {
++	.poll_in		= uart_usbserial_poll_in,
++	.poll_out		= uart_usbserial_poll_out,
++	.err_check		= NULL,
++};
++
++static int uart_usbserial_init(const struct device *dev)
++{
++	// Start USB serial not using interrupts
++	// HAL_usbserial_init(false);
++
++	return 0;
++}
++
++DEVICE_DT_INST_DEFINE(0,
++		uart_usbserial_init,
++		NULL, NULL, NULL,
++		PRE_KERNEL_1, CONFIG_SERIAL_INIT_PRIORITY,
++		(void *)&uart_usbserial_driver_api);
+diff --git a/dts/arm/quicklogic/quicklogic_eos_s3.dtsi b/dts/arm/quicklogic/quicklogic_eos_s3.dtsi
+index db3b7b35e0..2a2e968130 100644
+--- a/dts/arm/quicklogic/quicklogic_eos_s3.dtsi
++++ b/dts/arm/quicklogic/quicklogic_eos_s3.dtsi
+@@ -49,6 +49,13 @@
+ 			label = "UART_0";
+ 		};
+ 
++		uart1: uart@40020000 {
++			compatible = "quicklogic,usbserial";
++			reg = <0x40020000 DT_SIZE_K(4)>;
++			label = "UART_1";
++			status = "disabled";
++		};
++
+ 		gpio: gpio {
+ 			compatible = "quicklogic,eos-s3-gpio";
+ 			status = "disabled";
+diff --git a/soc/arm/quicklogic_eos_s3/Kconfig.defconfig b/soc/arm/quicklogic_eos_s3/Kconfig.defconfig
+index 6f32558585..b5b2b00258 100644
+--- a/soc/arm/quicklogic_eos_s3/Kconfig.defconfig
++++ b/soc/arm/quicklogic_eos_s3/Kconfig.defconfig
+@@ -26,6 +26,9 @@ config UART_PL011_PORT0
+ config UART_PL011_PORT1
+ 	default n
+ 
++config UART_USBSERIAL
++	default n
++
+ endif # SERIAL
+ 
+ if GPIO

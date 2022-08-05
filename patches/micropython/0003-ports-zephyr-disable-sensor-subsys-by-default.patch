@@ -1,0 +1,25 @@
+From 043618ae2ad251c2531dfe9614e64c3266feba4c Mon Sep 17 00:00:00 2001
+From: Filip Kokosinski <fkokosinski@antmicro.com>
+Date: Mon, 4 Jul 2022 11:34:55 +0200
+Subject: [PATCH] ports/zephyr: disable sensor subsys by default
+
+---
+ ports/zephyr/prj.conf | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/ports/zephyr/prj.conf b/ports/zephyr/prj.conf
+index b6559e4f7..c9b98823a 100644
+--- a/ports/zephyr/prj.conf
++++ b/ports/zephyr/prj.conf
+@@ -17,7 +17,7 @@ CONFIG_POLL=y
+ 
+ # Enable sensor subsystem (doesn't add code if not used).
+ # Specific sensors should be enabled per-board.
+-CONFIG_SENSOR=y
++#CONFIG_SENSOR=y
+ 
+ # Networking config
+ CONFIG_NETWORKING=y
+-- 
+2.35.1
+

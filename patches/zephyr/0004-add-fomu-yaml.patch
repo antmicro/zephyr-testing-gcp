@@ -1,0 +1,22 @@
+commit 23c4a2ddd473b7b1ef035d19a88f344862d570c6
+Author: Mateusz Holenko <mholenko@antmicro.com>
+Date:   Wed Jun 8 10:13:45 2022 +0200
+
+    Add Fomu yaml
+
+diff --git a/boards/riscv/fomu/fomu.yaml b/boards/riscv/fomu/fomu.yaml
+new file mode 100644
+index 0000000000..c61808393f
+--- /dev/null
++++ b/boards/riscv/fomu/fomu.yaml
+@@ -0,0 +1,10 @@
++identifier: fomu
++name: Fomu - The FPGA-based Tomu
++type: fpga
++arch: riscv32
++toolchain:
++  - zephyr
++testing:
++  ignore_tags:
++    - net
++    - bluetooth

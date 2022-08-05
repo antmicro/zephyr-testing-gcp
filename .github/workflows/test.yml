@@ -43,6 +43,12 @@ jobs:
         false
     steps:
     - uses: actions/checkout@v2
+    - name: Checkout tools repo
+      uses: actions/checkout@v2
+      with:
+        repository: zephyrproject-rtos/zephyr
+        path: zephyr
+        fetch-depth: 0
     - run: ./scripts/test.py ${{ matrix.SHA }}
       id: success
       continue-on-error: true

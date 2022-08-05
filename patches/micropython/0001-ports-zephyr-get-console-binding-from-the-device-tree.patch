@@ -1,0 +1,25 @@
+From 24f8a00fb6fa65a3a923d0b43fec0efaf68de3f9 Mon Sep 17 00:00:00 2001
+From: Filip Kokosinski <fkokosinski@antmicro.com>
+Date: Fri, 26 Nov 2021 14:28:38 +0100
+Subject: [PATCH] ports/zephyr: get console binding from the device tree
+
+---
+ ports/zephyr/uart_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/ports/zephyr/uart_core.c b/ports/zephyr/uart_core.c
+index 44bdeb5c2..96af10575 100644
+--- a/ports/zephyr/uart_core.c
++++ b/ports/zephyr/uart_core.c
+@@ -55,7 +55,7 @@ void mp_hal_stdout_tx_strn(const char *str, mp_uint_t len) {
+     #else
+     static const struct device *uart_console_dev;
+     if (uart_console_dev == NULL) {
+-        uart_console_dev = device_get_binding(CONFIG_UART_CONSOLE_ON_DEV_NAME);
++        uart_console_dev = DEVICE_DT_GET(DT_CHOSEN(zephyr_console));
+     }
+ 
+     while (len--) {
+-- 
+2.30.2
+

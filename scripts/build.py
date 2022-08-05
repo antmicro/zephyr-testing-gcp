@@ -395,7 +395,7 @@ if __name__ == '__main__':
     # boards with 'NOT BUILT' status. If nothing in the CI had changed,
     # presumably trying to rebuild them doesn't make sense and is a waste of
     # time.
-    with open('.ci.yml') as f:
+    with open('.github/workspace/test.yml') as f:
         ci_contents = f.read().encode()
     with open('artifacts/ci.version', 'w') as f:
         build_version = hashlib.sha256(ci_contents).hexdigest()

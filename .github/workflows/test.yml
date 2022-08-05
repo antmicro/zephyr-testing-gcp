@@ -41,6 +41,8 @@ jobs:
         SHA: ${{ fromJson(needs.generate-sha.outputs.matrix) }}
       fail-fast:
         false
+    env:
+      ZEPHYR_SDK_VERSION: 0.14.2
     steps:
     - uses: actions/checkout@v2
     - name: Prepare zephyr

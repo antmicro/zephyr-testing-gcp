@@ -1,3 +1,10 @@
+mkdir -p zephyr-sdk && cd zephyr-sdk
+curl -kL https://dl.antmicro.com/projects/renode/zephyr-sdk-${ZEPHYR_SDK_VERSION}_linux-x86_64.tar.gz | tar xz --strip 1
+./setup.sh -t all -h -c
+cd -
+export ZEPHYR_SDK_INSTALL_DIR=$(pwd)/zephyr-sdk
+
+
 pip uninstall -y devicetree
 west init zephyrproject # 1>artifacts/build.log 2>&1
 cd zephyrproject/zephyr

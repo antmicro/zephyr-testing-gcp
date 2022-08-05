@@ -6,3 +6,4 @@ PyYAML==6.0
 devicetree==0.0.*
 pytest==7.1.*
 GitPython==3.1.*
+-e git+https://github.com/antmicro/dts2repl.git@a243aee#egg=dts2repl

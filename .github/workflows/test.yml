@@ -49,7 +49,8 @@ jobs:
         repository: zephyrproject-rtos/zephyr
         path: zephyr
         ref: ${{ matrix.SHA }}
-    - run: ./scripts/test.py ${{ matrix.SHA }}
+    - run: |
+        ./scripts/test.py ${{ matrix.SHA }}
       id: success
       continue-on-error: true
     - name: Upload artifacts
@@ -72,6 +73,8 @@ jobs:
       fail-fast: false
       matrix:
         SHA: ${{ fromJson(needs.generate-sha.outputs.matrix) }}
+    env:
+      RENODE_VERSION: 1.13.1+20220731git8eca7310
     steps:
     - name: Download binaries
       uses: actions/download-artifact@v2
@@ -80,14 +83,7 @@ jobs:
       continue-on-error: true
 
     - run: |
-        if [[ $(( $RANDOM % 100 )) -gt 60 ]]; then
-          exit 1
-        fi
-        if [ -f ${{ matrix.SHA }}.txt ]; then
-          sha=$(cat ${{ matrix.SHA }}.txt | tr -d '\n')
-          sha="${sha}-done"
-          echo $sha > ${{ matrix.SHA }}.txt
-        fi
+        ./scripts/download_renode.sh
       continue-on-error: true
     - name: Upload artifacts
       uses: actions/upload-artifact@v2

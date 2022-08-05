@@ -43,7 +43,7 @@ jobs:
         false
     steps:
     - uses: actions/checkout@v2
-    - run: ./scripts/test.py
+    - run: pwd && ls -la
       #scripts/test.py ${{ matrix.SHA }}
       id: success
       continue-on-error: true

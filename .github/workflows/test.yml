@@ -42,9 +42,8 @@ jobs:
       fail-fast:
         false
     steps:
-    - run: |
-        echo "${{ matrix.SHA }}" > ${{ matrix.SHA }}.txt
-        scripts/test.py ${{ matrix.SHA }}
+    - run: pwd && ls -la
+      #scripts/test.py ${{ matrix.SHA }}
       id: success
       continue-on-error: true
     - name: Upload artifacts

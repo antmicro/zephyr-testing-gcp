@@ -3,7 +3,7 @@ curl -kL https://dl.antmicro.com/projects/renode/zephyr-sdk-${ZEPHYR_SDK_VERSION
 ./setup.sh -t all -h -c
 cd -
 export ZEPHYR_SDK_INSTALL_DIR=$(pwd)/zephyr-sdk
-
+pip3 install --user -U west
 
 pip uninstall -y devicetree
 west init zephyrproject # 1>artifacts/build.log 2>&1

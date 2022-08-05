@@ -440,6 +440,8 @@ if __name__ == '__main__':
     else:
         boards_to_run = selected_platforms
 
+    boards_to_run = ['atsamd20_xpro']
+
     total_boards = len(boards_to_run)
     build_jobs = int(os.getenv('BUILD_JOBS', 1))
 

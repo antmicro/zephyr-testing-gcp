@@ -1,0 +1,8 @@
+robotframework==4.0.1
+joblib==1.1.*
+west==0.13.*
+cmake==3.22.*
+PyYAML==6.0
+devicetree==0.0.*
+pytest==7.1.*
+GitPython==3.1.*

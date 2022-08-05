@@ -44,7 +44,7 @@ jobs:
     steps:
     - run: |
         echo "${{ matrix.SHA }}" > ${{ matrix.SHA }}.txt
-        ./test.py ${{ matrix.SHA }}
+        scripts/test.py ${{ matrix.SHA }}
       id: success
       continue-on-error: true
     - name: Upload artifacts

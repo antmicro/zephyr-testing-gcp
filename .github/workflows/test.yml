@@ -76,13 +76,12 @@ jobs:
     env:
       RENODE_VERSION: 1.13.1+20220731git8eca7310
     steps:
-      - uses: actions/checkout@v2
-      - name: Download binaries
+    - uses: actions/checkout@v2
+    - name: Download binaries
       uses: actions/download-artifact@v2
       with:
         name: ${{ matrix.SHA }}.txt
       continue-on-error: true
-
     - run: |
         ./scripts/download_renode.sh
       continue-on-error: true

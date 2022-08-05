@@ -50,7 +50,7 @@ jobs:
         path: zephyr
         ref: ${{ matrix.SHA }}
     - run: |
-        ./scripts/test.py ${{ matrix.SHA }}
+        ./scripts/build.py
       id: success
       continue-on-error: true
     - name: Upload artifacts

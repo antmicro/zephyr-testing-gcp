@@ -58,7 +58,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: ${{ matrix.SHA }}
-        path: artifacts/*
+        path: artifacts/
   simulate:
     runs-on: ubuntu-20.04
     needs: [generate-sha, build]
@@ -79,6 +79,9 @@ jobs:
         ls -la
         ls -la artifacts
         tree artifacts
+    - name: Prepare environment
+      run: ./scripts/prepare_environment.sh
+      continue-on-error: true
     - run: |
         ./scripts/download_renode.sh
       continue-on-error: true
@@ -90,7 +93,7 @@ jobs:
       with:
         name: ${{ matrix.SHA }}
         path: |
-          artifacts/*
+          artifacts/
   results:
     runs-on: ubuntu-20.04
     needs: [simulate]

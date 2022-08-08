@@ -43,25 +43,22 @@ jobs:
         false
     env:
       ZEPHYR_SDK_VERSION: 0.14.2
+      FORCE_BUILD: true
     steps:
     - uses: actions/checkout@v2
     - name: Prepare zephyr
-      run: |
-        ./scripts/prepare_zephyr.sh
+      run: ./scripts/prepare_zephyr.sh
     - name: Prepare environment
-      run: |
-        ./scripts/prepare_environment.sh
+      run: ./scripts/prepare_environment.sh
       continue-on-error: true
     - name: Build boards
-      run: |
-        ./scripts/build.py
+      run: ./scripts/build.py
       continue-on-error: true
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
         name: ${{ matrix.SHA }}
-        path: |
-          artifacts/*
+        path: artifacts/*
   simulate:
     runs-on: ubuntu-20.04
     needs: [generate-sha, build]
@@ -78,6 +75,10 @@ jobs:
       with:
         name: ${{ matrix.SHA }}
       continue-on-error: true
+    - run: |
+        ls -la
+        ls -la artifacts
+        tree artifacts
     - run: |
         ./scripts/download_renode.sh
       continue-on-error: true

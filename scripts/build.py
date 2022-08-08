@@ -414,7 +414,7 @@ if __name__ == '__main__':
     # - FORCE_BUILD env variable has *not* been set
     zephyr_commit_remote = get_remote_version('zephyr')
     print(f'Comparing remote Zephyr commit {bold(zephyr_commit_remote)} with local {bold(zephyr_commit)}.')
-    download_artifacts = zephyr_commit_remote == zephyr_commit
+    download_artifacts = False
     download_artifacts = download_artifacts and not os.getenv('FORCE_BUILD', False)
 
     # We want to try to rebuild samples with 'NOT BUILT' status if:
@@ -440,7 +440,7 @@ if __name__ == '__main__':
     else:
         boards_to_run = selected_platforms
 
-    boards_to_run = ['96b_aerocore2'] # Test
+    boards_to_run = boards_to_run[:1] # Test
 
     total_boards = len(boards_to_run)
     build_jobs = int(os.getenv('BUILD_JOBS', 1))

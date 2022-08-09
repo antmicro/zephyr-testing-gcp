@@ -69,6 +69,7 @@ jobs:
     env:
       RENODE_VERSION: 1.13.1+20220731git8eca7310
       ZEPHYR_SDK_VERSION: 0.14.2
+      ZEPHYR_COMMIT: ${{ matrix.SHA }}
     steps:
     - uses: actions/checkout@v2
     - name: Download binaries
@@ -90,7 +91,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: ${{ matrix.SHA }}
-        path: artifacts/
+        path: artifacts/results/
   results:
     runs-on: ubuntu-20.04
     needs: [simulate]
@@ -105,11 +106,10 @@ jobs:
       run: |
         sudo apt-get update -qq
         sudo apt install -y curl gnupg
-
     - run: |
         ls -la results
-        cat results/*/*.txt
-        cat results/*/*.txt > result.txt
+        cat results/*/*.json
+        cat results/*/*.json > result.txt
         gsutil cp result.txt gs://gcp-distributed-job-test-bucket
     - name: Find artifacts that are no longer needed
       id: get-artifacts-to-delete
@@ -131,9 +131,3 @@ jobs:
         name: result
         path: |
           **/result.txt
-    - name: Upload artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: plots
-        path: |
-          **/plot_*.svg

@@ -610,5 +610,7 @@ if __name__ == '__main__':
     if isinstance(selected_platforms, list):
         selected_platforms = '_'.join(selected_platforms)
 
-    with open(f"artifacts/results-{sample_name}_{selected_platforms}.json", "w") as f:
+    zephyr_commit = os.getenv("ZEPHYR_COMMIT", "")
+
+    with open(f"artifacts/results/{zephyr_commit}/results-{sample_name}_{selected_platforms}.json", "w") as f:
         json.dump(results, f)

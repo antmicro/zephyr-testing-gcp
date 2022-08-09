@@ -433,23 +433,6 @@ def get_full_name(yaml_filename):
 
     return full_board_name
 
-def get_toolchain(yaml_filename):
-    if os.path.exists(yaml_filename):
-        with open(yaml_filename) as f:
-            board_data = yaml.load(f, Loader=yaml.FullLoader)
-            toolchains = board_data['toolchain']
-
-        # try using the default zephyr toolchain
-        if 'zephyr' in toolchains:
-            toolchain = 'zephyr'
-        else:
-            toolchain = toolchains[0]
-    else:
-        print(f'Could not open YAML file {yaml_filename}! Defaulting to Zephyr toolchain...')
-        toolchain = 'zephyr'
-
-    return toolchain
-
 def flatten(zephyr_boards):
     flat_boards = {}
     for arch in zephyr_boards:

@@ -20,19 +20,13 @@ jobs:
     - name: Generate matrix
       id: generate-sha
       run: |
-        matrix=$(git -C zephyr log -n 1 --format='"%H",' | tr '\n' ' ')
+        matrix=$(git -C zephyr log -n 2 --format='"%H",' | tr '\n' ' ')
         # Delete last character
         matrix="${matrix%?}"
         # Add [ ]
         matrix="[${matrix}]"
         echo "::set-output name=matrix::$matrix"
         echo "matrix: $matrix"
-    - name: Upload load graphs
-      uses: actions/upload-artifact@v2
-      with:
-        name: plots
-        path: |
-          **/plot_*.svg
   build:
     runs-on: ubuntu-20.04
     needs: [generate-sha]

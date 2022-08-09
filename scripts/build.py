@@ -204,28 +204,6 @@ def build_sample(zephyr_platform, sample_name, sample_path, sample_args, toolcha
                     args = f'-- {sample_args} {overlay_args}'
                     process = subprocess.run(["./scripts/build_and_copy_bin.sh", zephyr_platform, sample_path, args, sample_name], stdout=subprocess.PIPE, env=env)
 
-
-def create_zip_archive(platform, zip_name=None, files=[]):
-    if zip_name is None:
-        zip_filename = artifacts_dict['zip'].format(**platform)
-    else:
-        zip_filename = zip_name
-
-    with zipfile.ZipFile(zip_filename, 'w') as f:
-        for ftype in platform['files'] if files == [] else files:
-            fname = artifacts_dict[ftype].format(**platform)
-            if os.path.exists(fname):
-                f.write(fname)
-
-def get_artifacts_list(platform):
-    ret = []
-    for ftype, path in artifacts_dict.items():
-        file_path = path.format(**platform)
-        if os.path.exists(file_path) and os.stat(file_path).st_size > 0 and not ftype.startswith('zip'):
-            ret.append(ftype)
-
-    return ret
-
 def get_board_yaml_path(board_name, board_path):
     board_yaml = f'{zephyr_path}/{board_path}/{board_name}.yaml'
 
@@ -265,19 +243,6 @@ def get_boards():
                         help='''add a board root (ZEPHYR_BASE is always
                         present), may be given more than once''')    
     return find_arch2boards(parser.parse_args())
-
-def get_full_name(yaml_filename):
-    if os.path.exists(yaml_filename):
-        with open(yaml_filename) as f:
-            board_data = yaml.load(f, Loader=yaml.FullLoader)
-    
-        full_board_name = board_data['name']
-        if len(full_board_name) > 50:
-            full_board_name = re.sub(r'\(.*\)', '', full_board_name)
-    else:
-        full_board_name = ''
-
-    return full_board_name
 
 def get_toolchain(yaml_filename):
     if os.path.exists(yaml_filename):

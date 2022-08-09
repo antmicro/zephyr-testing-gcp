@@ -175,7 +175,7 @@ def build_sample(zephyr_platform, sample_name, sample_path, sample_args, toolcha
         return
     print(f"Building for {bold(zephyr_platform)}, sample: {bold(sample_name)} with args: {bold(sample_args)} using {bold(toolchain)} toolchain.")
     args = f'-- {sample_args}' if sample_args != '' else ''
-    process = subprocess.run(["./build_and_copy_bin.sh", zephyr_platform, sample_path, args, sample_name], stdout=subprocess.PIPE, env=env)
+    process = subprocess.run(["./scripts/build_and_copy_bin.sh", zephyr_platform, sample_path, args, sample_name], stdout=subprocess.PIPE, env=env)
 
     # try increasing flash size if the sample doesn't fit in it 
     dts_filename = artifacts_dict['dts'].format(board_name=zephyr_platform, sample_name=sample_name)
@@ -202,7 +202,7 @@ def build_sample(zephyr_platform, sample_name, sample_path, sample_args, toolcha
                     # build again, this time with bigger flash size
                     overlay_args = f'-DDTC_OVERLAY_FILE={overlay_path}'
                     args = f'-- {sample_args} {overlay_args}'
-                    process = subprocess.run(["./build_and_copy_bin.sh", zephyr_platform, sample_path, args, sample_name], stdout=subprocess.PIPE, env=env)
+                    process = subprocess.run(["./scripts/build_and_copy_bin.sh", zephyr_platform, sample_path, args, sample_name], stdout=subprocess.PIPE, env=env)
 
 
 def create_zip_archive(platform, zip_name=None, files=[]):

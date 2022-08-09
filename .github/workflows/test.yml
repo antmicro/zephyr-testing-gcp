@@ -68,6 +68,7 @@ jobs:
         SHA: ${{ fromJson(needs.generate-sha.outputs.matrix) }}
     env:
       RENODE_VERSION: 1.13.1+20220731git8eca7310
+      ZEPHYR_SDK_VERSION: 0.14.2
     steps:
     - uses: actions/checkout@v2
     - name: Download binaries
@@ -80,6 +81,7 @@ jobs:
       run: ./scripts/prepare_environment.sh
       continue-on-error: true
     - run: |
+        ./scripts/prepare_zephyr.sh
         ./scripts/download_renode.sh
       continue-on-error: true
     - run: ./scripts/simulate.py

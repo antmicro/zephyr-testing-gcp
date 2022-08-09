@@ -417,7 +417,7 @@ def get_boards():
     parser.add_argument("--board-root", dest='board_roots', default=[],
                         type=Path, action='append',
                         help='''add a board root (ZEPHYR_BASE is always
-                        present), may be given more than once''')    
+                        present), may be given more than once''')
     return find_arch2boards(parser.parse_args())
 
 def get_full_name(yaml_filename):
@@ -506,7 +506,7 @@ def get_remote_file(url, decode=True):
 
     return content
 
-def loop_wrapper(b, i, total_boards, dashboard_json, sample_name, sample_path, download_artifacts, skip_not_built, stage='build'):
+def loop_wrapper(b, i, total_boards, dashboard_json, sample_name, sample_path, stage='build'):
     board_name = b if isinstance(b, str) else b.name
     if total_boards > 1:
         print(f">> [{i} / {total_boards}] -- {board_name} {stage} --")
@@ -518,10 +518,7 @@ def loop_wrapper(b, i, total_boards, dashboard_json, sample_name, sample_path, d
     if not os.path.exists(artifacts_path):
         os.mkdir(artifacts_path)
 
-    if stage == 'build':
-        try_build(board_name, get_board_path(flat_boards[board_name]), sample_name, sample_path, download_artifacts, skip_not_built)
-    else:
-        out = run_renode_simulation(board_name, sample_name, sample_path, flat_boards, remote_board)
+    out = run_renode_simulation(board_name, sample_name, sample_path, flat_boards, remote_board)
     if total_boards > 1:
         print(f"<< [{i} / {total_boards}] -- {board_name} {stage} --")
     return out
@@ -576,14 +573,6 @@ if __name__ == '__main__':
     possible_sim_skip = renode_commit_remote == renode_commit
     possible_sim_skip = possible_sim_skip and not os.getenv('FORCE_SIM', False)
 
-    # Skipping sample building is possible if:
-    # - local and remote Zephyr version are the same
-    # - FORCE_BUILD env variable has *not* been set
-    zephyr_commit_remote = get_remote_version('zephyr')
-    print(f'Comparing remote Zephyr commit {bold(zephyr_commit_remote)} with local {bold(zephyr_commit)}.')
-    download_artifacts = zephyr_commit_remote == zephyr_commit
-    download_artifacts = download_artifacts and not os.getenv('FORCE_BUILD', False)
-
     sample_name, sample_path = get_sample_name_path()
     zephyr_boards = get_boards()
     flat_boards = flatten(zephyr_boards)
@@ -598,19 +587,18 @@ if __name__ == '__main__':
         boards_to_run = list(filter(lambda x: all(map(lambda y: y not in x.name, omit_board)), boards_to_run))
     else:
         boards_to_run = selected_platforms
+
     boards_to_run = ['96b_aerocore2'] # Test
 
     total_boards = len(boards_to_run)
     sim_jobs = int(os.getenv('SIM_JOBS', 1))
 
-    results = [loop_wrapper(b, i, total_boards, dashboard_json, sample_name, sample_path, download_artifacts, False, stage='sim') for i, b in enumerate(boards_to_run, start=1)]
+    results = [loop_wrapper(b, i, total_boards, dashboard_json, sample_name, sample_path, stage='sim') for i, b in enumerate(boards_to_run, start=1)]
 
     # if boards are selected manually from the cmdline, append their names to
     # the final json file
     if isinstance(selected_platforms, list):
         selected_platforms = '_'.join(selected_platforms)
 
-    zephyr_commit = os.getenv("ZEPHYR_COMMIT", "")
-
-    with open(f"artifacts/results/{zephyr_commit}/results-{sample_name}_{selected_platforms}.json", "w") as f:
+    with open(f"artifacts/results/results-{sample_name}_{selected_platforms}.json", "w") as f:
         json.dump(results, f)

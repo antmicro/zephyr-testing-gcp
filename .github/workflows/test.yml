@@ -91,7 +91,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: ${{ matrix.SHA }}
-        path: artifacts/results/
+        path: artifacts/
   results:
     runs-on: ubuntu-20.04
     needs: [simulate]
@@ -101,17 +101,16 @@ jobs:
     - name: Download binaries
       uses: actions/download-artifact@v2
       with:
-        path: results
+        path: results/
     - name: Install dependencies
       run: |
         sudo apt-get update -qq
         sudo apt install -y curl gnupg
     - run: |
         ls -la results
-        ls -ls results/352fde1271c568fa24cb48b4aed20f97b25945b1
-        cat results/352fde1271c568fa24cb48b4aed20f97b25945b1/352fde1271c568fa24cb48b4aed20f97b25945b1/*.json
+        ls -ls results/*
+        cat results/*/*.json
         cat results/*/*.json > result.txt
-        gsutil cp result.txt gs://gcp-distributed-job-test-bucket
     - name: Find artifacts that are no longer needed
       id: get-artifacts-to-delete
       run: |

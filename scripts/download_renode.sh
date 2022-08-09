@@ -5,4 +5,4 @@ curl -kL https://dl.antmicro.com/projects/renode/builds/renode-${RENODE_VERSION}
 ln -s ../artifacts artifacts
 #export PATH=`pwd`:$PATH
 cd -
-ls -la ronode_portable/
+ls -la renode_portable/

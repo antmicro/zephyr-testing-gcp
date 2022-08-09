@@ -76,14 +76,10 @@ jobs:
         name: ${{ matrix.SHA }}
         path: artifacts/
       continue-on-error: true
-    - run: |
-        ls -la
-        ls -la artifacts
-        ls -la artifacts/96b_aerocore2-hello_world
     - name: Prepare environment
       run: ./scripts/prepare_environment.sh
       continue-on-error: true
-    - run: ./scripts/download_renode.sh
+    - run: source ./scripts/download_renode.sh
       continue-on-error: true
     - run: ./scripts/simulate.py
       continue-on-error: true

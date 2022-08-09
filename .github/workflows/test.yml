@@ -79,6 +79,7 @@ jobs:
     - run: |
         ls -la
         ls -la artifacts
+        ls -la artifacts/96b_aerocore2-hello_world
     - name: Prepare environment
       run: ./scripts/prepare_environment.sh
       continue-on-error: true

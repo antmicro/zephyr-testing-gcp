@@ -127,6 +127,42 @@ def find_flash_size(dts_filename):
 
     return flash_name, flash_size
 
+def build_and_copy_bin(zephyr_platform, sample_path, args, sample_name):
+    zephyr_sample_name = f"{zephyr_platform}-{sample_name}"
+    os.makedirs(f"artifacts/{zephyr_sample_name}")
+    curr_dir = os.getcwd()
+    os.chdir(zephyr_path)
+    build_path = f"build.{zephyr_platform}.{sample_name}"
+    shutil.rmtree(build_path)
+    log_path = f"../../artifacts/{zephyr_sample_name}/{zephyr_sample_name}-zephyr.log"
+
+    run_west_cmd(f"west spdx --init -d {build_path}", f"tee -a {log_path}")
+    run_west_cmd(f"west build --pristine -b {zephyr_platform} -d {build_path} {sample_path} {args}", f"tee -a {log_path}")
+    run_west_cmd(f"west spdx -d {build_path}", f"tee -a {log_path}")
+
+    os.chdir(curr_dir)
+    file_list=["zephyr/zephyr.elf" "zephyr/zephyr.dts" "zephyr/.config" "spdx/app.spdx" "spdx/build.spdx" "spdx/zephyr.spdx"]
+
+    for file_name in file_list:
+        file_path = f"{zephyr_path}/{build_path}/{file_name}"
+        base_name = os.path.basename(file_path)
+        if os.path.exists(file_path):
+            if re.search("spdx/.+", file_name):
+                shutil.copyfile(file_path, f"artifacts/{zephyr_sample_name}/{zephyr_sample_name}-{base_name}")
+            if file_name == file_list[0]:
+                shutil.copyfile(file_path, f"artifacts/{zephyr_sample_name}/{zephyr_platform}-zephyr-{sample_name}.elf")
+            if file_name == file_list[1]:
+                shutil.copyfile(file_path, f"artifacts/{zephyr_sample_name}/{zephyr_sample_name}.dts")
+                if sample_name == "hello_world":
+                    shutil.copyfile(file_path, f"artifacts/{zephyr_platform}.dts")
+            if file_name == file_list[2]:
+                shutil.copyfile(file_path, f"artifacts/{zephyr_sample_name}/{zephyr_sample_name}-config")
+    shutil.rmtree(f"{zephyr_path}/{build_path}")
+
+def run_west_cmd(cmd, pipe_cmd):
+    ps = subprocess.Popen((cmd.split(" ")), stdout=subprocess.PIPE)
+    subprocess.check_output(pipe_cmd.split(" "), stdin=ps.stdout)
+    ps.wait()
 
 def build_sample(zephyr_platform, sample_name, sample_path, sample_args, toolchain, download_artifacts, skip_not_built):
     if download_artifacts:

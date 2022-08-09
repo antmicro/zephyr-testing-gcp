@@ -440,7 +440,7 @@ if __name__ == '__main__':
     else:
         boards_to_run = selected_platforms
 
-    boards_to_run = boards_to_run[:1] # Test
+    boards_to_run = boards_to_run[:2] # Test
 
     total_boards = len(boards_to_run)
     build_jobs = int(os.getenv('BUILD_JOBS', 1))
@@ -451,3 +451,4 @@ if __name__ == '__main__':
     # the final json file
     if isinstance(selected_platforms, list):
         selected_platforms = '_'.join(selected_platforms)
+

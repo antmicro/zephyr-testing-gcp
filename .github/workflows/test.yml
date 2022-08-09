@@ -106,11 +106,7 @@ jobs:
       run: |
         sudo apt-get update -qq
         sudo apt install -y curl gnupg
-    - run: |
-        ls -la results
-        ls -ls results/*
-        cat results/*/*.json
-        cat results/*/*.json > result.txt
+    - run: ls -la results
     - name: Find artifacts that are no longer needed
       id: get-artifacts-to-delete
       run: |
@@ -129,5 +125,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: result
-        path: |
-          **/result.txt
+        path: results

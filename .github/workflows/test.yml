@@ -79,7 +79,6 @@ jobs:
     - run: |
         ls -la
         ls -la artifacts
-        tree artifacts
     - name: Prepare environment
       run: ./scripts/prepare_environment.sh
       continue-on-error: true

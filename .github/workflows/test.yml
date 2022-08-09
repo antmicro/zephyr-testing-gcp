@@ -109,7 +109,7 @@ jobs:
     - run: |
         ls -la results
         ls -ls results/352fde1271c568fa24cb48b4aed20f97b25945b1
-        cat results/352fde1271c568fa24cb48b4aed20f97b25945b1/*.json
+        cat results/352fde1271c568fa24cb48b4aed20f97b25945b1/352fde1271c568fa24cb48b4aed20f97b25945b1/*.json
         cat results/*/*.json > result.txt
         gsutil cp result.txt gs://gcp-distributed-job-test-bucket
     - name: Find artifacts that are no longer needed

@@ -33,11 +33,13 @@ jobs:
     strategy:
       matrix:
         SHA: ${{ fromJson(needs.generate-sha.outputs.matrix) }}
+        sample: [hello_world, shell_module, philosophers, micropython, tensorflow_lite_micro]
       fail-fast:
         false
     env:
       ZEPHYR_SDK_VERSION: 0.14.2
       FORCE_BUILD: true
+      SAMPLE_NAME: ${{ matrix.sample }}
     steps:
     - uses: actions/checkout@v2
     - name: Prepare zephyr
@@ -60,10 +62,13 @@ jobs:
       fail-fast: false
       matrix:
         SHA: ${{ fromJson(needs.generate-sha.outputs.matrix) }}
+        sample: [hello_world, shell_module, philosophers, micropython, tensorflow_lite_micro]
     env:
       RENODE_VERSION: 1.13.1+20220731git8eca7310
       ZEPHYR_SDK_VERSION: 0.14.2
       ZEPHYR_COMMIT: ${{ matrix.SHA }}
+      SAMPLE_NAME: ${{ matrix.sample }}
+      FORCE_SIM: true
     steps:
     - uses: actions/checkout@v2
     - name: Download binaries

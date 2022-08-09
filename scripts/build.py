@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 
-import filecmp
 import git
-import glob
 import hashlib
 import jinja2
 import json
@@ -10,23 +8,18 @@ import math
 import os
 import re
 import shutil
-import signal
 import subprocess
 import sys
 import tempfile
-import time
-import time
 import urllib.request
 import yaml
-import zipfile
-from argparse import Namespace
 from dts2repl import dts2repl
 from joblib import Parallel, delayed, parallel_backend
 
 from colorama import init
 init()
 
-from colorama import Fore, Back, Style
+from colorama import Fore, Style
 
 def bold(text):
     return Style.BRIGHT + (text or '') + Style.RESET_ALL
@@ -123,19 +116,6 @@ def download_remote_artifacts(zephyr_platform, sample_name, artifacts, suffix=""
 
     print(f'{", ".join(downloads)}.')
     return ret
-
-def conv_zephyr_mem_usage(val):
-    if val.endswith(' B'):
-        val = int(val[:-2])
-    elif val.endswith(' KB'):
-        val = int(val[:-2]) * 1024
-    elif val.endswith(' MB'):
-        val = int(val[:-2]) * 1024 * 1024
-    elif val.endswith(' GB'):
-        val = int(val[:-2]) * 1024 * 1024 * 1024
-
-    return val
-
 
 def find_flash_size(dts_filename):
     with open(dts_filename) as f:
@@ -241,7 +221,7 @@ def get_boards():
     parser.add_argument("--board-root", dest='board_roots', default=[],
                         type=Path, action='append',
                         help='''add a board root (ZEPHYR_BASE is always
-                        present), may be given more than once''')    
+                        present), may be given more than once''')
     return find_arch2boards(parser.parse_args())
 
 def get_toolchain(yaml_filename):
@@ -410,10 +390,6 @@ if __name__ == '__main__':
     total_boards = len(boards_to_run)
     build_jobs = int(os.getenv('BUILD_JOBS', 1))
 
-    [loop_wrapper(b, i, total_boards, dashboard_json, sample_name, sample_path, download_artifacts, skip_not_built) for i, b in enumerate(boards_to_run, start=1)]
-
-    # if boards are selected manually from the cmdline, append their names to
-    # the final json file
-    if isinstance(selected_platforms, list):
-        selected_platforms = '_'.join(selected_platforms)
+    for i, board in enumerate(boards_to_run, start=1):
+        loop_wrapper(board, i, total_boards, dashboard_json, sample_name, sample_path, download_artifacts, skip_not_built)
 

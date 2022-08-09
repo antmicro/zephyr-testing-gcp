@@ -3,17 +3,14 @@
 import filecmp
 import git
 import glob
-import hashlib
 import jinja2
 import json
-import math
 import os
 import re
 import shutil
 import signal
 import subprocess
 import sys
-import tempfile
 import time
 import time
 import urllib.request
@@ -26,7 +23,7 @@ from joblib import Parallel, delayed, parallel_backend
 from colorama import init
 init()
 
-from colorama import Fore, Back, Style
+from colorama import Fore, Style
 
 def bold(text):
     return Style.BRIGHT + (text or '') + Style.RESET_ALL

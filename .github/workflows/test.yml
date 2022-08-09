@@ -81,10 +81,6 @@ jobs:
       continue-on-error: true
     - run: |
         ./scripts/download_renode.sh
-        export PATH=`pwd`/renode_portable:$PATH
-        echo $PATH
-        echo $GITHUB_PATH
-        cat $GITHUB_PATH
       continue-on-error: true
     - run: ./scripts/simulate.py
       continue-on-error: true

@@ -79,7 +79,9 @@ jobs:
     - name: Prepare environment
       run: ./scripts/prepare_environment.sh
       continue-on-error: true
-    - run: source ./scripts/download_renode.sh
+    - run: |
+        ./scripts/download_renode.sh
+        export PATH=`pwd`/renode_portable:$PATH
       continue-on-error: true
     - run: ./scripts/simulate.py
       continue-on-error: true

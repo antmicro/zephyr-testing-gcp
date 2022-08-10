@@ -25,6 +25,7 @@ jobs:
         matrix="${matrix%?}"
         # Add [ ]
         matrix="[${matrix}]"
+        matrix=["62f19cc6b3d4697630abed9c5bea94d3a4eed7ed"]
         echo "::set-output name=matrix::$matrix"
         echo "matrix: $matrix"
   build:

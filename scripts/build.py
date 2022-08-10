@@ -120,7 +120,7 @@ def download_remote_artifacts(zephyr_platform, sample_name, artifacts, suffix=""
 def find_flash_size(dts_filename):
     with open(dts_filename) as f:
         dts = f.read()
-    
+
     flash_name = re.search(r"zephyr,flash = &(\w+);", dts).group(1)
     flash_size = re.search(r"{}:(.*\n)*?.*reg = <(.*)>;".format(flash_name), dts).group(2)
     flash_size = flash_size.split()
@@ -130,7 +130,7 @@ def find_flash_size(dts_filename):
 def build_and_copy_bin(zephyr_platform, sample_path, args, sample_name):
     zephyr_sample_name = f"{zephyr_platform}-{sample_name}"
     os.makedirs(f"artifacts/{zephyr_sample_name}")
-    curr_dir = os.getcwd()
+    previous_dir = os.getcwd()
     os.chdir(zephyr_path)
     build_path = f"build.{zephyr_platform}.{sample_name}"
     shutil.rmtree(build_path)
@@ -140,7 +140,7 @@ def build_and_copy_bin(zephyr_platform, sample_path, args, sample_name):
     run_west_cmd(f"west build --pristine -b {zephyr_platform} -d {build_path} {sample_path} {args}", f"tee -a {log_path}")
     run_west_cmd(f"west spdx -d {build_path}", f"tee -a {log_path}")
 
-    os.chdir(curr_dir)
+    os.chdir(previous_dir)
     file_list=["zephyr/zephyr.elf" "zephyr/zephyr.dts" "zephyr/.config" "spdx/app.spdx" "spdx/build.spdx" "spdx/zephyr.spdx"]
 
     for file_name in file_list:
@@ -304,13 +304,7 @@ samples = (
 def get_sample_name_path():
     # make it possible for the user to choose which sample to build
     sample_name = os.getenv('SAMPLE_NAME')
-    if sample_name is None:
-        # CI_NODE_INDEX starts with 1; default to the first entry
-        idx = int(os.getenv('CI_NODE_INDEX', 1)) - 1
-    else:
-        # find first entry that matches the sample name
-        idx = list(map(lambda x: x[0], samples)).index(sample_name)
-
+    idx = list(map(lambda x: x[0], samples)).index(sample_name) if sample_name is not None else 0
     return samples[idx]
 
 def get_remote_json(sample_name):
@@ -333,11 +327,11 @@ def get_remote_file(url, decode=True):
 
     return content
 
-def loop_wrapper(b, i, total_boards, dashboard_json, sample_name, sample_path, download_artifacts, skip_not_built):
+def loop_wrapper(b, i, total_boards, sample_name, sample_path, download_artifacts, skip_not_built):
     board_name = b if isinstance(b, str) else b.name
     if total_boards > 1:
         print(f">> [{i} / {total_boards}] -- {board_name} --")
-    remote_board = filter(lambda x: x['board_name'] == board_name, dashboard_json)
+    remote_board = filter(lambda x: x['board_name'] == board_name, [])
     remote_board = next(remote_board, None)
     out = None
 
@@ -358,7 +352,7 @@ if __name__ == '__main__':
     selected_platforms = "all"
     if len(sys.argv) > 1:
         selected_platforms = sys.argv[1:]
-        print(f'Running dashboard generation for the selected boards: {bold(", ".join(selected_platforms))}.') 
+        print(f'Running dashboard generation for the selected boards: {bold(", ".join(selected_platforms))}.')
     else:
         print(f'Running dashboard generation for {bold("all boards")}.')
 
@@ -387,8 +381,6 @@ if __name__ == '__main__':
     # - FORCE_SIM env variable has *not* been set
     _, renode_commit_remote = get_remote_version('renode').split('git')
     # print(f'Comparing remote Renode commit {bold(renode_commit_remote)} with local {bold(renode_commit)}.')
-    possible_sim_skip = False
-    possible_sim_skip = possible_sim_skip and not os.getenv('FORCE_SIM', False)
 
     # Skipping sample building is possible if:
     # - local and remote Zephyr version are the same
@@ -411,7 +403,6 @@ if __name__ == '__main__':
     flat_boards = flatten(zephyr_boards)
     flat_boards = dict(filter(lambda b: "qemu" not in b[0] and "native" not in b[0], flat_boards.items()))
     flat_boards = dict(filter(lambda b: not b[0].startswith("fvp_"), flat_boards.items()))
-    dashboard_json = get_remote_json(sample_name) if possible_sim_skip else []
     if selected_platforms == "all":
         boards_to_run = flat_boards.values()
         omit_arch = ('arc', 'posix')
@@ -427,5 +418,5 @@ if __name__ == '__main__':
     build_jobs = int(os.getenv('BUILD_JOBS', 1))
 
     for i, board in enumerate(boards_to_run, start=1):
-        loop_wrapper(board, i, total_boards, dashboard_json, sample_name, sample_path, download_artifacts, skip_not_built)
+        loop_wrapper(board, i, total_boards, sample_name, sample_path, download_artifacts, skip_not_built)
 

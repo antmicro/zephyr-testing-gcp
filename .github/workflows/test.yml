@@ -38,6 +38,7 @@ jobs:
         false
     env:
       ZEPHYR_SDK_VERSION: 0.14.2
+      ZEPHYR_COMMIT: ${{ matrix.SHA }}
       FORCE_BUILD: true
       SAMPLE_NAME: ${{ matrix.sample }}
     steps:

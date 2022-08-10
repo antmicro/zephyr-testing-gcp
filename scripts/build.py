@@ -411,8 +411,7 @@ if __name__ == '__main__':
         boards_to_run = list(filter(lambda x: all(map(lambda y: y not in x.name, omit_board)), boards_to_run))
     else:
         boards_to_run = selected_platforms
-
-    boards_to_run = boards_to_run[:1] # Test
+    boards_to_run = boards_to_run[:2] # Test
 
     total_boards = len(boards_to_run)
     build_jobs = int(os.getenv('BUILD_JOBS', 1))
@@ -420,3 +419,9 @@ if __name__ == '__main__':
     for i, board in enumerate(boards_to_run, start=1):
         loop_wrapper(board, i, total_boards, sample_name, sample_path, download_artifacts, skip_not_built)
 
+    boards_to_serialize = []
+    for board in boards_to_run:
+        boards_to_serialize.append({"name": board.name, "arch": board.arch, "dir": str(board.dir)})
+    with open("artifacts/built_boards.json", "w") as file:
+        json.dump(boards_to_serialize, file)
+        #file.write("\n".join([str(board.name) for board in boards_to_run]))

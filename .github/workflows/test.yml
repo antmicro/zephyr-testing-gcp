@@ -79,8 +79,6 @@ jobs:
       with:
         name: ${{ matrix.SHA }}
         path: artifacts/
-    - name: Prepare zephyr
-      run: ./scripts/prepare_zephyr.sh
     - name: Prepare micropython
       run: ./scripts/prepare_micropython.sh
     - name: Prepare environment

@@ -51,10 +51,8 @@ jobs:
       run: ./scripts/prepare_micropython.sh
     - name: Prepare environment
       run: ./scripts/prepare_environment.sh
-      continue-on-error: true
     - name: Build boards
       run: ./scripts/build.py
-      continue-on-error: true
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
@@ -82,18 +80,14 @@ jobs:
       with:
         name: ${{ matrix.SHA }}
         path: artifacts/
-      continue-on-error: true
     - name: Prepare zephyr
       run: ./scripts/prepare_zephyr.sh
     - name: Prepare micropython
       run: ./scripts/prepare_micropython.sh
     - name: Prepare environment
       run: ./scripts/prepare_environment.sh
-      continue-on-error: true
     - run: ./scripts/download_renode.sh
-      continue-on-error: true
     - run: ./scripts/simulate.py
-      continue-on-error: true
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:

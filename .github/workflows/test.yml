@@ -40,7 +40,8 @@ jobs:
     strategy:
       matrix:
         SHA: ${{ fromJson(needs.generate-sha.outputs.matrix) }}
-        sample: [hello_world, shell_module, philosophers, micropython, tensorflow_lite_micro]
+        sample: [shell_module, micropython]
+          #sample: [hello_world, shell_module, philosophers, micropython, tensorflow_lite_micro]
       fail-fast:
         false
     env:
@@ -55,14 +56,18 @@ jobs:
       #with:
       #  name: zephyr
     - uses: actions/checkout@v2
-    - name: Prepare zephyr
-      run: ./scripts/prepare_zephyr.sh
+      #- name: Prepare zephyr
+      #run: ./scripts/prepare_zephyr.sh
     - name: Prepare micropython
       run: ./scripts/prepare_micropython.sh
     - name: Prepare environment
       run: ./scripts/prepare_environment.sh
-    - name: Build boards
-      run: ./scripts/build.py
+    - name: Debug
+      run: |
+        ls -la
+        ls -la micropython
+        #- name: Build boards
+        #run: ./scripts/build.py
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
@@ -75,7 +80,8 @@ jobs:
       fail-fast: false
       matrix:
         SHA: ${{ fromJson(needs.generate-sha.outputs.matrix) }}
-        sample: [hello_world, shell_module, philosophers, micropython, tensorflow_lite_micro]
+        sample: [shell_module, micropython]
+          #sample: [hello_world, shell_module, philosophers, micropython, tensorflow_lite_micro]
     env:
       RENODE_VERSION: 1.13.1+20220731git8eca7310
       MICROPYTHON_VERSION: 97a7cc243b028833bdcb8ce0bc19b2bce7545851

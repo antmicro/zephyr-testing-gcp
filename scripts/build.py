@@ -140,6 +140,7 @@ def build_and_copy_bin(zephyr_platform, sample_path, args, sample_name, env):
     run_west_cmd(f"west spdx --init -d {build_path}", env, log_path)
     return_code, west_output = run_west_cmd(f"west build --pristine -b {zephyr_platform} -d {build_path} {sample_path} {args}", env, log_path)
     run_west_cmd(f"west spdx -d {build_path}", env, log_path)
+    print(f"[DEBUG] {return_code} {west_output}")
 
     os.chdir(previous_dir)
     file_list=["zephyr/zephyr.elf", "zephyr/zephyr.dts", "zephyr/.config", "spdx/app.spdx", "spdx/build.spdx", "spdx/zephyr.spdx"]
@@ -165,7 +166,7 @@ def build_and_copy_bin(zephyr_platform, sample_path, args, sample_name, env):
 def run_west_cmd(cmd, env, log_file):
     return_code = 0
     try:
-        output = subprocess.check_output((cmd.split(" ")), env=env).decode()
+        output = subprocess.check_output((cmd.split(" ")), env=env, stderr=subprocess.STDOUT).decode()
     except subprocess.CalledProcessError as error:
         return_code = error.returncode
         output = error.output.decode()

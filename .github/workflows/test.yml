@@ -56,18 +56,14 @@ jobs:
       #with:
       #  name: zephyr
     - uses: actions/checkout@v2
-      #- name: Prepare zephyr
-      #run: ./scripts/prepare_zephyr.sh
+    - name: Prepare zephyr
+      run: ./scripts/prepare_zephyr.sh
     - name: Prepare micropython
       run: ./scripts/prepare_micropython.sh
     - name: Prepare environment
       run: ./scripts/prepare_environment.sh
-    - name: Debug
-      run: |
-        ls -la
-        ls -la micropython
-        #- name: Build boards
-        #run: ./scripts/build.py
+    - name: Build boards
+      run: ./scripts/build.py
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:

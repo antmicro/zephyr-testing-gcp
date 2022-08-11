@@ -27,6 +27,13 @@ jobs:
         matrix="[${matrix}]"
         echo "::set-output name=matrix::$matrix"
         echo "matrix: $matrix"
+    - name: Tar zephyr
+      run: tar cvf zephyr.tar zephyrproject
+    - name: Upload zephyr as artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: zephyr
+        path: zephyr.tar
   build:
     runs-on: ubuntu-20.04
     needs: [generate-sha]
@@ -43,6 +50,10 @@ jobs:
       SAMPLE_NAME: ${{ matrix.sample }}
       MICROPYTHON_VERSION: 97a7cc243b028833bdcb8ce0bc19b2bce7545851
     steps:
+    - name: Download zephyr
+      uses: actions/download-artifact@v2
+      with:
+        name: zephyr
     - uses: actions/checkout@v2
     - name: Prepare zephyr
       run: ./scripts/prepare_zephyr.sh

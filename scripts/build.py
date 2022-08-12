@@ -164,6 +164,9 @@ def build_and_copy_bin(zephyr_platform, sample_path, args, sample_name, env):
     return return_code, west_output
 
 def run_west_cmd(cmd, env, log_file):
+    print(f"[DEBUG] [CMD] {cmd}")
+    print(f"[DEBUG] [ENV] {env}")
+    print(f"[DEBUG] [LOG_FILE] {log_file}")
     return_code = 0
     try:
         output = subprocess.check_output((cmd.split(" ")), env=env, stderr=subprocess.STDOUT).decode()

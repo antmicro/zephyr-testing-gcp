@@ -50,7 +50,7 @@ jobs:
       FORCE_BUILD: true
       SAMPLE_NAME: ${{ matrix.sample }}
       MICROPYTHON_VERSION: 97a7cc243b028833bdcb8ce0bc19b2bce7545851
-      ZEPHYR_SDK_INSTALL_DIR: ${{ env.GITHUB_WORKSPACE }}/zephyr-sdk
+      ZEPHYR_SDK_INSTALL_DIR: ${{ GITHUB_WORKSPACE }}/zephyr-sdk
     steps:
       #- name: Download zephyr
       #uses: actions/download-artifact@v2

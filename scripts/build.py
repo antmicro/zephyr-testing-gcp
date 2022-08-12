@@ -190,6 +190,7 @@ def build_sample(zephyr_platform, sample_name, sample_path, sample_args, toolcha
             else:
                 print("Trying to build it locally.")
     env = os.environ.copy()
+    env['ZEPHYR_SDK_INSTALL_DIR'] = f"{os.getcwd()}/zephyr-sdk"
     if toolchain == "zephyr":
         pass
     elif toolchain == "espressif":

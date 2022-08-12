@@ -132,24 +132,18 @@ def build_and_copy_bin(zephyr_platform, sample_path, args, sample_name, env):
     return_code = 1
     os.makedirs(f"artifacts/{zephyr_sample_name}", exist_ok=True)
     previous_dir = os.getcwd()
-    print(f"[DEBUG] curr_dir: {os.getcwd()}")
     os.chdir(zephyr_path)
-    print(f"[DEBUG] curr_dir: {os.getcwd()}")
     build_path = f"build.{zephyr_platform}.{sample_name}"
     if os.path.isdir(build_path):
         shutil.rmtree(build_path)
     log_path = f"../../artifacts/{zephyr_sample_name}/{zephyr_sample_name}-zephyr.log"
 
-    print(f"[DEBUG] curr_dir: {os.getcwd()}")
     run_west_cmd(f"west spdx --init -d {build_path}", env, log_path)
     west_output = run_west_cmd(f"west build --pristine -b {zephyr_platform} -d {build_path} {sample_path} {args}", env, log_path)
     shutil.copyfile(f"{build_path}/CMakeFiles/CMakeOutput.log", f"../../artifacts/CMakeOutput-{zephyr_sample_name}.log")
     run_west_cmd(f"west spdx -d {build_path}", env, log_path)
-    print(f"[DEBUG] {return_code} {west_output}")
-    print(f"[DEBUG] curr_dir: {os.getcwd()}")
 
     os.chdir(previous_dir)
-    print(f"[DEBUG] curr_dir: {os.getcwd()}")
     file_list=["zephyr/zephyr.elf", "zephyr/zephyr.dts", "zephyr/.config", "spdx/app.spdx", "spdx/build.spdx", "spdx/zephyr.spdx"]
 
     for file_name in file_list:
@@ -172,11 +166,8 @@ def build_and_copy_bin(zephyr_platform, sample_path, args, sample_name, env):
     return return_code, west_output
 
 def run_west_cmd(cmd, env, log_file):
-    print(f"[DEBUG] [CMD] {cmd}")
-    print(f"[DEBUG] [ENV] {env}")
-    print(f"[DEBUG] [LOG_FILE] {log_file}")
     try:
-        output = subprocess.check_output((cmd.split(" ")), env=env, stderr=subprocess.STDOUT).decode()
+        output = subprocess.check_output((cmd.split(" ")), stderr=subprocess.STDOUT).decode()
     except subprocess.CalledProcessError as error:
         output = error.output.decode()
     with open(log_file, 'a') as file:

@@ -129,6 +129,7 @@ def find_flash_size(dts_filename):
 
 def build_and_copy_bin(zephyr_platform, sample_path, args, sample_name, env):
     zephyr_sample_name = f"{zephyr_platform}-{sample_name}"
+    return_code = 1
     os.makedirs(f"artifacts/{zephyr_sample_name}", exist_ok=True)
     previous_dir = os.getcwd()
     os.chdir(zephyr_path)
@@ -138,7 +139,7 @@ def build_and_copy_bin(zephyr_platform, sample_path, args, sample_name, env):
     log_path = f"../../artifacts/{zephyr_sample_name}/{zephyr_sample_name}-zephyr.log"
 
     run_west_cmd(f"west spdx --init -d {build_path}", env, log_path)
-    return_code, west_output = run_west_cmd(f"west build --pristine -b {zephyr_platform} -d {build_path} {sample_path} {args}", env, log_path)
+    west_output = run_west_cmd(f"west build --pristine -b {zephyr_platform} -d {build_path} {sample_path} {args}", env, log_path)
     run_west_cmd(f"west spdx -d {build_path}", env, log_path)
     print(f"[DEBUG] {return_code} {west_output}")
 
@@ -153,6 +154,7 @@ def build_and_copy_bin(zephyr_platform, sample_path, args, sample_name, env):
                 shutil.copyfile(file_path, f"artifacts/{zephyr_sample_name}/{zephyr_sample_name}-{base_name}")
             if file_name == file_list[0]:
                 shutil.copyfile(file_path, f"artifacts/{zephyr_sample_name}/{zephyr_platform}-zephyr-{sample_name}.elf")
+                return_code = 0
             if file_name == file_list[1]:
                 shutil.copyfile(file_path, f"artifacts/{zephyr_sample_name}/{zephyr_sample_name}.dts")
                 if sample_name == "hello_world":
@@ -175,7 +177,7 @@ def run_west_cmd(cmd, env, log_file):
         output = error.output.decode()
     with open(log_file, 'a') as file:
         file.write(output)
-    return return_code, output
+    return output
 
 def build_sample(zephyr_platform, sample_name, sample_path, sample_args, toolchain, download_artifacts, skip_not_built):
     if download_artifacts:
@@ -204,12 +206,12 @@ def build_sample(zephyr_platform, sample_name, sample_path, sample_args, toolcha
         return
     print(f"Building for {bold(zephyr_platform)}, sample: {bold(sample_name)} with args: {bold(sample_args)} using {bold(toolchain)} toolchain.")
     args = f'-- {sample_args}' if sample_args != '' else ''
-    #return_code, west_output = build_and_copy_bin(zephyr_platform, sample_path, args, sample_name, env)
-    process = subprocess.run(["./scripts/build_and_copy_bin.sh", zephyr_platform, sample_path, args, sample_name], stdout=subprocess.PIPE, env=env)
+    return_code, west_output = build_and_copy_bin(zephyr_platform, sample_path, args, sample_name, env)
+    #process = subprocess.run(["./scripts/build_and_copy_bin.sh", zephyr_platform, sample_path, args, sample_name], stdout=subprocess.PIPE, env=env)
     # try increasing flash size if the sample doesn't fit in it
     dts_filename = artifacts_dict['dts'].format(board_name=zephyr_platform, sample_name=sample_name)
-    m = re.search(r"region `FLASH' overflowed by (\d+) bytes", process.stdout.decode())
-    if process.returncode:
+    m = re.search(r"region `FLASH' overflowed by (\d+) bytes", west_output)
+    if return_code:
         if m is not None and os.path.exists(dts_filename):
             shutil.copy2(dts_filename, dts_filename + '.orig')
             flash_increase = math.ceil(int(m.group(1)) / 1024) * 1024
@@ -231,8 +233,8 @@ def build_sample(zephyr_platform, sample_name, sample_path, sample_args, toolcha
                     # build again, this time with bigger flash size
                     overlay_args = f'-DDTC_OVERLAY_FILE={overlay_path}'
                     args = f'-- {sample_args} {overlay_args}'
-                    process = subprocess.run(["./scripts/build_and_copy_bin.sh", zephyr_platform, sample_path, args, sample_name], stdout=subprocess.PIPE, env=env)
-                    #build_and_copy_bin(zephyr_platform, sample_path, args, sample_name, env)
+                    #process = subprocess.run(["./scripts/build_and_copy_bin.sh", zephyr_platform, sample_path, args, sample_name], stdout=subprocess.PIPE, env=env)
+                    build_and_copy_bin(zephyr_platform, sample_path, args, sample_name, env)
 
 
 def get_board_yaml_path(board_name, board_path):

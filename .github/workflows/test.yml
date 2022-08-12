@@ -57,7 +57,9 @@ jobs:
       #  name: zephyr
     - uses: actions/checkout@v2
     - name: Prepare zephyr
-      run: ./scripts/prepare_zephyr.sh
+      run: |
+        ./scripts/prepare_zephyr.sh
+        export ZEPHYR_SDK_INSTALL_DIR=$(pwd)/zephyr-sdk
     - name: Prepare micropython
       run: ./scripts/prepare_micropython.sh
     - name: Prepare environment

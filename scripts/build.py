@@ -134,6 +134,7 @@ def build_and_copy_bin(zephyr_platform, sample_path, args, sample_name, env):
     previous_dir = os.getcwd()
     os.chdir(zephyr_path)
     build_path = f"build.{zephyr_platform}.{sample_name}"
+    print(f"[DEBUG] {env}")
     if os.path.isdir(build_path):
         shutil.rmtree(build_path)
     log_path = f"../../artifacts/{zephyr_sample_name}/{zephyr_sample_name}-zephyr.log"
@@ -167,7 +168,7 @@ def build_and_copy_bin(zephyr_platform, sample_path, args, sample_name, env):
 
 def run_west_cmd(cmd, env, log_file):
     try:
-        output = subprocess.check_output((cmd.split(" ")), stderr=subprocess.STDOUT).decode()
+        output = subprocess.check_output((cmd.split(" ")), env=env, stderr=subprocess.STDOUT).decode()
     except subprocess.CalledProcessError as error:
         output = error.output.decode()
     with open(log_file, 'a') as file:

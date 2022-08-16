@@ -14,7 +14,6 @@ import tempfile
 import urllib.request
 import yaml
 from dts2repl import dts2repl
-from joblib import Parallel, delayed, parallel_backend
 
 from colorama import init
 init()
@@ -91,32 +90,6 @@ robot_templates = {
     'tensorflow_lite_micro': robot_template_tflm,
 }
 
-def download_remote_artifacts(zephyr_platform, sample_name, artifacts, suffix=""):
-    print(f"Downloading artifacts {bold(zephyr_platform)}, sample: {bold(sample_name)}, files: ", end="")
-    artifacts = list(artifacts)
-    files = map(lambda x: artifacts_dict[x], artifacts)
-    files = map(lambda x: x.format(board_name=zephyr_platform, sample_name=sample_name), files)
-    files = map(lambda x: '/'.join(x.split('/')[1:]), files)
-    downloads = []
-    ret = True
-
-    for remote_file, ftype in zip(files, artifacts):
-        file_path = artifacts_dict[ftype].format(board_name=zephyr_platform, sample_name=sample_name) + suffix
-        data = get_remote_file(f"{dashboard_url}/{remote_file}", decode=False)
-
-        # if file wasn't found - break the loop
-        if data is None:
-            downloads.append(f'{bold(red(ftype))} not found')
-            ret = False
-            break
-
-        with open(os.path.join(file_path), "wb") as f:
-            downloads.append(f'{bold(green(ftype))} found')
-            f.write(data)
-
-    print(f'{", ".join(downloads)}.')
-    return ret
-
 def find_flash_size(dts_filename):
     with open(dts_filename) as f:
         dts = f.read()
@@ -175,20 +148,7 @@ def run_west_cmd(cmd, env, log_file):
         file.write(output)
     return output
 
-def build_sample(zephyr_platform, sample_name, sample_path, sample_args, toolchain, download_artifacts, skip_not_built):
-    if download_artifacts:
-        try:
-            # all artifacts were succesfully downloaded, can return from this function
-            artifacts = ['elf', 'dts', 'config', 'zephyr-log', 'sbom-app', 'sbom-build', 'sbom-zephyr']
-            download_remote_artifacts(zephyr_platform, sample_name, artifacts)
-            return
-        except urllib.error.HTTPError:
-            print("Artifact not found! ", end="")
-            if skip_not_built:
-                print("Skipping build locally due to matching CI hash.")
-                return
-            else:
-                print("Trying to build it locally.")
+def build_sample(zephyr_platform, sample_name, sample_path, sample_args, toolchain):
     env = os.environ.copy()
     env['ZEPHYR_SDK_INSTALL_DIR'] = f"{os.getcwd()}/zephyr-sdk"
     if toolchain == "zephyr":
@@ -203,7 +163,7 @@ def build_sample(zephyr_platform, sample_name, sample_path, sample_args, toolcha
         return
     print(f"Building for {bold(zephyr_platform)}, sample: {bold(sample_name)} with args: {bold(sample_args)} using {bold(toolchain)} toolchain.")
     args = f'-- {sample_args}' if sample_args != '' else ''
-    return_code, west_output = build_and_copy_bin(zephyr_platform, sample_path, args, sample_name, env)
+    #return_code, west_output = build_and_copy_bin(zephyr_platform, sample_path, args, sample_name, env)
     process = subprocess.run(["./scripts/build_and_copy_bin.sh", zephyr_platform, sample_path, args, sample_name], stdout=subprocess.PIPE, env=env)
     # try increasing flash size if the sample doesn't fit in it
     dts_filename = artifacts_dict['dts'].format(board_name=zephyr_platform, sample_name=sample_name)
@@ -233,7 +193,6 @@ def build_sample(zephyr_platform, sample_name, sample_path, sample_args, toolcha
                     process = subprocess.run(["./scripts/build_and_copy_bin.sh", zephyr_platform, sample_path, args, sample_name], stdout=subprocess.PIPE, env=env)
                     #build_and_copy_bin(zephyr_platform, sample_path, args, sample_name, env)
 
-
 def get_board_yaml_path(board_name, board_path):
     board_yaml = f'{zephyr_path}/{board_path}/{board_name}.yaml'
 
@@ -243,7 +202,7 @@ def get_board_yaml_path(board_name, board_path):
 
     return board_yaml
 
-def try_build(board_name, board_path, sample_name, sample_path, download_artifacts=False, skip_not_built=False):
+def try_build(board_name, board_path, sample_name, sample_path):
     board_yaml = get_board_yaml_path(board_name, board_path)
     if os.getenv('CI', False):
         # check if additional custom config is available
@@ -254,7 +213,7 @@ def try_build(board_name, board_path, sample_name, sample_path, download_artifac
             sample_args = ''
 
         # build the sample
-        build_sample(board_name, sample_name, f'samples/{sample_path}', sample_args, get_toolchain(board_yaml), download_artifacts, skip_not_built)
+        build_sample(board_name, sample_name, f'samples/{sample_path}', sample_args, get_toolchain(board_yaml))
 
 def get_boards():
     # the Zephyr utility has its own argument parsing, so avoid args clash
@@ -273,6 +232,17 @@ def get_boards():
                         help='''add a board root (ZEPHYR_BASE is always
                         present), may be given more than once''')
     return find_arch2boards(parser.parse_args())
+
+def get_full_name(yaml_filename):
+    if os.path.exists(yaml_filename):
+        with open(yaml_filename) as f:
+            board_data = yaml.load(f, Loader=yaml.FullLoader)
+        full_board_name = board_data['name']
+        if len(full_board_name) > 50:
+            full_board_name = re.sub(r'\(.*\)', '', full_board_name)
+    else:
+        full_board_name = ''
+    return full_board_name
 
 def get_toolchain(yaml_filename):
     if os.path.exists(yaml_filename):
@@ -341,7 +311,7 @@ def get_remote_file(url, decode=True):
 
     return content
 
-def loop_wrapper(b, i, total_boards, sample_name, sample_path, download_artifacts, skip_not_built):
+def loop_wrapper(b, i, total_boards, sample_name, sample_path):
     board_name = b if isinstance(b, str) else b.name
     if total_boards > 1:
         print(f">> [{i} / {total_boards}] -- {board_name} --")
@@ -353,23 +323,13 @@ def loop_wrapper(b, i, total_boards, sample_name, sample_path, download_artifact
     if not os.path.exists(artifacts_path):
         os.mkdir(artifacts_path)
 
-    try_build(board_name, get_board_path(flat_boards[board_name]), sample_name, sample_path, download_artifacts, skip_not_built)
+    try_build(board_name, get_board_path(flat_boards[board_name]), sample_name, sample_path)
     if total_boards > 1:
         print(f"<< [{i} / {total_boards}] -- {board_name} --")
     return out
 
 
 if __name__ == '__main__':
-    # Determine if we want to run build/sim routines for all boards or only for
-    # a subset of them. If any cmdline arguments are provided - treat them as
-    # board names.
-    selected_platforms = "all"
-    if len(sys.argv) > 1:
-        selected_platforms = sys.argv[1:]
-        print(f'Running dashboard generation for the selected boards: {bold(", ".join(selected_platforms))}.')
-    else:
-        print(f'Running dashboard generation for {bold("all boards")}.')
-
     # Get and write Zephyr version; save commit hash for later usage
     with open('artifacts/zephyr.version', 'w') as f:
         try:
@@ -380,62 +340,33 @@ if __name__ == '__main__':
             print("error: zephyr not found")
             sys.exit(1)
 
-    # Create a 'version' of CI script to determine later if we want to rebuild
-    # boards with 'NOT BUILT' status. If nothing in the CI had changed,
-    # presumably trying to rebuild them doesn't make sense and is a waste of
-    # time.
-    with open('.github/workflows/test.yml') as f:
-        ci_contents = f.read().encode()
-    with open('artifacts/ci.version', 'w') as f:
-        build_version = hashlib.sha256(ci_contents).hexdigest()
-        f.write(build_version)
-
-    # Skipping simulation is possible if:
-    # - local and remote Renode version are the same
-    # - FORCE_SIM env variable has *not* been set
-    _, renode_commit_remote = get_remote_version('renode').split('git')
-    # print(f'Comparing remote Renode commit {bold(renode_commit_remote)} with local {bold(renode_commit)}.')
-
-    # Skipping sample building is possible if:
-    # - local and remote Zephyr version are the same
-    # - FORCE_BUILD env variable has *not* been set
-    zephyr_commit_remote = get_remote_version('zephyr')
-    print(f'Comparing remote Zephyr commit {bold(zephyr_commit_remote)} with local {bold(zephyr_commit)}.')
-    download_artifacts = False
-    download_artifacts = download_artifacts and not os.getenv('FORCE_BUILD', False)
-
-    # We want to try to rebuild samples with 'NOT BUILT' status if:
-    # - local and remote CI version are *not* the same
-    # - FORCE_SKIP_NOT_BUILT has *not* been set
-    # where CI version is a sha256 calculated from the CI script
-    build_remote_version = get_remote_version('ci')
-    skip_not_built = build_remote_version == build_version
-    skip_not_built = skip_not_built or os.getenv('FORCE_SKIP_NOT_BUILT', False)
-
     sample_name, sample_path = get_sample_name_path()
     zephyr_boards = get_boards()
     flat_boards = flatten(zephyr_boards)
     flat_boards = dict(filter(lambda b: "qemu" not in b[0] and "native" not in b[0], flat_boards.items()))
     flat_boards = dict(filter(lambda b: not b[0].startswith("fvp_"), flat_boards.items()))
-    if selected_platforms == "all":
-        boards_to_run = flat_boards.values()
-        omit_arch = ('arc', 'posix')
-        boards_to_run = filter(lambda x: all(map(lambda y: y != x.arch, omit_arch)), boards_to_run)
-        omit_board = ('acrn', 'qemu', 'native', 'nsim', 'xenvm', 'xt-sim')
-        boards_to_run = list(filter(lambda x: all(map(lambda y: y not in x.name, omit_board)), boards_to_run))
-    else:
-        boards_to_run = selected_platforms
+    boards_to_run = flat_boards.values()
+    omit_arch = ('arc', 'posix')
+    boards_to_run = filter(lambda x: all(map(lambda y: y != x.arch, omit_arch)), boards_to_run)
+    omit_board = ('acrn', 'qemu', 'native', 'nsim', 'xenvm', 'xt-sim')
+    boards_to_run = list(filter(lambda x: all(map(lambda y: y not in x.name, omit_board)), boards_to_run))
+
     boards_to_run = boards_to_run[:2] # Test
 
     total_boards = len(boards_to_run)
     build_jobs = int(os.getenv('BUILD_JOBS', 1))
 
     for i, board in enumerate(boards_to_run, start=1):
-        loop_wrapper(board, i, total_boards, sample_name, sample_path, download_artifacts, skip_not_built)
+        loop_wrapper(board, i, total_boards, sample_name, sample_path)
 
     boards_to_serialize = []
     for board in boards_to_run:
-        boards_to_serialize.append({"name": board.name, "arch": board.arch, "dir": str(board.dir)})
+        boards_to_serialize.append({
+            "name": board.name,
+            "full_name": get_full_name(get_board_yaml_path(board.name, get_board_path(board))),
+            "arch": board.arch,
+            "path": get_board_path(board)
+            })
     with open("artifacts/built_boards.json", "w") as file:
         json.dump(boards_to_serialize, file)
-        #file.write("\n".join([str(board.name) for board in boards_to_run]))
+

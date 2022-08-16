@@ -20,28 +20,20 @@ jobs:
     - name: Generate matrix
       id: generate-sha
       run: |
-        matrix=$(git -C zephyr log -n 1 --format='"%h",' | tr '\n' ' ')
+        matrix=$(git -C zephyr log -n 1 --format='"%H",' | tr '\n' ' ')
         # Delete last character
-        matrix='"62f19cc6b3",'
+        matrix='"62f19cc6b3d4697630abed9c5bea94d3a4eed7ed",'
         # Add [ ]
         matrix="[${matrix}]"
         echo "::set-output name=matrix::$matrix"
         echo "matrix: $matrix"
-          #- name: Tar zephyr
-          #run: tar cvf zephyr.tar zephyrproject
-          #- name: Upload zephyr as artifact
-          #uses: actions/upload-artifact@v2
-          #with:
-          #name: zephyr
-          #path: zephyr.tar
   build:
     runs-on: ubuntu-20.04
     needs: [generate-sha]
     strategy:
       matrix:
         SHA: ${{ fromJson(needs.generate-sha.outputs.matrix) }}
-        sample: [hello_world, shell_module, micropython]
-          #sample: [hello_world, shell_module, philosophers, micropython, tensorflow_lite_micro]
+        sample: [hello_world, shell_module, philosophers, micropython, tensorflow_lite_micro]
       fail-fast:
         false
     env:
@@ -51,17 +43,13 @@ jobs:
       SAMPLE_NAME: ${{ matrix.sample }}
       MICROPYTHON_VERSION: 97a7cc243b028833bdcb8ce0bc19b2bce7545851
     steps:
-      #- name: Download zephyr
-      #uses: actions/download-artifact@v2
-      #with:
-      #  name: zephyr
     - uses: actions/checkout@v2
+    - name: Prepare environment
+      run: ./scripts/prepare_environment.sh
     - name: Prepare zephyr
       run: ./scripts/prepare_zephyr.sh
     - name: Prepare micropython
       run: ./scripts/prepare_micropython.sh
-    - name: Prepare environment
-      run: ./scripts/prepare_environment.sh
     - name: Build boards
       run: ./scripts/build.py
     - name: Upload artifacts
@@ -76,8 +64,7 @@ jobs:
       fail-fast: false
       matrix:
         SHA: ${{ fromJson(needs.generate-sha.outputs.matrix) }}
-        sample: [hello_world, shell_module, micropython]
-          #sample: [hello_world, shell_module, philosophers, micropython, tensorflow_lite_micro]
+        sample: [hello_world, shell_module, philosophers, micropython, tensorflow_lite_micro]
     env:
       RENODE_VERSION: 1.13.1+20220731git8eca7310
       MICROPYTHON_VERSION: 97a7cc243b028833bdcb8ce0bc19b2bce7545851
@@ -94,8 +81,8 @@ jobs:
         path: artifacts/
     - name: Prepare micropython
       run: ./scripts/prepare_micropython.sh
-        #- name: Prepare environment
-        #run: ./scripts/prepare_environment.sh
+    - name: Prepare environment
+      run: ./scripts/prepare_environment.sh
     - run: ./scripts/download_renode.sh
     - run: ./scripts/simulate.py
     - name: Upload artifacts

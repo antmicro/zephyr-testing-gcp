@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
 
-import filecmp
-import git
-import glob
 import jinja2
 import json
 import os
@@ -18,7 +15,6 @@ import yaml
 import zipfile
 from argparse import Namespace
 from dts2repl import dts2repl
-from joblib import Parallel, delayed, parallel_backend
 
 from colorama import init
 init()
@@ -57,9 +53,6 @@ artifacts_dict = {
 
 dashboard_url = 'https://zephyr-dashboard.renode.io'
 
-def get_board_path(board):
-    return str(board['dir']).replace(os.getcwd()+'/','').replace(zephyr_path+'/','')
-
 def get_cpu_name(arch, dts_filename, verbose=False):
     cpu_dep_chain = dts2repl.get_cpu_dep_chain(arch, dts_filename, zephyr_path, [])
     verbose = os.getenv("VERBOSE", False) or verbose
@@ -95,7 +88,7 @@ robot_templates = {
     'tensorflow_lite_micro': robot_template_tflm,
 }
 
-def run_in_renode(renode_platform, zephyr_platform, sample_name, uart_name, auto=False, script=None, remote_board=None):
+def run_in_renode(renode_platform, zephyr_platform, sample_name, uart_name, script=None):
     rm_files = ('log.html', 'logs', 'monitor.txt')
     format_args = {
         'board_name': zephyr_platform,
@@ -136,41 +129,6 @@ def run_in_renode(renode_platform, zephyr_platform, sample_name, uart_name, auto
             uart_name=uart_name,
             sample_name=sample_name
         ))
-
-    skip_sim = True
-    if remote_board is not None:
-        files = ('resc', 'repl', 'config', 'robot')
-        files = filter(lambda f: f in remote_board['files'], files)
-
-        if download_remote_artifacts(zephyr_platform, sample_name, files, suffix='.remote'):
-            for remote_file in glob.glob(f'artifacts/{remote_board["board_name"]}-{remote_board["sample_name"]}/*.remote'):
-                local_file = os.path.splitext(remote_file)[0]
-                if not bool(filecmp.cmp(local_file, remote_file)):
-                    skip_sim = False
-                    print(f"Found difference in {bold(local_file)} contents!")
-                    break
-        else:
-            skip_sim = False
-    else:
-        skip_sim = False
-
-    # remove remote artifacts
-    if remote_board is not None:
-        for remote_file in glob.glob(f'artifacts/{remote_board["board_name"]}-{remote_board["sample_name"]}/*.remote'):
-            os.remove(remote_file)
-
-    if skip_sim:
-        # download all artifacts without a suffix this time
-        try:
-            files = remote_board['files'][:]
-            for f in ('elf', 'dts'):
-                if f in remote_board['files']:
-                    files.remove(f)
-            download_remote_artifacts(zephyr_platform, sample_name, files)
-            print(f'Skipping Renode simulation for platform {bold(zephyr_platform)}!')
-            return remote_board['status'] == 'PASSED'
-        except urllib.error.HTTPError:
-            pass
 
     print(f'Run this interactively using: {bold("renode " + resc_filename)}')
     try:
@@ -220,32 +178,6 @@ def run_in_renode(renode_platform, zephyr_platform, sample_name, uart_name, auto
         print(green("Test passed."))
         return True
 
-def download_remote_artifacts(zephyr_platform, sample_name, artifacts, suffix=""):
-    print(f"Downloading artifacts {bold(zephyr_platform)}, sample: {bold(sample_name)}, files: ", end="")
-    artifacts = list(artifacts)
-    files = map(lambda x: artifacts_dict[x], artifacts)
-    files = map(lambda x: x.format(board_name=zephyr_platform, sample_name=sample_name), files)
-    files = map(lambda x: '/'.join(x.split('/')[1:]), files)
-    downloads = []
-    ret = True
-
-    for remote_file, ftype in zip(files, artifacts):
-        file_path = artifacts_dict[ftype].format(board_name=zephyr_platform, sample_name=sample_name) + suffix
-        data = get_remote_file(f"{dashboard_url}/{remote_file}", decode=False)
-
-        # if file wasn't found - break the loop
-        if data is None:
-            downloads.append(f'{bold(red(ftype))} not found')
-            ret = False
-            break
-
-        with open(os.path.join(file_path), "wb") as f:
-            downloads.append(f'{bold(green(ftype))} found')
-            f.write(data)
-
-    print(f'{", ".join(downloads)}.')
-    return ret
-
 def conv_zephyr_mem_usage(val):
     if val.endswith(' B'):
         val = int(val[:-2])
@@ -290,19 +222,10 @@ def get_artifacts_list(platform):
 
     return ret
 
-def get_board_yaml_path(board_name, board_path):
-    board_yaml = f'{zephyr_path}/{board_path}/{board_name}.yaml'
-
-    # this hack is needed for pinetime_devkit0
-    if not os.path.exists(board_yaml):
-        board_yaml = f'{zephyr_path}/{board_path}/{board_name.replace("_", "-")}.yaml'
-
-    return board_yaml
-
-def run_renode_simulation(board, sample_name, sample_path, remote_board=None):
+def run_renode_simulation(board, sample_name):
     result = {
         'board_name': board['name'],
-        'board_path': get_board_path(board),
+        'board_path': board['path'],
         'sample_name': sample_name,
         'status': 'NOT BUILT',
         'uart_name': '',
@@ -312,23 +235,14 @@ def run_renode_simulation(board, sample_name, sample_path, remote_board=None):
     repl_filename = artifacts_dict['repl'].format(**result)
     save_filename = artifacts_dict['save'].format(**result)
     zephyr_log_filename = artifacts_dict['zephyr-log'].format(**result)
-    board_yaml = get_board_yaml_path(board['name'], result['board_path'])
-
-    # this hack is needed for pinetime_devkit0
-    if not os.path.exists(board_yaml):
-        board_yaml = f'{zephyr_path}/{result["board_path"]}/{result["board_name"].replace("_", "-")}.yaml'
 
     if os.path.exists(elf_filename):
         result['status'] = 'BUILT'
 
-    renode_platform = None
-    extra_cmd = None
-    uart = None
-
-    cpu, uart = try_match_board(board)
+    uart = try_match_board(board)
 
     result['arch'] = board['arch']
-    result['board_full_name'] = get_full_name(board_yaml)
+    result['board_full_name'] = board['full_name']
 
     dts_path = f'{zephyr_path}/{result["board_path"]}/{result["board_name"]}.dts'
     result['cpu'] = get_cpu_name(result['arch'], dts_path)
@@ -341,7 +255,6 @@ def run_renode_simulation(board, sample_name, sample_path, remote_board=None):
 
     if uart is not None and result['status'] != 'NOT BUILT':
         passed = False
-        skip = False
 
         print(f"Autogenerating repl for {bold(board['name'])} using device tree.")
         fake_args = Namespace(filename=dts_filename, overlays=",".join(cpu_dep_chain + [board['name']]))
@@ -354,7 +267,7 @@ def run_renode_simulation(board, sample_name, sample_path, remote_board=None):
         elif "RiscV" in repl:
             extra_cmd = f"cpu0 EnableProfiler true $ORIGIN/{board['name']}-{sample_name}-profile true"
 
-        passed = run_in_renode(repl_filename, board['name'], sample_name, uart, True, extra_cmd, remote_board)
+        passed = run_in_renode(repl_filename, board['name'], sample_name, uart, extra_cmd)
         result['repl_type'] = 'AUTO'
         result['repl_name'] = f"{board['name']}-{sample_name}.repl"
         if passed:
@@ -395,29 +308,11 @@ def run_renode_simulation(board, sample_name, sample_path, remote_board=None):
 
     return result
 
-def get_boards():
-    # the Zephyr utility has its own argument parsing, so avoid args clash
-    sys.argv = [sys.argv[0]]
-    sys.path.append(f'{zephyr_path}/scripts')
-    from list_boards import find_arch2boards
-    import argparse
-    from pathlib import Path
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--arch-root", dest='arch_roots', default=[],
-                        type=Path, action='append',
-                        help='''add an architecture root (ZEPHYR_BASE is
-                        always present), may be given more than once''')
-    parser.add_argument("--board-root", dest='board_roots', default=[],
-                        type=Path, action='append',
-                        help='''add a board root (ZEPHYR_BASE is always
-                        present), may be given more than once''')
-    return find_arch2boards(parser.parse_args())
-
 def get_full_name(yaml_filename):
     if os.path.exists(yaml_filename):
         with open(yaml_filename) as f:
             board_data = yaml.load(f, Loader=yaml.FullLoader)
-    
+
         full_board_name = board_data['name']
         if len(full_board_name) > 50:
             full_board_name = re.sub(r'\(.*\)', '', full_board_name)
@@ -426,20 +321,11 @@ def get_full_name(yaml_filename):
 
     return full_board_name
 
-def flatten(zephyr_boards):
-    flat_boards = {}
-    for arch in zephyr_boards:
-        for board in zephyr_boards[arch]:
-            flat_boards[board.name] = board
-    return flat_boards
-
 def try_match_board(board):
     sample_name, _ = get_sample_name_path()
-    board_path = get_board_path(board)
     dts_filename = artifacts_dict['dts'].format(board_name=board['name'], sample_name=sample_name)
-    cpu_dep_chain = dts2repl.get_cpu_dep_chain(board['arch'], dts_filename, zephyr_path, [])
     uart = dts2repl.get_uart(dts_filename)
-    return None, uart
+    return uart
 
 samples = (
     # sample name and path of the samples that we support
@@ -476,22 +362,19 @@ def get_remote_file(url, decode=True):
 
     return content
 
-def loop_wrapper(b, i, total_boards, sample_name, sample_path, stage='build'):
+def loop_wrapper(b, i, total_boards, sample_name):
     board_name = b if isinstance(b, str) else b["name"]
     if total_boards > 1:
-        print(f">> [{i} / {total_boards}] -- {board_name} {stage} --")
-    remote_board = filter(lambda x: x['board_name'] == board_name, [])
-    remote_board = next(remote_board, None)
-    print(f"remote_board: {remote_board}")
+        print(f">> [{i} / {total_boards}] -- {board_name} --")
     out = None
 
     artifacts_path = f'artifacts/{board_name}-{sample_name}'
     if not os.path.exists(artifacts_path):
         os.mkdir(artifacts_path)
 
-    out = run_renode_simulation(b, sample_name, sample_path, remote_board)
+    out = run_renode_simulation(b, sample_name)
     if total_boards > 1:
-        print(f"<< [{i} / {total_boards}] -- {board_name} {stage} --")
+        print(f"<< [{i} / {total_boards}] -- {board_name} --")
     return out
 
 def get_renode_version():
@@ -506,16 +389,6 @@ def get_renode_version():
     return renode_commit, f'renode-{renode_ver}+{renode_date}@git{renode_commit}'
 
 if __name__ == '__main__':
-    # Determine if we want to run build/sim routines for all boards or only for
-    # a subset of them. If any cmdline arguments are provided - treat them as
-    # board names.
-    selected_platforms = "all"
-    if len(sys.argv) > 1:
-        selected_platforms = sys.argv[1:]
-        print(f'Running dashboard generation for the selected boards: {bold(", ".join(selected_platforms))}.') 
-    else:
-        print(f'Running dashboard generation for {bold("all boards")}.')
-
     # Get and write Renode version; save commit hash for later usage
     with open('artifacts/renode.version', 'w') as f:
         renode_ver = get_renode_version()
@@ -527,19 +400,14 @@ if __name__ == '__main__':
         f.write(renode_ver[1])
 
 
-    sample_name, sample_path = get_sample_name_path()
+    sample_name, _ = get_sample_name_path()
     with open("artifacts/built_boards.json") as file:
         boards_to_run = json.loads(file.read())
 
     total_boards = len(boards_to_run)
     sim_jobs = int(os.getenv('SIM_JOBS', 1))
 
-    results = [loop_wrapper(b, i, total_boards, sample_name, sample_path, stage='sim') for i, b in enumerate(boards_to_run, start=1)]
+    results = [loop_wrapper(b, i, total_boards, sample_name) for i, b in enumerate(boards_to_run, start=1)]
 
-    # if boards are selected manually from the cmdline, append their names to
-    # the final json file
-    if isinstance(selected_platforms, list):
-        selected_platforms = '_'.join(selected_platforms)
-
-    with open(f"artifacts/results/results-{sample_name}_{selected_platforms}.json", "w") as f:
+    with open(f"artifacts/results/results-{sample_name}_all.json", "w") as f:
         json.dump(results, f)

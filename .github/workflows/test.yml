@@ -44,6 +44,7 @@ jobs:
       MICROPYTHON_VERSION: 97a7cc243b028833bdcb8ce0bc19b2bce7545851
     steps:
     - uses: actions/checkout@v2
+    - run: echo "ZEPHYR_BASE=`pwd`/zephyrproject/zephyr >> $GITHUB_ENV"
     - name: Prepare environment
       run: ./scripts/prepare_environment.sh
     - name: Prepare zephyr

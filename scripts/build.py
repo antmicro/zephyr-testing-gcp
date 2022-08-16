@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import git
-import hashlib
 import jinja2
 import json
 import math
@@ -13,7 +12,6 @@ import sys
 import tempfile
 import urllib.request
 import yaml
-from dts2repl import dts2repl
 
 from colorama import init
 init()
@@ -54,21 +52,6 @@ dashboard_url = 'https://zephyr-dashboard.renode.io'
 
 def get_board_path(board):
     return str(board.dir).replace(os.getcwd()+'/','').replace(zephyr_path+'/','')
-
-def get_cpu_name(arch, dts_filename, verbose=False):
-    cpu_dep_chain = dts2repl.get_cpu_dep_chain(arch, dts_filename, zephyr_path, [])
-    verbose = os.getenv("VERBOSE", False) or verbose
-    cpu_dep_chain_string = ''
-    if not verbose:
-        if len(cpu_dep_chain) > 0:
-            for cpu in cpu_dep_chain:
-                if cpu[0] != '!':
-                    cpu_dep_chain_string = cpu
-                    break
-    else:
-        cpu_dep_chain_string = " -> ".join(cpu_dep_chain)
-
-    return cpu_dep_chain_string
 
 
 templateLoader = jinja2.FileSystemLoader(searchpath="./")
@@ -267,14 +250,6 @@ def flatten(zephyr_boards):
         for board in zephyr_boards[arch]:
             flat_boards[board.name] = board
     return flat_boards
-
-def try_match_board(board):
-    sample_name, _ = get_sample_name_path()
-    board_path = get_board_path(board)
-    dts_filename = artifacts_dict['dts'].format(board_name=board.name, sample_name=sample_name)
-    cpu_dep_chain = dts2repl.get_cpu_dep_chain(board.arch, dts_filename, zephyr_path, [])
-    uart = dts2repl.get_uart(dts_filename)
-    return None, uart
 
 samples = (
     # sample name and path of the samples that we support

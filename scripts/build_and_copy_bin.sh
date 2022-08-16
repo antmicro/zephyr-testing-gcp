@@ -1,4 +1,6 @@
 #!/bin/bash
+set -x
+
 mkdir -p artifacts/$1-$4
 cd zephyrproject/zephyr
 

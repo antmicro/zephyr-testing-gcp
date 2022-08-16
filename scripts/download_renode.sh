@@ -8,3 +8,4 @@ ln -s ../artifacts artifacts
 echo `pwd` >> $GITHUB_PATH
 pip3 install -r tests/requirements.txt
 cd -
+pip install -e git+https://github.com/antmicro/dts2repl.git@a243aee#egg=dts2repl

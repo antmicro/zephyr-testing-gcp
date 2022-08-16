@@ -94,8 +94,8 @@ jobs:
         path: artifacts/
     - name: Prepare micropython
       run: ./scripts/prepare_micropython.sh
-    - name: Prepare environment
-      run: ./scripts/prepare_environment.sh
+        #- name: Prepare environment
+        #run: ./scripts/prepare_environment.sh
     - run: ./scripts/download_renode.sh
     - run: ./scripts/simulate.py
     - name: Upload artifacts

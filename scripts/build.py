@@ -90,7 +90,6 @@ def build_and_copy_bin(zephyr_platform, sample_path, args, sample_name, env):
     previous_dir = os.getcwd()
     os.chdir(zephyr_path)
     build_path = f"build.{zephyr_platform}.{sample_name}"
-    #print(f"[DEBUG] {env}")
     if os.path.isdir(build_path):
         shutil.rmtree(build_path)
     log_path = f"../../artifacts/{zephyr_sample_name}/{zephyr_sample_name}-zephyr.log"
@@ -146,12 +145,12 @@ def build_sample(zephyr_platform, sample_name, sample_path, sample_args, toolcha
         return
     print(f"Building for {bold(zephyr_platform)}, sample: {bold(sample_name)} with args: {bold(sample_args)} using {bold(toolchain)} toolchain.")
     args = f'-- {sample_args}' if sample_args != '' else ''
-    #return_code, west_output = build_and_copy_bin(zephyr_platform, sample_path, args, sample_name, env)
-    process = subprocess.run(["./scripts/build_and_copy_bin.sh", zephyr_platform, sample_path, args, sample_name], stdout=subprocess.PIPE, env=env)
+    return_code, west_output = build_and_copy_bin(zephyr_platform, sample_path, args, sample_name, env)
+    #process = subprocess.run(["./scripts/build_and_copy_bin.sh", zephyr_platform, sample_path, args, sample_name], stdout=subprocess.PIPE, env=env)
     # try increasing flash size if the sample doesn't fit in it
     dts_filename = artifacts_dict['dts'].format(board_name=zephyr_platform, sample_name=sample_name)
-    m = re.search(r"region `FLASH' overflowed by (\d+) bytes", process.stdout.decode())
-    if process.returncode:
+    m = re.search(r"region `FLASH' overflowed by (\d+) bytes", west_output)
+    if return_code:
         if m is not None and os.path.exists(dts_filename):
             shutil.copy2(dts_filename, dts_filename + '.orig')
             flash_increase = math.ceil(int(m.group(1)) / 1024) * 1024
@@ -173,8 +172,8 @@ def build_sample(zephyr_platform, sample_name, sample_path, sample_args, toolcha
                     # build again, this time with bigger flash size
                     overlay_args = f'-DDTC_OVERLAY_FILE={overlay_path}'
                     args = f'-- {sample_args} {overlay_args}'
-                    process = subprocess.run(["./scripts/build_and_copy_bin.sh", zephyr_platform, sample_path, args, sample_name], stdout=subprocess.PIPE, env=env)
-                    #build_and_copy_bin(zephyr_platform, sample_path, args, sample_name, env)
+                    #process = subprocess.run(["./scripts/build_and_copy_bin.sh", zephyr_platform, sample_path, args, sample_name], stdout=subprocess.PIPE, env=env)
+                    build_and_copy_bin(zephyr_platform, sample_path, args, sample_name, env)
 
 def get_board_yaml_path(board_name, board_path):
     board_yaml = f'{zephyr_path}/{board_path}/{board_name}.yaml'
@@ -261,30 +260,9 @@ samples = (
 )
 
 def get_sample_name_path():
-    # make it possible for the user to choose which sample to build
     sample_name = os.getenv('SAMPLE_NAME')
     idx = list(map(lambda x: x[0], samples)).index(sample_name) if sample_name is not None else 0
     return samples[idx]
-
-def get_remote_json(sample_name):
-    url = f'{dashboard_url}/results-{sample_name}_all.json'
-
-    return json.loads(get_remote_file(url))
-
-def get_remote_version(name):
-    return get_remote_file(f'{dashboard_url}/{name}.version').strip()
-
-def get_remote_file(url, decode=True):
-    content = None
-
-    try:
-        with urllib.request.urlopen(url) as u:
-            content = u.read()
-            content = content.decode() if decode else content
-    except urllib.error.HTTPError:
-        pass
-
-    return content
 
 def loop_wrapper(b, i, total_boards, sample_name, sample_path):
     board_name = b if isinstance(b, str) else b.name

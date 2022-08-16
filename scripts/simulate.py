@@ -342,26 +342,6 @@ def get_sample_name_path():
     idx = list(map(lambda x: x[0], samples)).index(sample_name) if sample_name is not None else 0
     return samples[idx]
 
-def get_remote_json(sample_name):
-    url = f'{dashboard_url}/results-{sample_name}_all.json'
-
-    return json.loads(get_remote_file(url))
-
-def get_remote_version(name):
-    return get_remote_file(f'{dashboard_url}/{name}.version').strip()
-
-def get_remote_file(url, decode=True):
-    content = None
-
-    try:
-        with urllib.request.urlopen(url) as u:
-            content = u.read()
-            content = content.decode() if decode else content
-    except urllib.error.HTTPError:
-        pass
-
-    return content
-
 def loop_wrapper(b, i, total_boards, sample_name):
     board_name = b if isinstance(b, str) else b["name"]
     if total_boards > 1:

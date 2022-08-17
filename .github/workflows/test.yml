@@ -6,11 +6,11 @@ jobs:
     runs-on: ubuntu-20.04
     outputs:
       matrix: ${{ steps.generate-sha.outputs.matrix }}
-      samples: [hello_world, shell_module, philosophers, micropython, tensorflow_lite_micro]
+      samples: ${{ steps.generate-sha.outputs.samples }}
     steps:
     - name: Install dependencies
       run: |
-        sudo apt-get update -qq
+        sudo apt update -qq
         sudo apt install -y git
     - name: Checkout tools repo
       uses: actions/checkout@v2
@@ -22,12 +22,14 @@ jobs:
       id: generate-sha
       run: |
         matrix=$(git -C zephyr log -n 1 --format='"%h",' | tr '\n' ' ')
-        # Delete last character
+        # Test case - only one valid zephyr commit for now
         matrix='"62f19cc6b3",'
-        # Add [ ]
         matrix="[${matrix}]"
         echo "::set-output name=matrix::$matrix"
         echo "matrix: $matrix"
+        samples=[hello_world, shell_module, philosophers, micropython, tensorflow_lite_micro]
+        echo "::set-output name=samples::$samples"
+        echo "samples: $samples"
   build:
     runs-on: ubuntu-20.04
     needs: [generate-sha]

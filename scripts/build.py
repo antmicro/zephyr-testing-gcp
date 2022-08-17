@@ -95,7 +95,7 @@ def build_and_copy_bin(zephyr_platform, sample_path, args, sample_name, env):
     log_path = f"../../artifacts/{zephyr_sample_name}/{zephyr_sample_name}-zephyr.log"
 
     run_west_cmd(f"west spdx --init -d {build_path}", env, log_path)
-    west_output = run_west_cmd(f"west build --pristine -b {zephyr_platform} -d {build_path} {sample_path} {args}", env, log_path)
+    west_output = run_west_cmd(f"west build --pristine -b {zephyr_platform} -d {build_path} {sample_path} {args}".strip(), env, log_path)
     shutil.copyfile(f"{build_path}/CMakeFiles/CMakeOutput.log", f"../../artifacts/CMakeOutput-{zephyr_sample_name}.log")
     run_west_cmd(f"west spdx -d {build_path}", env, log_path)
 
@@ -146,7 +146,6 @@ def build_sample(zephyr_platform, sample_name, sample_path, sample_args, toolcha
     print(f"Building for {bold(zephyr_platform)}, sample: {bold(sample_name)} with args: {bold(sample_args)} using {bold(toolchain)} toolchain.")
     args = f'-- {sample_args}' if sample_args != '' else ''
     return_code, west_output = build_and_copy_bin(zephyr_platform, sample_path, args, sample_name, env)
-    #process = subprocess.run(["./scripts/build_and_copy_bin.sh", zephyr_platform, sample_path, args, sample_name], stdout=subprocess.PIPE, env=env)
     # try increasing flash size if the sample doesn't fit in it
     dts_filename = artifacts_dict['dts'].format(board_name=zephyr_platform, sample_name=sample_name)
     m = re.search(r"region `FLASH' overflowed by (\d+) bytes", west_output)
@@ -172,7 +171,6 @@ def build_sample(zephyr_platform, sample_name, sample_path, sample_args, toolcha
                     # build again, this time with bigger flash size
                     overlay_args = f'-DDTC_OVERLAY_FILE={overlay_path}'
                     args = f'-- {sample_args} {overlay_args}'
-                    #process = subprocess.run(["./scripts/build_and_copy_bin.sh", zephyr_platform, sample_path, args, sample_name], stdout=subprocess.PIPE, env=env)
                     build_and_copy_bin(zephyr_platform, sample_path, args, sample_name, env)
 
 def get_board_yaml_path(board_name, board_path):

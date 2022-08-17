@@ -20,9 +20,9 @@ jobs:
     - name: Generate matrix
       id: generate-sha
       run: |
-        matrix=$(git -C zephyr log -n 1 --format='"%H",' | tr '\n' ' ')
+        matrix=$(git -C zephyr log -n 1 --format='"%h",' | tr '\n' ' ')
         # Delete last character
-        matrix='"62f19cc6b3d4697630abed9c5bea94d3a4eed7ed",'
+        matrix='"62f19cc6b3",'
         # Add [ ]
         matrix="[${matrix}]"
         echo "::set-output name=matrix::$matrix"

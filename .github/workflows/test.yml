@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-20.04
     outputs:
       matrix: ${{ steps.generate-sha.outputs.matrix }}
-      samples: ${{ steps.generate-sha.outputs.samples }}
+      samples: ${{ steps.generate-samples.outputs.samples }}
     steps:
     - name: Install dependencies
       run: |
@@ -27,13 +27,19 @@ jobs:
         matrix="[${matrix}]"
         echo "::set-output name=matrix::$matrix"
         echo "matrix: $matrix"
+    - name: Generate samples
+      id: generate-samples
+      run: |
+        samples=[ "hello_world", "shell_module", "philosophers", "micropython", "tensorflow_lite_micro" ]
+        echo "::set-output name=samples::$samples"
+        echo "samples: $samples"
   build:
     runs-on: ubuntu-20.04
     needs: [generate-sha]
     strategy:
       matrix:
         SHA: ${{ fromJson(needs.generate-sha.outputs.matrix) }}
-        sample: [hello_world, shell_module, philosophers, micropython, tensorflow_lite_micro]
+        sample: ${{ fromJson(needs.generate-sha.outputs.samples) }}
       fail-fast:
         false
     env:

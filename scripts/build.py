@@ -10,7 +10,6 @@ import shutil
 import subprocess
 import sys
 import tempfile
-import urllib.request
 import yaml
 
 from colorama import init
@@ -48,8 +47,6 @@ artifacts_dict = {
     'zephyr-log':   'artifacts/{board_name}-{sample_name}/{board_name}-{sample_name}-zephyr.log',
 }
 
-dashboard_url = 'https://zephyr-dashboard.renode.io'
-
 def get_board_path(board):
     return str(board.dir).replace(os.getcwd()+'/','').replace(zephyr_path+'/','')
 
@@ -58,20 +55,6 @@ templateLoader = jinja2.FileSystemLoader(searchpath="./")
 templateEnv = jinja2.Environment(loader=templateLoader)
 
 dts_flash_template = templateEnv.get_template('templates/flash_override.dts')
-resc_template = templateEnv.get_template('templates/common.resc')
-robot_template_hello_world = templateEnv.get_template('templates/hello_world.robot')
-robot_template_shell_module = templateEnv.get_template('templates/shell_module.robot')
-robot_template_philosophers = templateEnv.get_template('templates/philosophers.robot')
-robot_template_micropython = templateEnv.get_template('templates/micropython.robot')
-robot_template_tflm = templateEnv.get_template('templates/tensorflow_lite_micro.robot')
-
-robot_templates = {
-    'hello_world':           robot_template_hello_world,
-    'shell_module':          robot_template_shell_module,
-    'philosophers':          robot_template_philosophers,
-    'micropython':           robot_template_micropython,
-    'tensorflow_lite_micro': robot_template_tflm,
-}
 
 def find_flash_size(dts_filename):
     with open(dts_filename) as f:
@@ -113,8 +96,6 @@ def build_and_copy_bin(zephyr_platform, sample_path, args, sample_name, env):
                 return_code = 0
             if file_name == file_list[1]:
                 shutil.copyfile(file_path, f"artifacts/{zephyr_sample_name}/{zephyr_sample_name}.dts")
-                if sample_name == "hello_world":
-                    shutil.copyfile(file_path, f"artifacts/{zephyr_platform}.dts")
             if file_name == file_list[2]:
                 shutil.copyfile(file_path, f"artifacts/{zephyr_sample_name}/{zephyr_sample_name}-config")
     if os.path.isdir(build_path):

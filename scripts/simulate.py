@@ -51,8 +51,6 @@ artifacts_dict = {
     'zephyr-log':   'artifacts/{board_name}-{sample_name}/{board_name}-{sample_name}-zephyr.log',
 }
 
-dashboard_url = 'https://zephyr-dashboard.renode.io'
-
 def get_cpu_name(arch, dts_filename, verbose=False):
     cpu_dep_chain = dts2repl.get_cpu_dep_chain(arch, dts_filename, zephyr_path, [])
     verbose = os.getenv("VERBOSE", False) or verbose

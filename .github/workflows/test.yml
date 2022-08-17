@@ -6,6 +6,7 @@ jobs:
     runs-on: ubuntu-20.04
     outputs:
       matrix: ${{ steps.generate-sha.outputs.matrix }}
+      samples: [hello_world, shell_module, philosophers, micropython, tensorflow_lite_micro]
     steps:
     - name: Install dependencies
       run: |
@@ -33,20 +34,16 @@ jobs:
     strategy:
       matrix:
         SHA: ${{ fromJson(needs.generate-sha.outputs.matrix) }}
-        sample: [hello_world, shell_module, philosophers, micropython, tensorflow_lite_micro]
+        sample: ${{ fromJson(needs.generate-sha.outputs.samples) }}
       fail-fast:
         false
     env:
       ZEPHYR_SDK_VERSION: 0.14.2
       ZEPHYR_COMMIT: ${{ matrix.SHA }}
-      FORCE_BUILD: true
       SAMPLE_NAME: ${{ matrix.sample }}
       MICROPYTHON_VERSION: 97a7cc243b028833bdcb8ce0bc19b2bce7545851
     steps:
     - uses: actions/checkout@v2
-    - run: |
-        echo "ZEPHYR_BASE=`pwd`/zephyrproject/zephyr" >> $GITHUB_ENV
-        echo "ZEPHYR_SDK_INSTALL_DIR=`pwd`/zephyr-sdk" >> $GITHUB_ENV
     - name: Prepare environment
       run: ./scripts/prepare_environment.sh
     - name: Prepare zephyr
@@ -67,14 +64,10 @@ jobs:
       fail-fast: false
       matrix:
         SHA: ${{ fromJson(needs.generate-sha.outputs.matrix) }}
-        sample: [hello_world, shell_module, philosophers, micropython, tensorflow_lite_micro]
+        sample: ${{ fromJson(needs.generate-sha.outputs.samples) }}
     env:
       RENODE_VERSION: 1.13.1+20220731git8eca7310
-      MICROPYTHON_VERSION: 97a7cc243b028833bdcb8ce0bc19b2bce7545851
-      ZEPHYR_SDK_VERSION: 0.14.2
-      ZEPHYR_COMMIT: ${{ matrix.SHA }}
       SAMPLE_NAME: ${{ matrix.sample }}
-      FORCE_SIM: true
     steps:
     - uses: actions/checkout@v2
     - name: Download binaries
@@ -82,12 +75,12 @@ jobs:
       with:
         name: ${{ matrix.SHA }}
         path: artifacts/
-    - name: Prepare micropython
-      run: ./scripts/prepare_micropython.sh
     - name: Prepare environment
       run: ./scripts/prepare_environment.sh
-    - run: ./scripts/download_renode.sh
-    - run: ./scripts/simulate.py
+    - name: Prepare Renode
+      run: ./scripts/download_renode.sh
+    - name: Simulate
+      run: ./scripts/simulate.py
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:

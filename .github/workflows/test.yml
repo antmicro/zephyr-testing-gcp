@@ -27,7 +27,7 @@ jobs:
         matrix="[${matrix}]"
         echo "::set-output name=matrix::$matrix"
         echo "matrix: $matrix"
-        samples=[hello_world, shell_module, philosophers, micropython, tensorflow_lite_micro]
+        samples=["hello_world", "shell_module", "philosophers", "micropython", "tensorflow_lite_micro"]
         echo "::set-output name=samples::$samples"
         echo "samples: $samples"
   build:

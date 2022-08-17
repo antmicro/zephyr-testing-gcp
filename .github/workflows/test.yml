@@ -27,16 +27,13 @@ jobs:
         matrix="[${matrix}]"
         echo "::set-output name=matrix::$matrix"
         echo "matrix: $matrix"
-        samples=["hello_world", "shell_module", "philosophers", "micropython", "tensorflow_lite_micro"]
-        echo "::set-output name=samples::$samples"
-        echo "samples: $samples"
   build:
     runs-on: ubuntu-20.04
     needs: [generate-sha]
     strategy:
       matrix:
         SHA: ${{ fromJson(needs.generate-sha.outputs.matrix) }}
-        sample: ${{ fromJson(needs.generate-sha.outputs.samples) }}
+        sample: [hello_world, shell_module, philosophers, micropython, tensorflow_lite_micro]
       fail-fast:
         false
     env:
@@ -66,7 +63,7 @@ jobs:
       fail-fast: false
       matrix:
         SHA: ${{ fromJson(needs.generate-sha.outputs.matrix) }}
-        sample: ${{ fromJson(needs.generate-sha.outputs.samples) }}
+        sample: ${{ fromJson(needs.build.strategy.matrix.sample) }}
     env:
       RENODE_VERSION: 1.13.1+20220731git8eca7310
       SAMPLE_NAME: ${{ matrix.sample }}

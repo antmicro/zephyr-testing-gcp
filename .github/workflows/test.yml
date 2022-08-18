@@ -8,6 +8,7 @@ jobs:
       matrix: ${{ steps.generate-sha.outputs.matrix }}
       samples: ${{ steps.generate-samples.outputs.samples }}
     steps:
+    - uses: actions/checkout@v2
     - name: Install dependencies
       run: ./scripts/prepare_environment.sh
     - name: Get zephyr

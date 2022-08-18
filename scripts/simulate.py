@@ -9,8 +9,6 @@ import signal
 import subprocess
 import sys
 import time
-import time
-import urllib.request
 import yaml
 import zipfile
 from argparse import Namespace
@@ -70,7 +68,6 @@ def get_cpu_name(arch, dts_filename, verbose=False):
 templateLoader = jinja2.FileSystemLoader(searchpath="./")
 templateEnv = jinja2.Environment(loader=templateLoader)
 
-dts_flash_template = templateEnv.get_template('templates/flash_override.dts')
 resc_template = templateEnv.get_template('templates/common.resc')
 robot_template_hello_world = templateEnv.get_template('templates/hello_world.robot')
 robot_template_shell_module = templateEnv.get_template('templates/shell_module.robot')
@@ -192,7 +189,6 @@ def conv_zephyr_mem_usage(val):
 def find_flash_size(dts_filename):
     with open(dts_filename) as f:
         dts = f.read()
-    
     flash_name = re.search(r"zephyr,flash = &(\w+);", dts).group(1)
     flash_size = re.search(r"{}:(.*\n)*?.*reg = <(.*)>;".format(flash_name), dts).group(2)
     flash_size = flash_size.split()

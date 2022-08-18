@@ -30,11 +30,13 @@ jobs:
         samples="['hello_world', 'shell_module', 'philosophers', 'micropython', 'tensorflow_lite_micro']"
         echo "::set-output name=samples::$samples"
         echo "samples: $samples"
+    - name: Tar zephyr
+      run: tar cvf zephyrproject.tar zephyrproject
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
         name: zephyr
-        path: zephyrproject
+        path: zephyrproject.tar
   build:
     runs-on: ubuntu-20.04
     needs: [generate-sha]
@@ -55,7 +57,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: zephyr
-        path: zephyrproject
+        path: zephyr-artifact
     - name: Prepare environment
       run: ./scripts/prepare_environment.sh
     - name: Prepare zephyr

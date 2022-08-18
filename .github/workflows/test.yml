@@ -30,7 +30,7 @@ jobs:
     - name: Generate samples
       id: generate-samples
       run: |
-        samples='["hello_world", "shell_module", "philosophers", "micropython", "tensorflow_lite_micro"]'
+        samples="['hello_world', 'shell_module', 'philosophers', 'micropython', 'tensorflow_lite_micro']"
         echo "::set-output name=samples::$samples"
         echo "samples: $samples"
   build:
@@ -69,7 +69,7 @@ jobs:
       fail-fast: false
       matrix:
         SHA: ${{ fromJson(needs.generate-sha.outputs.matrix) }}
-        sample: ${{ fromJson(needs.build.strategy.matrix.sample) }}
+        sample: ${{ fromJson(needs.generate-sha.outputs.samples) }}
     env:
       RENODE_VERSION: 1.13.1+20220731git8eca7310
       SAMPLE_NAME: ${{ matrix.sample }}

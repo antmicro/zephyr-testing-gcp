@@ -71,6 +71,10 @@ jobs:
       with:
         name: ${{ matrix.SHA }}
         path: artifacts/
+    - name: Delete zephyr artifact
+      uses: geekyeggo/delete-artifact@v1
+      with:
+        name: zephyr
   simulate:
     runs-on: ubuntu-20.04
     needs: [generate-sha, build]

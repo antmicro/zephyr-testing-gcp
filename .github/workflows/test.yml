@@ -106,6 +106,10 @@ jobs:
     env:
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
     steps:
+    - name: Delete zephyr artifact
+      uses: geekyeggo/delete-artifact@v1
+      with:
+        name: zephyr
     - name: Download binaries
       uses: actions/download-artifact@v2
       with:
@@ -129,10 +133,6 @@ jobs:
       uses: geekyeggo/delete-artifact@v1
       with:
         name: ${{ steps.get-artifacts-to-delete.outputs.artifacts }}
-    - name: Delete zephyr artifact
-      uses: geekyeggo/delete-artifact@v1
-      with:
-        name: zephyr
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:

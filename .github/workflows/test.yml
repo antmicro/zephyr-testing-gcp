@@ -10,7 +10,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Install dependencies
-      run: ./scripts/prepare_environment.sh
+      run: |
+        ./scripts/prepare_environment.sh
+        pip3 install west
     - name: Get zephyr
       run: west init zephyrproject
     - name: Generate matrix

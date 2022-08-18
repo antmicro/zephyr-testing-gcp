@@ -9,8 +9,9 @@ curl -kL https://dl.antmicro.com/projects/renode/zephyr-sdk-${ZEPHYR_SDK_VERSION
 cd -
 export ZEPHYR_SDK_INSTALL_DIR=$(pwd)/zephyr-sdk
 
-tar xvf tar-artifact/zephyrproject.tar
-rm -rf tar-artifact
+ls -la zephyr-artifact
+tar xvf zephyr-artifact/zephyrproject.tar
+rm -rf zephyr-artifact
 cd zephyrproject/zephyr
 git checkout ${ZEPHYR_COMMIT}
 git apply ../../patches/zephyr/*.patch

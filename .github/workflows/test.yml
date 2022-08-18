@@ -9,19 +9,13 @@ jobs:
       samples: ${{ steps.generate-samples.outputs.samples }}
     steps:
     - name: Install dependencies
-      run: |
-        sudo apt update -qq
-        sudo apt install -y git
-    - name: Checkout tools repo
-      uses: actions/checkout@v2
-      with:
-        repository: zephyrproject-rtos/zephyr
-        path: zephyr
-        fetch-depth: 0
+      run: ./scripts/prepare_environment.sh
+    - name: Get zephyr
+      run: west init zephyrproject
     - name: Generate matrix
       id: generate-sha
       run: |
-        matrix=$(git -C zephyr log -n 1 --format='"%h",' | tr '\n' ' ')
+        matrix=$(git -C zephyrproject/zephyr log -n 1 --format='"%h",' | tr '\n' ' ')
         # Test case - only one valid zephyr commit for now
         matrix='"62f19cc6b3",'
         matrix="[${matrix}]"
@@ -30,9 +24,16 @@ jobs:
     - name: Generate samples
       id: generate-samples
       run: |
-        samples="['hello_world', 'shell_module', 'philosophers', 'micropython', 'tensorflow_lite_micro']"
+        samples="[hello_world, shell_module, philosophers, micropython, tensorflow_lite_micro]"
         echo "::set-output name=samples::$samples"
         echo "samples: $samples"
+    - name: Tar zephyr
+      run: tar cvf zephyrproject.tar zephyrproject
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: zephyr
+        path: zephyrproject.tar
   build:
     runs-on: ubuntu-20.04
     needs: [generate-sha]
@@ -49,6 +50,11 @@ jobs:
       MICROPYTHON_VERSION: 97a7cc243b028833bdcb8ce0bc19b2bce7545851
     steps:
     - uses: actions/checkout@v2
+    - name: Download zephyr
+      uses: actions/download-artifact@v2
+      with:
+        name: zephyr
+        path: zephyrproject.tar
     - name: Prepare environment
       run: ./scripts/prepare_environment.sh
     - name: Prepare zephyr

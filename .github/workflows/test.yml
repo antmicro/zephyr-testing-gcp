@@ -30,7 +30,7 @@ jobs:
     - name: Generate samples
       id: generate-samples
       run: |
-        samples = '["hello_world", "shell_module", "philosophers", "micropython", "tensorflow_lite_micro"]'
+        samples='["hello_world", "shell_module", "philosophers", "micropython", "tensorflow_lite_micro"]'
         echo "::set-output name=samples::$samples"
         echo "samples: $samples"
   build:

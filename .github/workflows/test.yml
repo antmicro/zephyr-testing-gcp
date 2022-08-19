@@ -122,7 +122,7 @@ jobs:
     - name: Find artifacts that are no longer needed
       id: get-artifacts-to-delete
       run: |
-        artifacts=${{ join(fromJson(needs.generate-sha.outputs.samples), ' ') }}
+        artifacts="${{ join(fromJson(needs.generate-sha.outputs.matrix), ' ') }}"
         echo $artifacts
         artifacts="${artifacts//'%'/'%25'}"
         artifacts="${artifacts//$'\n'/'%0A'}"

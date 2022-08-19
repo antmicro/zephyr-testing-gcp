@@ -102,7 +102,7 @@ jobs:
         path: artifacts/
   results:
     runs-on: ubuntu-20.04
-    needs: [simulate]
+    needs: [generate-sha, simulate]
     env:
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
     steps:

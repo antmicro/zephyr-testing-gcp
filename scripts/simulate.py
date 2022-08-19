@@ -242,6 +242,8 @@ def run_renode_simulation(board, sample_name):
     result['cpu'] = get_cpu_name(result['arch'], dts_path)
     cpu_dep_chain = dts2repl.get_cpu_dep_chain(result['arch'], dts_path, zephyr_path, [])
 
+    extra_cmd = None
+
     if uart is None:
         print("No uart. Cannot run test.")
     else:

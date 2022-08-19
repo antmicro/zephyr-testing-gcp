@@ -123,6 +123,7 @@ jobs:
       id: get-artifacts-to-delete
       run: |
         artifacts=$(find ./results -type d -name '*.txt' -exec basename {} \;)
+        echo ${{ fromJson(needs.generate-sha.outputs.samples) }}
         echo $artifacts
         artifacts="${artifacts//'%'/'%25'}"
         artifacts="${artifacts//$'\n'/'%0A'}"
@@ -132,7 +133,7 @@ jobs:
     - name: Delete Old Artifacts
       uses: geekyeggo/delete-artifact@v1
       with:
-        name: ${{ steps.get-artifacts-to-delete.outputs.artifacts }}
+        name: ${{ steps.get-artifacts-to-delete.outputs.matrix }}
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:

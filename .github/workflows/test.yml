@@ -20,7 +20,7 @@ jobs:
       run: |
         matrix=$(git -C zephyrproject/zephyr log -n 1 --format='"%h",' | tr '\n' ' ')
         # Test case - only one valid zephyr commit for now
-        matrix='"62f19cc6b3",'
+        matrix='"62f19cc6b3", "f72eb8d40d",'
         matrix="[${matrix}]"
         echo "::set-output name=matrix::$matrix"
         echo "matrix: $matrix"

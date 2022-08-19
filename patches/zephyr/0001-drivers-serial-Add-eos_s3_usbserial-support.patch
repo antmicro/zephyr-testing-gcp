@@ -1,0 +1,273 @@
+From 38c4276c20d40ce72e2959f99c6bb35655d81532 Mon Sep 17 00:00:00 2001
+From: Michal Sieron <msieron@antmicro.com>
+Date: Mon, 6 Jun 2022 17:02:36 +0200
+Subject: [PATCH 1/4] drivers: serial: Add eos_s3_usbserial support
+
+USB interface that may be used to send messages from a USB host to
+the M4 processor in the S3B, and vice-versa.
+
+Signed-off-by: Michal Sieron <msieron@antmicro.com>
+---
+ drivers/serial/CMakeLists.txt                 |  1 +
+ drivers/serial/Kconfig                        |  2 +
+ drivers/serial/Kconfig.eos_s3_usbserial       | 12 +++
+ drivers/serial/uart_eos_s3_usbserial.c        | 92 +++++++++++++++++++
+ drivers/serial/uart_eos_s3_usbserial.h        | 62 +++++++++++++
+ dts/arm/quicklogic/quicklogic_eos_s3.dtsi     |  6 ++
+ .../serial/quicklogic,eos-s3-usbserial.yaml   | 15 +++
+ 7 files changed, 190 insertions(+)
+ create mode 100644 drivers/serial/Kconfig.eos_s3_usbserial
+ create mode 100644 drivers/serial/uart_eos_s3_usbserial.c
+ create mode 100644 drivers/serial/uart_eos_s3_usbserial.h
+ create mode 100644 dts/bindings/serial/quicklogic,eos-s3-usbserial.yaml
+
+diff --git a/drivers/serial/CMakeLists.txt b/drivers/serial/CMakeLists.txt
+index 9f1dba615b..b2ed20cab3 100644
+--- a/drivers/serial/CMakeLists.txt
++++ b/drivers/serial/CMakeLists.txt
+@@ -32,6 +32,7 @@ zephyr_library_sources_ifdef(CONFIG_UART_STM32 uart_stm32.c)
+ zephyr_library_sources_ifdef(CONFIG_UART_SAM0 uart_sam0.c)
+ zephyr_library_sources_ifdef(CONFIG_UART_PSOC6 uart_psoc6.c)
+ zephyr_library_sources_ifdef(CONFIG_UART_PL011 uart_pl011.c)
++zephyr_library_sources_ifdef(CONFIG_UART_EOS_S3_USBSERIAL uart_eos_s3_usbserial.c)
+ zephyr_library_sources_ifdef(CONFIG_UART_RV32M1_LPUART uart_rv32m1_lpuart.c)
+ zephyr_library_sources_ifdef(CONFIG_UART_RPI_PICO uart_rpi_pico.c)
+ zephyr_library_sources_ifdef(CONFIG_UART_LITEUART uart_liteuart.c)
+diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
+index ba117b1636..3676bb150c 100644
+--- a/drivers/serial/Kconfig
++++ b/drivers/serial/Kconfig
+@@ -170,6 +170,8 @@ source "drivers/serial/Kconfig.psoc6"
+ 
+ source "drivers/serial/Kconfig.pl011"
+ 
++source "drivers/serial/Kconfig.eos_s3_usbserial"
++
+ source "drivers/serial/Kconfig.rv32m1_lpuart"
+ 
+ source "drivers/serial/Kconfig.rpi_pico"
+diff --git a/drivers/serial/Kconfig.eos_s3_usbserial b/drivers/serial/Kconfig.eos_s3_usbserial
+new file mode 100644
+index 0000000000..a780f0fc79
+--- /dev/null
++++ b/drivers/serial/Kconfig.eos_s3_usbserial
+@@ -0,0 +1,12 @@
++# QuickFeather USBserialport_S3B configuration option
++
++# Copyright (c) 2022 Antmicro <www.antmicro.com>
++# SPDX-License-Identifier: Apache-2.0
++
++config UART_EOS_S3_USBSERIAL
++	bool "USBserialport_S3B serial driver"
++	default y
++	depends on DT_HAS_QUICKLOGIC_EOS_S3_USBSERIAL_ENABLED
++	select SERIAL_HAS_DRIVER
++	help
++	  This option enables USBserialport_S3B serial driver.
+diff --git a/drivers/serial/uart_eos_s3_usbserial.c b/drivers/serial/uart_eos_s3_usbserial.c
+new file mode 100644
+index 0000000000..d1117982c3
+--- /dev/null
++++ b/drivers/serial/uart_eos_s3_usbserial.c
+@@ -0,0 +1,92 @@
++/*
++ * Copyright (c) 2022 Antmicro <www.antmicro.com>
++ *
++ * SPDX-License-Identifier: Apache-2.0
++ */
++
++#define DT_DRV_COMPAT quicklogic_eos_s3_usbserial
++
++#include <zephyr/zephyr.h>
++#include <zephyr/drivers/uart.h>
++#include <eoss3_dev.h>
++
++#include "uart_eos_s3_usbserial.h"
++
++/*
++ * code is a modified version of usbserial driver from https://github.com/QuickLogic-Corp/qorc-sdk
++ * freertos_gateware/src/eoss3_hal_fpga_usbserial.c
++ * freertos_gateware/inc/eoss3_hal_fpga_usbserial.h
++ */
++
++volatile struct fpga_usbserial_regs *usbserial_regs
++	= (struct fpga_usbserial_regs *)(FPGA_PERIPH_BASE);
++
++static uint32_t usbserial_tx_fifo_status(void)
++{
++	return usbserial_regs->m2u_fifo_flags;
++}
++
++static bool usbserial_tx_fifo_full(void)
++{
++	return usbserial_tx_fifo_status() == USBSERIAL_TX_FIFO_FULL;
++}
++
++static uint32_t usbserial_rx_fifo_status(void)
++{
++	return usbserial_regs->u2m_fifo_flags;
++}
++
++static bool usbserial_rx_fifo_empty(void)
++{
++	return usbserial_rx_fifo_status() == USBSERIAL_RX_FIFO_EMPTY;
++}
++
++/**
++ * @brief Output a character in polled mode.
++ *
++ * Writes data to tx register. Waits for space if transmitter is full.
++ *
++ * @param dev UART device struct
++ * @param c Character to send
++ */
++static void uart_usbserial_poll_out(const struct device *dev, unsigned char c)
++{
++	 /* Wait for room in Tx FIFO */
++	while (usbserial_tx_fifo_full())
++		;
++	usbserial_regs->wdata = c;
++}
++
++/**
++ * @brief Poll the device for input.
++ *
++ * @param dev UART device struct
++ * @param c Pointer to character
++ *
++ * @return 0 if a character arrived, -1 if the input buffer if empty.
++ */
++static int uart_usbserial_poll_in(const struct device *dev, unsigned char *c)
++{
++	if (usbserial_rx_fifo_empty()) {
++		return -1;
++	}
++
++	*c = usbserial_regs->rdata;
++	return 0;
++}
++
++static const struct uart_driver_api uart_usbserial_driver_api = {
++	.poll_in		= uart_usbserial_poll_in,
++	.poll_out		= uart_usbserial_poll_out,
++};
++
++static int uart_usbserial_init(const struct device *dev)
++{
++	return 0;
++}
++
++DEVICE_DT_INST_DEFINE(0,
++		uart_usbserial_init,
++		NULL, NULL, NULL,
++		PRE_KERNEL_1, CONFIG_SERIAL_INIT_PRIORITY,
++		(void *)&uart_usbserial_driver_api);
+diff --git a/drivers/serial/uart_eos_s3_usbserial.h b/drivers/serial/uart_eos_s3_usbserial.h
+new file mode 100644
+index 0000000000..3578ba036f
+--- /dev/null
++++ b/drivers/serial/uart_eos_s3_usbserial.h
+@@ -0,0 +1,62 @@
++/*
++ * Copyright (c) 2022 Antmicro <www.antmicro.com>
++ *
++ * SPDX-License-Identifier: Apache-2.0
++ */
++
++#ifndef ZEPHYR_DRIVERS_SERIAL_UART_USBSERIAL_H_
++#define ZEPHYR_DRIVERS_SERIAL_UART_USBSERIAL_H_
++
++#include <stdint.h>
++
++#define USBSERIAL_TX_FIFOSIZE (512)
++#define USBSERIAL_RX_FIFOSIZE (512)
++
++/* USB-Serial FIFO status values */
++#define USBSERIAL_RX_FIFO_EMPTY         (0x00)    /* 0000 Empty */
++#define USBSERIAL_RX_FIFO_E1            (0x01)    /* 0001 1 entry in FIFO */
++#define USBSERIAL_RX_FIFO_GE_2          (0x02)    /* 0010 At least 2 entries */
++#define USBSERIAL_RX_FIFO_GE_4          (0x03)    /* 0011 At least 4 entries */
++#define USBSERIAL_RX_FIFO_GE_8          (0x04)    /* 0100 At least 8 entries */
++#define USBSERIAL_RX_FIFO_GE_16         (0x0A)    /* 1010 At least 16 entries */
++#define USBSERIAL_RX_FIFO_GE_32         (0x0B)    /* 1011 At least 32 entries */
++#define USBSERIAL_RX_FIFO_LT_QUARTER    (0x0C)    /* 1100 Less than 1/4 to 64 entries */
++#define USBSERIAL_RX_FIFO_GT_QUARTE     (0x0D)    /* 1101 1/4 or more full */
++#define USBSERIAL_RX_FIFO_GT_HALF       (0x0E)    /* 1110 1/2 or more full */
++#define USBSERIAL_RX_FIFO_FULL          (0x0F)    /* 1111 Full */
++
++#define USBSERIAL_TX_FIFO_FULL          (0x00)    /* 0000 Full */
++#define USBSERIAL_TX_FIFO_EMPTY         (0x01)    /* 0001 Empty */
++#define USBSERIAL_TX_FIFO_GT_HALF       (0x02)    /* 0010 Room for more than 1/2 */
++#define USBSERIAL_TX_FIFO_GT_QUARTER    (0x03)    /* 0011 Room for more than 1/4 */
++#define USBSERIAL_TX_FIFO_LT_QUARTER    (0x04)    /* 0100 Room for less than 1/4 */
++#define USBSERIAL_TX_FIFO_32_TO_63      (0x0A)    /* 1010 Room for 32 to 63 */
++#define USBSERIAL_TX_FIFO_16_TO_31      (0x0B)    /* 1011 Room for 16 to 31 */
++#define USBSERIAL_TX_FIFO_8_TO_15       (0x0C)    /* 1100 Room for 8 to 15 */
++#define USBSERIAL_TX_FIFO_4_TO_7        (0x0D)    /* 1101 Room for 4 to 7 */
++#define USBSERIAL_TX_FIFO_GE_2          (0x0E)    /* 1110 Room for atleast 2 */
++#define USBSERIAL_TX_FIFO_GE_1          (0x0F)    /* 1111 Room for atleast 1 */
++
++struct fpga_usbserial_regs {
++	uint32_t device_id;
++	uint32_t rev_num;
++	uint16_t scratch_reg;
++	uint16_t reserved1;
++	uint32_t clock_select;
++	uint32_t usbpid;
++	uint32_t reserved2[11];
++	unsigned u2m_fifo_flags : 4;
++	unsigned reserved3 : 28;
++	unsigned rdata : 8;
++	unsigned reserved4 : 24;
++	uint32_t reserved5[14];
++	unsigned m2u_fifo_flags : 4;
++	unsigned reserved6 : 28;
++	unsigned wdata : 8;
++	unsigned reserved7 : 24;
++	uint32_t reserved8[14];
++	unsigned u2m_fifo_int_en : 1;
++	unsigned reserved9 : 31;
++};
++
++#endif /*  ZEPHYR_DRIVERS_SERIAL_UART_USBSERIAL_H_ */
+diff --git a/dts/arm/quicklogic/quicklogic_eos_s3.dtsi b/dts/arm/quicklogic/quicklogic_eos_s3.dtsi
+index ff2350a38e..d5044d9ca0 100644
+--- a/dts/arm/quicklogic/quicklogic_eos_s3.dtsi
++++ b/dts/arm/quicklogic/quicklogic_eos_s3.dtsi
+@@ -48,6 +48,12 @@
+ 			interrupt-names = "rx";
+ 		};
+ 
++		uart1: uart@40020000 {
++			compatible = "quicklogic,eos-s3-usbserial";
++			reg = <0x40020000 DT_SIZE_K(4)>;
++			status = "disabled";
++		};
++
+ 		gpio: gpio {
+ 			compatible = "quicklogic,eos-s3-gpio";
+ 			status = "disabled";
+diff --git a/dts/bindings/serial/quicklogic,eos-s3-usbserial.yaml b/dts/bindings/serial/quicklogic,eos-s3-usbserial.yaml
+new file mode 100644
+index 0000000000..81d9288870
+--- /dev/null
++++ b/dts/bindings/serial/quicklogic,eos-s3-usbserial.yaml
+@@ -0,0 +1,15 @@
++# Copyright (c) 2022 Antmicro <www.antmicro.com>
++# SPDX-License-Identifier: Apache-2.0
++
++description: USBserialport_S3B serial interface
++
++compatible: "quicklogic,eos-s3-usbserial"
++
++include: uart-controller.yaml
++
++properties:
++    reg:
++      required: true
++
++    interrupts:
++      required: false
+-- 
+2.35.1
+

@@ -8,6 +8,9 @@ jobs:
     outputs:
       matrix: ${{ steps.generate-sha.outputs.matrix }}
       samples: ${{ steps.generate-samples.outputs.samples }}
+    env:
+      NUMBER_OF_COMMITS: 2
+      FIRST_SHA: 6cfb18686e
     steps:
     - uses: actions/checkout@v2
     - name: Install dependencies
@@ -21,9 +24,7 @@ jobs:
     - name: Generate matrix
       id: generate-sha
       run: |
-        matrix=$(git -C zephyrproject/zephyr log -n 1 --format='"%h",' | tr '\n' ' ')
-        # Test case - only one valid zephyr commit for now
-        matrix='"62f19cc6b3", "f72eb8d40d",'
+        matrix=$(git -C zephyr log -n $NUMBER_OF_COMMITS --format='"%h",' $FIRST_SHA | tr '\n' ' ')
         matrix="[${matrix}]"
         echo "::set-output name=matrix::$matrix"
         echo "matrix: $matrix"

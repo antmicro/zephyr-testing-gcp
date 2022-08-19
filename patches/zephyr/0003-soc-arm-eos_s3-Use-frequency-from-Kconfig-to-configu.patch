@@ -1,0 +1,30 @@
+From d4512b0425ae182a0763a0ab0a2995a832b6e6ab Mon Sep 17 00:00:00 2001
+From: Michal Sieron <msieron@antmicro.com>
+Date: Mon, 11 Jul 2022 14:49:40 +0200
+Subject: [PATCH 3/4] soc: arm: eos_s3: Use frequency from Kconfig to configure
+ main clock
+
+Allows applications to use other frequencies than 60 MHz.
+For example 48 MHz for USB communication with usbserial driver.
+
+Signed-off-by: Michal Sieron <msieron@antmicro.com>
+---
+ soc/arm/quicklogic_eos_s3/soc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/soc/arm/quicklogic_eos_s3/soc.c b/soc/arm/quicklogic_eos_s3/soc.c
+index 821324ec93..ddf99ac54f 100644
+--- a/soc/arm/quicklogic_eos_s3/soc.c
++++ b/soc/arm/quicklogic_eos_s3/soc.c
+@@ -39,7 +39,7 @@ static void eos_s3_cru_init(void)
+ 	/* Set desired frequency */
+ 	AIP->OSC_CTRL_0 |= AIP_OSC_CTRL_EN;
+ 	AIP->OSC_CTRL_0 &= ~AIP_OSC_CTRL_FRE_SEL;
+-	OSC_SET_FREQ_INC(HSOSC_60MHZ);
++	OSC_SET_FREQ_INC(CONFIG_SYS_CLOCK_HW_CYCLES_PER_SEC);
+ 
+ 	while (!OSC_CLK_LOCKED()) {
+ 		;
+-- 
+2.35.1
+

@@ -33,7 +33,7 @@ new file mode 100644
 index 0000000000..32fc43d98f
 --- /dev/null
 +++ b/boards/riscv/fomu/fomu.dts
-@@ -0,0 +1,103 @@
+@@ -0,0 +1,81 @@
 +/*
 + * Copyright (c) 2022 Antmicro <www.antmicro.com>
 + *
@@ -82,28 +82,6 @@ index 0000000000..32fc43d98f
 +			size = <0x00100000>;
 +			status = "okay";
 +		};
-+	};
-+
-+	led: led@e0006800 {
-+		compatible = "fomu,sbled";
-+		reg = <0xe0006800 0x4
-+			0xe0006804 0x4
-+			0xe0006808 0x4
-+			0xe000680c 0x4>;
-+		reg-names = "dat",
-+			"addr",
-+			"ctrl",
-+			"raw";
-+	};
-+
-+	fomu_uart: serial@e0001800 {
-+		compatible = "fomu,uart";
-+		interrupt-parent = <&intc0>;
-+		interrupts = <3 0>;
-+		reg = <0xe0004800 0x18>;
-+		reg-names = "control";
-+		label = "uart0";
-+		status = "okay";
 +	};
 +};
 +
@@ -178,19 +156,6 @@ index be836a1ad9..297aed609e 100644
  	help
  	  IRQ implementation for LiteX VexRiscv
  
-diff --git a/drivers/serial/Kconfig.litex b/drivers/serial/Kconfig.litex
-index 0581d0ea38..611e887cdf 100644
---- a/drivers/serial/Kconfig.litex
-+++ b/drivers/serial/Kconfig.litex
-@@ -5,7 +5,7 @@
- 
- config UART_LITEUART
- 	bool "LiteUART serial driver"
--	depends on SOC_RISCV32_LITEX_VEXRISCV
-+	depends on SOC_RISCV32_LITEX_VEXRISCV || SOC_RISCV32_FOMU
- 	select SERIAL_HAS_DRIVER
- 	help
- 	  This option enables LiteUART serial driver.
 diff --git a/drivers/timer/Kconfig.litex b/drivers/timer/Kconfig.litex
 index 80e2574928..b03d3e1ea6 100644
 --- a/drivers/timer/Kconfig.litex
@@ -279,7 +244,7 @@ index 0000000000..d0195a49a9
 + * SPDX-License-Identifier: Apache-2.0
 + */
 +
-+#include <arch/riscv/common/linker.ld>
++#include <zephyr/arch/riscv/common/linker.ld>
 diff --git a/soc/riscv/fomu/soc.h b/soc/riscv/fomu/soc.h
 new file mode 100644
 index 0000000000..5285b32635
@@ -311,7 +276,7 @@ index 0000000000..5bef05d2d4
 + * SPDX-License-Identifier: Apache-2.0
 + */
 +
-+#include <toolchain.h>
++#include <zephyr/toolchain.h>
 +
 +/* exports */
 +GTEXT(__start)

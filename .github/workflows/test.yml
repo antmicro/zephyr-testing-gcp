@@ -3,7 +3,8 @@ on: [push]
 
 jobs:
   generate-sha:
-    runs-on: ubuntu-20.04
+    container: ubuntu:bionic
+    runs-on: [self-hosted, Linux, X64]
     outputs:
       matrix: ${{ steps.generate-sha.outputs.matrix }}
       samples: ${{ steps.generate-samples.outputs.samples }}
@@ -13,6 +14,8 @@ jobs:
       run: |
         ./scripts/prepare_environment.sh
         pip3 install west
+        echo "nproc"
+        nproc
     - name: Get zephyr
       run: west init zephyrproject
     - name: Generate matrix
@@ -38,7 +41,8 @@ jobs:
         name: zephyr
         path: zephyrproject.tar
   build:
-    runs-on: ubuntu-20.04
+    container: ubuntu:bionic
+    runs-on: [self-hosted, Linux, X64]
     needs: [generate-sha]
     strategy:
       matrix:
@@ -72,7 +76,8 @@ jobs:
         name: ${{ matrix.SHA }}
         path: artifacts/
   simulate:
-    runs-on: ubuntu-20.04
+    container: ubuntu:bionic
+    runs-on: [self-hosted, Linux, X64]
     needs: [generate-sha, build]
     strategy:
       fail-fast: false
@@ -101,7 +106,8 @@ jobs:
         name: ${{ matrix.SHA }}
         path: artifacts/
   results:
-    runs-on: ubuntu-20.04
+    container: ubuntu:bionic
+    runs-on: [self-hosted, Linux, X64]
     needs: [generate-sha, simulate]
     env:
       GHA_SA: "gh-sa-gcp-distributed-job-buck"

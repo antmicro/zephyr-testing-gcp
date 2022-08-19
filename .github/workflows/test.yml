@@ -133,7 +133,7 @@ jobs:
     - name: Delete Old Artifacts
       uses: geekyeggo/delete-artifact@v1
       with:
-        name: ${{ steps.get-artifacts-to-delete.outputs.matrix }}
+        name: ${{ fromJson(needs.generate-sha.outputs.samples) }}
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:

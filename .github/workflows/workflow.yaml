@@ -2,10 +2,10 @@ name: workflow
 on: [push]
 
 jobs:
-  prepare-zephyr-62f19cc6b3:
+  prepare-zephyr-6cfb18686e:
     runs-on: ubuntu-20.04
     env:
-      ZEPHYR_COMMIT: 62f19cc6b3
+      ZEPHYR_COMMIT: 6cfb18686e
       ZEPHYR_SDK_VERSION: 0.14.2
     steps:
     - uses: actions/checkout@v2
@@ -16,12 +16,12 @@ jobs:
     - name: Pass Zephyr as artifact
       uses: actions/upload-artifact@v2
       with:
-        name: zephyr-62f19cc6b3
+        name: zephyr-6cfb18686e
         path: zephyrproject.tar
-  prepare-zephyr-f72eb8d40d:
+  prepare-zephyr-a41f4f30b5:
     runs-on: ubuntu-20.04
     env:
-      ZEPHYR_COMMIT: f72eb8d40d
+      ZEPHYR_COMMIT: a41f4f30b5
       ZEPHYR_SDK_VERSION: 0.14.2
     steps:
     - uses: actions/checkout@v2
@@ -32,91 +32,91 @@ jobs:
     - name: Pass Zephyr as artifact
       uses: actions/upload-artifact@v2
       with:
-        name: zephyr-f72eb8d40d
+        name: zephyr-a41f4f30b5
         path: zephyrproject.tar
-  build-62f19cc6b3-hello_world:
+  build-6cfb18686e-hello_world:
     runs-on: ubuntu-20.04
-    needs: [prepare-zephyr-62f19cc6b3]
+    needs: [prepare-zephyr-6cfb18686e]
     env:
-      ZEPHYR_COMMIT: 62f19cc6b3
+      ZEPHYR_COMMIT: 6cfb18686e
       SAMPLE_NAME: hello_world
     steps:
     - name: Get Zephyr
       uses: actions/download-artifact@v2
       with:
-        name: zephyr-62f19cc6b3
+        name: zephyr-6cfb18686e
         path: zephyr-artifact
     - name: Test
       run: ls -la zephyr-artifact
-  simulate-62f19cc6b3-hello_world:
+  simulate-6cfb18686e-hello_world:
     runs-on: ubuntu-20.04
-    needs: [build-62f19cc6b3-hello_world]
+    needs: [build-6cfb18686e-hello_world]
     env:
        SAMPLE_NAME: hello_world
     steps:
     - name: Test simulate
       run: echo $SAMPLE_NAME
-  build-62f19cc6b3-shell_module:
+  build-6cfb18686e-shell_module:
     runs-on: ubuntu-20.04
-    needs: [prepare-zephyr-62f19cc6b3]
+    needs: [prepare-zephyr-6cfb18686e]
     env:
-      ZEPHYR_COMMIT: 62f19cc6b3
+      ZEPHYR_COMMIT: 6cfb18686e
       SAMPLE_NAME: shell_module
     steps:
     - name: Get Zephyr
       uses: actions/download-artifact@v2
       with:
-        name: zephyr-62f19cc6b3
+        name: zephyr-6cfb18686e
         path: zephyr-artifact
     - name: Test
       run: ls -la zephyr-artifact
-  simulate-62f19cc6b3-shell_module:
+  simulate-6cfb18686e-shell_module:
     runs-on: ubuntu-20.04
-    needs: [build-62f19cc6b3-shell_module]
+    needs: [build-6cfb18686e-shell_module]
     env:
        SAMPLE_NAME: shell_module
     steps:
     - name: Test simulate
       run: echo $SAMPLE_NAME
-  build-f72eb8d40d-hello_world:
+  build-a41f4f30b5-hello_world:
     runs-on: ubuntu-20.04
-    needs: [prepare-zephyr-f72eb8d40d]
+    needs: [prepare-zephyr-a41f4f30b5]
     env:
-      ZEPHYR_COMMIT: f72eb8d40d
+      ZEPHYR_COMMIT: a41f4f30b5
       SAMPLE_NAME: hello_world
     steps:
     - name: Get Zephyr
       uses: actions/download-artifact@v2
       with:
-        name: zephyr-f72eb8d40d
+        name: zephyr-a41f4f30b5
         path: zephyr-artifact
     - name: Test
       run: ls -la zephyr-artifact
-  simulate-f72eb8d40d-hello_world:
+  simulate-a41f4f30b5-hello_world:
     runs-on: ubuntu-20.04
-    needs: [build-f72eb8d40d-hello_world]
+    needs: [build-a41f4f30b5-hello_world]
     env:
        SAMPLE_NAME: hello_world
     steps:
     - name: Test simulate
       run: echo $SAMPLE_NAME
-  build-f72eb8d40d-shell_module:
+  build-a41f4f30b5-shell_module:
     runs-on: ubuntu-20.04
-    needs: [prepare-zephyr-f72eb8d40d]
+    needs: [prepare-zephyr-a41f4f30b5]
     env:
-      ZEPHYR_COMMIT: f72eb8d40d
+      ZEPHYR_COMMIT: a41f4f30b5
       SAMPLE_NAME: shell_module
     steps:
     - name: Get Zephyr
       uses: actions/download-artifact@v2
       with:
-        name: zephyr-f72eb8d40d
+        name: zephyr-a41f4f30b5
         path: zephyr-artifact
     - name: Test
       run: ls -la zephyr-artifact
-  simulate-f72eb8d40d-shell_module:
+  simulate-a41f4f30b5-shell_module:
     runs-on: ubuntu-20.04
-    needs: [build-f72eb8d40d-shell_module]
+    needs: [build-a41f4f30b5-shell_module]
     env:
        SAMPLE_NAME: shell_module
     steps:
@@ -124,7 +124,7 @@ jobs:
       run: echo $SAMPLE_NAME
   results:
     runs-on: ubuntu-20.04
-    needs: [simulate-62f19cc6b3-hello_world, simulate-62f19cc6b3-shell_module, simulate-f72eb8d40d-hello_world, simulate-f72eb8d40d-shell_module]
+    needs: [simulate-6cfb18686e-hello_world, simulate-6cfb18686e-shell_module, simulate-a41f4f30b5-hello_world, simulate-a41f4f30b5-shell_module]
     steps:
     - name: Test results
       run: echo "Working!!"

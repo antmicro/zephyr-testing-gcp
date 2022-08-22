@@ -17,7 +17,7 @@ def get_zephyr_commits(first_commit, commit_num):
     return [repo.commit(f"{first_commit}~{i}").hexsha[:10] for i in range(commit_num)]
 
 def generate():
-    zephyr_commits = get_zephyr_commits("HEAD", 2)
+    zephyr_commits = get_zephyr_commits("6cfb18686e", 2)
     commit_sample_product = list(itertools.product(zephyr_commits, SAMPLES))
     tasks = []
     for zephyr_commit in zephyr_commits:

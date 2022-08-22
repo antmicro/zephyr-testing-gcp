@@ -27,12 +27,16 @@ def generate():
     env:
       ZEPHYR_COMMIT: {zephyr_commit}
     steps:
+    - uses: actions/checkout@v2
+    - name: Prepare environment
+      run: ./scripts/prepare_environment.sh
     - name: Download Zephyr
-      run: echo "Download Zephyr"
-    - name: Tar Zephyr
-      run: echo "Tar Zephyr"
+      run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
-      run: echo "Pass Zephyr as artifact"''')
+      uses: actions/upload-artifact@v2
+      with:
+        name: zephyr-{zephyr_commit}
+        path: zephyrproject.tar''')
     for zephyr_commit, sample in commit_sample_product:
         tasks.append(f'''
   build-{zephyr_commit}-{sample}:
@@ -43,9 +47,12 @@ def generate():
       SAMPLE_NAME: {sample}
     steps:
     - name: Get Zephyr
-      run: echo "Get Zephyr"
+      uses: actions/download-artifact@v2
+      with:
+        name: zephyr-{zephyr_commit}
+        path: zephyr-artifact
     - name: Test
-      run: echo $SAMPLE_NAME''')
+      run: ls -la zephyr-artifact''')
         tasks.append(f'''
   simulate-{zephyr_commit}-{sample}:
     runs-on: ubuntu-20.04

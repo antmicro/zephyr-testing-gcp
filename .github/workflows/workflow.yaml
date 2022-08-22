@@ -7,23 +7,31 @@ jobs:
     env:
       ZEPHYR_COMMIT: 62f19cc6b3
     steps:
+    - uses: actions/checkout@v2
+    - name: Prepare environment
+      run: ./scripts/prepare_environment.sh
     - name: Download Zephyr
-      run: echo "Download Zephyr"
-    - name: Tar Zephyr
-      run: echo "Tar Zephyr"
+      run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
-      run: echo "Pass Zephyr as artifact"
+      uses: actions/upload-artifact@v2
+      with:
+        name: zephyr-62f19cc6b3
+        path: zephyrproject.tar
   prepare-zephyr-f72eb8d40d:
     runs-on: ubuntu-20.04
     env:
       ZEPHYR_COMMIT: f72eb8d40d
     steps:
+    - uses: actions/checkout@v2
+    - name: Prepare environment
+      run: ./scripts/prepare_environment.sh
     - name: Download Zephyr
-      run: echo "Download Zephyr"
-    - name: Tar Zephyr
-      run: echo "Tar Zephyr"
+      run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
-      run: echo "Pass Zephyr as artifact"
+      uses: actions/upload-artifact@v2
+      with:
+        name: zephyr-f72eb8d40d
+        path: zephyrproject.tar
   build-62f19cc6b3-hello_world:
     runs-on: ubuntu-20.04
     needs: [prepare-zephyr-62f19cc6b3]
@@ -32,9 +40,12 @@ jobs:
       SAMPLE_NAME: hello_world
     steps:
     - name: Get Zephyr
-      run: echo "Get Zephyr"
+      uses: actions/download-artifact@v2
+      with:
+        name: zephyr-62f19cc6b3
+        path: zephyr-artifact
     - name: Test
-      run: echo $SAMPLE_NAME
+      run: ls -la zephyr-artifact
   simulate-62f19cc6b3-hello_world:
     runs-on: ubuntu-20.04
     needs: [build-62f19cc6b3-hello_world]
@@ -51,9 +62,12 @@ jobs:
       SAMPLE_NAME: shell_module
     steps:
     - name: Get Zephyr
-      run: echo "Get Zephyr"
+      uses: actions/download-artifact@v2
+      with:
+        name: zephyr-62f19cc6b3
+        path: zephyr-artifact
     - name: Test
-      run: echo $SAMPLE_NAME
+      run: ls -la zephyr-artifact
   simulate-62f19cc6b3-shell_module:
     runs-on: ubuntu-20.04
     needs: [build-62f19cc6b3-shell_module]
@@ -70,9 +84,12 @@ jobs:
       SAMPLE_NAME: hello_world
     steps:
     - name: Get Zephyr
-      run: echo "Get Zephyr"
+      uses: actions/download-artifact@v2
+      with:
+        name: zephyr-f72eb8d40d
+        path: zephyr-artifact
     - name: Test
-      run: echo $SAMPLE_NAME
+      run: ls -la zephyr-artifact
   simulate-f72eb8d40d-hello_world:
     runs-on: ubuntu-20.04
     needs: [build-f72eb8d40d-hello_world]
@@ -89,9 +106,12 @@ jobs:
       SAMPLE_NAME: shell_module
     steps:
     - name: Get Zephyr
-      run: echo "Get Zephyr"
+      uses: actions/download-artifact@v2
+      with:
+        name: zephyr-f72eb8d40d
+        path: zephyr-artifact
     - name: Test
-      run: echo $SAMPLE_NAME
+      run: ls -la zephyr-artifact
   simulate-f72eb8d40d-shell_module:
     runs-on: ubuntu-20.04
     needs: [build-f72eb8d40d-shell_module]

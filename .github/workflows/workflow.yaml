@@ -46,8 +46,10 @@ jobs:
       with:
         name: zephyr-6cfb18686e
         path: zephyr-artifact
+    - name: Prepare Zephyr
+      run: ./scripts/prepare_zephyr.sh
     - name: Test
-      run: ls -la zephyr-artifact
+      run: ls -la
   simulate-6cfb18686e-hello_world:
     runs-on: ubuntu-20.04
     needs: [build-6cfb18686e-hello_world]
@@ -68,8 +70,10 @@ jobs:
       with:
         name: zephyr-6cfb18686e
         path: zephyr-artifact
+    - name: Prepare Zephyr
+      run: ./scripts/prepare_zephyr.sh
     - name: Test
-      run: ls -la zephyr-artifact
+      run: ls -la
   simulate-6cfb18686e-shell_module:
     runs-on: ubuntu-20.04
     needs: [build-6cfb18686e-shell_module]
@@ -90,8 +94,10 @@ jobs:
       with:
         name: zephyr-a41f4f30b5
         path: zephyr-artifact
+    - name: Prepare Zephyr
+      run: ./scripts/prepare_zephyr.sh
     - name: Test
-      run: ls -la zephyr-artifact
+      run: ls -la
   simulate-a41f4f30b5-hello_world:
     runs-on: ubuntu-20.04
     needs: [build-a41f4f30b5-hello_world]
@@ -112,8 +118,10 @@ jobs:
       with:
         name: zephyr-a41f4f30b5
         path: zephyr-artifact
+    - name: Prepare Zephyr
+      run: ./scripts/prepare_zephyr.sh
     - name: Test
-      run: ls -la zephyr-artifact
+      run: ls -la
   simulate-a41f4f30b5-shell_module:
     runs-on: ubuntu-20.04
     needs: [build-a41f4f30b5-shell_module]

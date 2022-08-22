@@ -52,8 +52,10 @@ def generate():
       with:
         name: zephyr-{zephyr_commit}
         path: zephyr-artifact
+    - name: Prepare Zephyr
+      run: ./scripts/prepare_zephyr.sh
     - name: Test
-      run: ls -la zephyr-artifact''')
+      run: ls -la''')
         tasks.append(f'''
   simulate-{zephyr_commit}-{sample}:
     runs-on: ubuntu-20.04

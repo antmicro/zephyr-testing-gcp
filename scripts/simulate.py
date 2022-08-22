@@ -9,7 +9,6 @@ import signal
 import subprocess
 import sys
 import time
-import yaml
 import zipfile
 from argparse import Namespace
 from dts2repl import dts2repl
@@ -125,7 +124,6 @@ def run_in_renode(renode_platform, zephyr_platform, sample_name, uart_name, scri
             sample_name=sample_name
         ))
 
-    print(f'Run this interactively using: {bold("renode " + resc_filename)}')
     try:
         process = subprocess.Popen(f"./renode_portable/renode-test --kill-stale-renode-instances artifacts/{zephyr_platform}-{sample_name}/{zephyr_platform}-{sample_name}.robot".split(), start_new_session=True)
         pgid = os.getpgid(process.pid)
@@ -303,19 +301,6 @@ def run_renode_simulation(board, sample_name):
     result['memory'] = memory
 
     return result
-
-def get_full_name(yaml_filename):
-    if os.path.exists(yaml_filename):
-        with open(yaml_filename) as f:
-            board_data = yaml.load(f, Loader=yaml.FullLoader)
-
-        full_board_name = board_data['name']
-        if len(full_board_name) > 50:
-            full_board_name = re.sub(r'\(.*\)', '', full_board_name)
-    else:
-        full_board_name = ''
-
-    return full_board_name
 
 def try_match_board(board):
     sample_name, _ = get_sample_name_path()

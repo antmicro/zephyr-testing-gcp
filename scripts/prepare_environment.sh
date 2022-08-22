@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -e
 set -u
+set -x
 
 mkdir -p artifacts/results
 sudo apt -qqy update

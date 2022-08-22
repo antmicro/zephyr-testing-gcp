@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -e
 set -u
+set -x
 
 pip3 install -r requirements.txt
 mkdir -p zephyr-sdk && cd zephyr-sdk
@@ -9,7 +10,6 @@ curl -kL https://dl.antmicro.com/projects/renode/zephyr-sdk-${ZEPHYR_SDK_VERSION
 cd -
 export ZEPHYR_SDK_INSTALL_DIR=$(pwd)/zephyr-sdk
 
-ls -la zephyr-artifact
 tar xvf zephyr-artifact/zephyrproject.tar
 rm -rf zephyr-artifact
 cd zephyrproject/zephyr

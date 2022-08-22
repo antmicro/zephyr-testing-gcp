@@ -17,9 +17,7 @@ jobs:
       run: |
         ./scripts/prepare_environment.sh
         pip3 install west
-        echo "nproc"
-        nproc
-    - name: Get zephyr
+    - name: Get Zephyr
       run: west init zephyrproject
     - name: Generate matrix
       id: generate-sha
@@ -34,7 +32,7 @@ jobs:
         samples="['hello_world', 'shell_module', 'philosophers', 'micropython', 'tensorflow_lite_micro']"
         echo "::set-output name=samples::$samples"
         echo "samples: $samples"
-    - name: Tar zephyr
+    - name: Tar Zephyr
       run: tar cvf zephyrproject.tar zephyrproject
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
@@ -58,16 +56,16 @@ jobs:
       MICROPYTHON_VERSION: 97a7cc243b028833bdcb8ce0bc19b2bce7545851
     steps:
     - uses: actions/checkout@v2
-    - name: Download zephyr
+    - name: Download Zephyr
       uses: actions/download-artifact@v2
       with:
         name: zephyr
         path: zephyr-artifact
     - name: Prepare environment
       run: ./scripts/prepare_environment.sh
-    - name: Prepare zephyr
+    - name: Prepare Zephyr
       run: ./scripts/prepare_zephyr.sh
-    - name: Prepare micropython
+    - name: Prepare Micropython
       run: ./scripts/prepare_micropython.sh
     - name: Build boards
       run: ./scripts/build.py
@@ -113,7 +111,7 @@ jobs:
     env:
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
     steps:
-    - name: Delete zephyr artifact
+    - name: Delete Zephyr artifact
       uses: geekyeggo/delete-artifact@v1
       with:
         name: zephyr

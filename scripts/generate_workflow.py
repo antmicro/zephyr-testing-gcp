@@ -6,7 +6,6 @@ from git.exc import NoSuchPathError
 WORKFLOW_FILE = 'workflow.yaml'
 WORKFLOW_NAME = 'workflow'
 SAMPLES = ['hello_world', 'shell_module', 'philosophers', 'micropython', 'tensorflow_lite_micro']
-SAMPLES = ['hello_world', 'shell_module'] # test
 
 def get_zephyr_commits(first_commit, commit_num):
     try:
@@ -20,6 +19,7 @@ def generate():
     zephyr_commits = get_zephyr_commits("6cfb18686e", 2)
     commit_sample_product = list(itertools.product(zephyr_commits, SAMPLES))
     tasks = []
+    newline = '\n          '
     for zephyr_commit in zephyr_commits:
         tasks.append(f'''
   prepare-zephyr-{zephyr_commit}:
@@ -109,6 +109,11 @@ def generate():
       run: |
         sudo apt update -qq
         sudo apt install -y curl gnupg
+    - name: Delete unnecessary artifacts
+      uses: geekyeggo/delete-artifact@v1
+      with:
+        name: |
+          {newline.join([i for i in zephyr_commits])}
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:

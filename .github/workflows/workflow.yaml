@@ -144,6 +144,171 @@ jobs:
       with:
         name: 6cfb18686e
         path: artifacts/
+  build-6cfb18686e-philosophers:
+    runs-on: ubuntu-20.04
+    needs: [prepare-zephyr-6cfb18686e]
+    env:
+      ZEPHYR_COMMIT: 6cfb18686e
+      SAMPLE_NAME: philosophers
+      MICROPYTHON_VERSION: 97a7cc243b
+    steps:
+    - uses: actions/checkout@v2
+    - name: Prepare environment
+      run: ./scripts/prepare_environment.sh
+    - name: Get Zephyr
+      uses: actions/download-artifact@v2
+      with:
+        name: zephyr-6cfb18686e
+        path: zephyr-artifact
+    - name: Prepare Zephyr
+      run: ./scripts/prepare_zephyr.sh
+    - name: Prepare Micropython
+      run: ./scripts/prepare_micropython.sh
+    - name: Build boards
+      run: ./scripts/build.py
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: 6cfb18686e
+        path: artifacts/
+    - name: Delete Zephyr artifact
+      uses: geekyeggo/delete-artifact@v1
+      with:
+        name: zephyr-6cfb18686e
+  simulate-6cfb18686e-philosophers:
+    runs-on: ubuntu-20.04
+    needs: [build-6cfb18686e-philosophers]
+    env:
+       SAMPLE_NAME: philosophers
+       RENODE_VERSION: 1.13.1+20220731git8eca7310
+    steps:
+    - uses: actions/checkout@v2
+    - name: Get artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: 6cfb18686e
+        path: artifacts/
+    - name: Prepare environment
+      run: ./scripts/prepare_environment.sh
+    - name: Prepare Renode
+      run: ./scripts/download_renode.sh
+    - name: Simulate
+      run: ./scripts/simulate.py
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: 6cfb18686e
+        path: artifacts/
+  build-6cfb18686e-micropython:
+    runs-on: ubuntu-20.04
+    needs: [prepare-zephyr-6cfb18686e]
+    env:
+      ZEPHYR_COMMIT: 6cfb18686e
+      SAMPLE_NAME: micropython
+      MICROPYTHON_VERSION: 97a7cc243b
+    steps:
+    - uses: actions/checkout@v2
+    - name: Prepare environment
+      run: ./scripts/prepare_environment.sh
+    - name: Get Zephyr
+      uses: actions/download-artifact@v2
+      with:
+        name: zephyr-6cfb18686e
+        path: zephyr-artifact
+    - name: Prepare Zephyr
+      run: ./scripts/prepare_zephyr.sh
+    - name: Prepare Micropython
+      run: ./scripts/prepare_micropython.sh
+    - name: Build boards
+      run: ./scripts/build.py
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: 6cfb18686e
+        path: artifacts/
+    - name: Delete Zephyr artifact
+      uses: geekyeggo/delete-artifact@v1
+      with:
+        name: zephyr-6cfb18686e
+  simulate-6cfb18686e-micropython:
+    runs-on: ubuntu-20.04
+    needs: [build-6cfb18686e-micropython]
+    env:
+       SAMPLE_NAME: micropython
+       RENODE_VERSION: 1.13.1+20220731git8eca7310
+    steps:
+    - uses: actions/checkout@v2
+    - name: Get artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: 6cfb18686e
+        path: artifacts/
+    - name: Prepare environment
+      run: ./scripts/prepare_environment.sh
+    - name: Prepare Renode
+      run: ./scripts/download_renode.sh
+    - name: Simulate
+      run: ./scripts/simulate.py
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: 6cfb18686e
+        path: artifacts/
+  build-6cfb18686e-tensorflow_lite_micro:
+    runs-on: ubuntu-20.04
+    needs: [prepare-zephyr-6cfb18686e]
+    env:
+      ZEPHYR_COMMIT: 6cfb18686e
+      SAMPLE_NAME: tensorflow_lite_micro
+      MICROPYTHON_VERSION: 97a7cc243b
+    steps:
+    - uses: actions/checkout@v2
+    - name: Prepare environment
+      run: ./scripts/prepare_environment.sh
+    - name: Get Zephyr
+      uses: actions/download-artifact@v2
+      with:
+        name: zephyr-6cfb18686e
+        path: zephyr-artifact
+    - name: Prepare Zephyr
+      run: ./scripts/prepare_zephyr.sh
+    - name: Prepare Micropython
+      run: ./scripts/prepare_micropython.sh
+    - name: Build boards
+      run: ./scripts/build.py
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: 6cfb18686e
+        path: artifacts/
+    - name: Delete Zephyr artifact
+      uses: geekyeggo/delete-artifact@v1
+      with:
+        name: zephyr-6cfb18686e
+  simulate-6cfb18686e-tensorflow_lite_micro:
+    runs-on: ubuntu-20.04
+    needs: [build-6cfb18686e-tensorflow_lite_micro]
+    env:
+       SAMPLE_NAME: tensorflow_lite_micro
+       RENODE_VERSION: 1.13.1+20220731git8eca7310
+    steps:
+    - uses: actions/checkout@v2
+    - name: Get artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: 6cfb18686e
+        path: artifacts/
+    - name: Prepare environment
+      run: ./scripts/prepare_environment.sh
+    - name: Prepare Renode
+      run: ./scripts/download_renode.sh
+    - name: Simulate
+      run: ./scripts/simulate.py
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: 6cfb18686e
+        path: artifacts/
   build-a41f4f30b5-hello_world:
     runs-on: ubuntu-20.04
     needs: [prepare-zephyr-a41f4f30b5]
@@ -254,9 +419,174 @@ jobs:
       with:
         name: a41f4f30b5
         path: artifacts/
+  build-a41f4f30b5-philosophers:
+    runs-on: ubuntu-20.04
+    needs: [prepare-zephyr-a41f4f30b5]
+    env:
+      ZEPHYR_COMMIT: a41f4f30b5
+      SAMPLE_NAME: philosophers
+      MICROPYTHON_VERSION: 97a7cc243b
+    steps:
+    - uses: actions/checkout@v2
+    - name: Prepare environment
+      run: ./scripts/prepare_environment.sh
+    - name: Get Zephyr
+      uses: actions/download-artifact@v2
+      with:
+        name: zephyr-a41f4f30b5
+        path: zephyr-artifact
+    - name: Prepare Zephyr
+      run: ./scripts/prepare_zephyr.sh
+    - name: Prepare Micropython
+      run: ./scripts/prepare_micropython.sh
+    - name: Build boards
+      run: ./scripts/build.py
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: a41f4f30b5
+        path: artifacts/
+    - name: Delete Zephyr artifact
+      uses: geekyeggo/delete-artifact@v1
+      with:
+        name: zephyr-a41f4f30b5
+  simulate-a41f4f30b5-philosophers:
+    runs-on: ubuntu-20.04
+    needs: [build-a41f4f30b5-philosophers]
+    env:
+       SAMPLE_NAME: philosophers
+       RENODE_VERSION: 1.13.1+20220731git8eca7310
+    steps:
+    - uses: actions/checkout@v2
+    - name: Get artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: a41f4f30b5
+        path: artifacts/
+    - name: Prepare environment
+      run: ./scripts/prepare_environment.sh
+    - name: Prepare Renode
+      run: ./scripts/download_renode.sh
+    - name: Simulate
+      run: ./scripts/simulate.py
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: a41f4f30b5
+        path: artifacts/
+  build-a41f4f30b5-micropython:
+    runs-on: ubuntu-20.04
+    needs: [prepare-zephyr-a41f4f30b5]
+    env:
+      ZEPHYR_COMMIT: a41f4f30b5
+      SAMPLE_NAME: micropython
+      MICROPYTHON_VERSION: 97a7cc243b
+    steps:
+    - uses: actions/checkout@v2
+    - name: Prepare environment
+      run: ./scripts/prepare_environment.sh
+    - name: Get Zephyr
+      uses: actions/download-artifact@v2
+      with:
+        name: zephyr-a41f4f30b5
+        path: zephyr-artifact
+    - name: Prepare Zephyr
+      run: ./scripts/prepare_zephyr.sh
+    - name: Prepare Micropython
+      run: ./scripts/prepare_micropython.sh
+    - name: Build boards
+      run: ./scripts/build.py
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: a41f4f30b5
+        path: artifacts/
+    - name: Delete Zephyr artifact
+      uses: geekyeggo/delete-artifact@v1
+      with:
+        name: zephyr-a41f4f30b5
+  simulate-a41f4f30b5-micropython:
+    runs-on: ubuntu-20.04
+    needs: [build-a41f4f30b5-micropython]
+    env:
+       SAMPLE_NAME: micropython
+       RENODE_VERSION: 1.13.1+20220731git8eca7310
+    steps:
+    - uses: actions/checkout@v2
+    - name: Get artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: a41f4f30b5
+        path: artifacts/
+    - name: Prepare environment
+      run: ./scripts/prepare_environment.sh
+    - name: Prepare Renode
+      run: ./scripts/download_renode.sh
+    - name: Simulate
+      run: ./scripts/simulate.py
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: a41f4f30b5
+        path: artifacts/
+  build-a41f4f30b5-tensorflow_lite_micro:
+    runs-on: ubuntu-20.04
+    needs: [prepare-zephyr-a41f4f30b5]
+    env:
+      ZEPHYR_COMMIT: a41f4f30b5
+      SAMPLE_NAME: tensorflow_lite_micro
+      MICROPYTHON_VERSION: 97a7cc243b
+    steps:
+    - uses: actions/checkout@v2
+    - name: Prepare environment
+      run: ./scripts/prepare_environment.sh
+    - name: Get Zephyr
+      uses: actions/download-artifact@v2
+      with:
+        name: zephyr-a41f4f30b5
+        path: zephyr-artifact
+    - name: Prepare Zephyr
+      run: ./scripts/prepare_zephyr.sh
+    - name: Prepare Micropython
+      run: ./scripts/prepare_micropython.sh
+    - name: Build boards
+      run: ./scripts/build.py
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: a41f4f30b5
+        path: artifacts/
+    - name: Delete Zephyr artifact
+      uses: geekyeggo/delete-artifact@v1
+      with:
+        name: zephyr-a41f4f30b5
+  simulate-a41f4f30b5-tensorflow_lite_micro:
+    runs-on: ubuntu-20.04
+    needs: [build-a41f4f30b5-tensorflow_lite_micro]
+    env:
+       SAMPLE_NAME: tensorflow_lite_micro
+       RENODE_VERSION: 1.13.1+20220731git8eca7310
+    steps:
+    - uses: actions/checkout@v2
+    - name: Get artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: a41f4f30b5
+        path: artifacts/
+    - name: Prepare environment
+      run: ./scripts/prepare_environment.sh
+    - name: Prepare Renode
+      run: ./scripts/download_renode.sh
+    - name: Simulate
+      run: ./scripts/simulate.py
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: a41f4f30b5
+        path: artifacts/
   results:
     runs-on: ubuntu-20.04
-    needs: [simulate-6cfb18686e-hello_world, simulate-6cfb18686e-shell_module, simulate-a41f4f30b5-hello_world, simulate-a41f4f30b5-shell_module]
+    needs: [simulate-6cfb18686e-hello_world, simulate-6cfb18686e-shell_module, simulate-6cfb18686e-philosophers, simulate-6cfb18686e-micropython, simulate-6cfb18686e-tensorflow_lite_micro, simulate-a41f4f30b5-hello_world, simulate-a41f4f30b5-shell_module, simulate-a41f4f30b5-philosophers, simulate-a41f4f30b5-micropython, simulate-a41f4f30b5-tensorflow_lite_micro]
     steps:
     - name: Download binaries
       uses: actions/download-artifact@v2
@@ -266,6 +596,12 @@ jobs:
       run: |
         sudo apt update -qq
         sudo apt install -y curl gnupg
+    - name: Delete unnecessary artifacts
+      uses: geekyeggo/delete-artifact@v1
+      with:
+        name: |
+          6cfb18686e
+          a41f4f30b5
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:

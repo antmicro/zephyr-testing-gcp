@@ -26,6 +26,7 @@ def generate():
     runs-on: ubuntu-20.04
     env:
       ZEPHYR_COMMIT: {zephyr_commit}
+      ZEPHYR_SDK_VERSION: 0.14.2
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment

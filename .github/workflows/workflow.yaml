@@ -61,10 +61,6 @@ jobs:
       with:
         name: 6cfb18686e
         path: artifacts/
-    - name: Delete Zephyr artifact
-      uses: geekyeggo/delete-artifact@v1
-      with:
-        name: zephyr-6cfb18686e
   simulate-6cfb18686e-hello_world:
     runs-on: ubuntu-20.04
     needs: [build-6cfb18686e-hello_world]
@@ -116,10 +112,6 @@ jobs:
       with:
         name: 6cfb18686e
         path: artifacts/
-    - name: Delete Zephyr artifact
-      uses: geekyeggo/delete-artifact@v1
-      with:
-        name: zephyr-6cfb18686e
   simulate-6cfb18686e-shell_module:
     runs-on: ubuntu-20.04
     needs: [build-6cfb18686e-shell_module]
@@ -171,10 +163,6 @@ jobs:
       with:
         name: 6cfb18686e
         path: artifacts/
-    - name: Delete Zephyr artifact
-      uses: geekyeggo/delete-artifact@v1
-      with:
-        name: zephyr-6cfb18686e
   simulate-6cfb18686e-philosophers:
     runs-on: ubuntu-20.04
     needs: [build-6cfb18686e-philosophers]
@@ -226,10 +214,6 @@ jobs:
       with:
         name: 6cfb18686e
         path: artifacts/
-    - name: Delete Zephyr artifact
-      uses: geekyeggo/delete-artifact@v1
-      with:
-        name: zephyr-6cfb18686e
   simulate-6cfb18686e-micropython:
     runs-on: ubuntu-20.04
     needs: [build-6cfb18686e-micropython]
@@ -281,10 +265,6 @@ jobs:
       with:
         name: 6cfb18686e
         path: artifacts/
-    - name: Delete Zephyr artifact
-      uses: geekyeggo/delete-artifact@v1
-      with:
-        name: zephyr-6cfb18686e
   simulate-6cfb18686e-tensorflow_lite_micro:
     runs-on: ubuntu-20.04
     needs: [build-6cfb18686e-tensorflow_lite_micro]
@@ -336,10 +316,6 @@ jobs:
       with:
         name: a41f4f30b5
         path: artifacts/
-    - name: Delete Zephyr artifact
-      uses: geekyeggo/delete-artifact@v1
-      with:
-        name: zephyr-a41f4f30b5
   simulate-a41f4f30b5-hello_world:
     runs-on: ubuntu-20.04
     needs: [build-a41f4f30b5-hello_world]
@@ -391,10 +367,6 @@ jobs:
       with:
         name: a41f4f30b5
         path: artifacts/
-    - name: Delete Zephyr artifact
-      uses: geekyeggo/delete-artifact@v1
-      with:
-        name: zephyr-a41f4f30b5
   simulate-a41f4f30b5-shell_module:
     runs-on: ubuntu-20.04
     needs: [build-a41f4f30b5-shell_module]
@@ -446,10 +418,6 @@ jobs:
       with:
         name: a41f4f30b5
         path: artifacts/
-    - name: Delete Zephyr artifact
-      uses: geekyeggo/delete-artifact@v1
-      with:
-        name: zephyr-a41f4f30b5
   simulate-a41f4f30b5-philosophers:
     runs-on: ubuntu-20.04
     needs: [build-a41f4f30b5-philosophers]
@@ -501,10 +469,6 @@ jobs:
       with:
         name: a41f4f30b5
         path: artifacts/
-    - name: Delete Zephyr artifact
-      uses: geekyeggo/delete-artifact@v1
-      with:
-        name: zephyr-a41f4f30b5
   simulate-a41f4f30b5-micropython:
     runs-on: ubuntu-20.04
     needs: [build-a41f4f30b5-micropython]
@@ -556,10 +520,6 @@ jobs:
       with:
         name: a41f4f30b5
         path: artifacts/
-    - name: Delete Zephyr artifact
-      uses: geekyeggo/delete-artifact@v1
-      with:
-        name: zephyr-a41f4f30b5
   simulate-a41f4f30b5-tensorflow_lite_micro:
     runs-on: ubuntu-20.04
     needs: [build-a41f4f30b5-tensorflow_lite_micro]
@@ -602,6 +562,8 @@ jobs:
         name: |
           6cfb18686e
           a41f4f30b5
+          zephyr-6cfb18686e
+          zephyr-a41f4f30b5
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:

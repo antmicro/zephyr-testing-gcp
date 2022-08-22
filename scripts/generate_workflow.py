@@ -66,11 +66,7 @@ def generate():
       uses: actions/upload-artifact@v2
       with:
         name: {zephyr_commit}
-        path: artifacts/
-    - name: Delete Zephyr artifact
-      uses: geekyeggo/delete-artifact@v1
-      with:
-        name: zephyr-{zephyr_commit}''')
+        path: artifacts/''')
         tasks.append(f'''
   simulate-{zephyr_commit}-{sample}:
     runs-on: ubuntu-20.04
@@ -114,6 +110,7 @@ def generate():
       with:
         name: |
           {newline.join([i for i in zephyr_commits])}
+          {newline.join([f"zephyr-{i}" for i in zephyr_commits])}
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:

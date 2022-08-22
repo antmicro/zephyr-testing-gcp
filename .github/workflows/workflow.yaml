@@ -1,0 +1,59 @@
+name: workflow
+on: [push]
+
+jobs:
+  build-62f19cc6b3-hello_world: &build-step
+    container: ubuntu:bionic
+    runs-on: [self-hosted, Linux, X64]
+    env:
+      ZEPHYR_COMMIT: 62f19cc6b3
+      SAMPLE_NAME: hello_world
+    steps:
+    - name: Test
+      run: echo $SAMPLE_NAME
+  simulate-62f19cc6b3-hello_world: &simulate-step
+    container: ubuntu:bionic
+    runs-on: [self-hosted, Linux, X64]
+    needs: [build-62f19cc6b3-hello_world]
+    env:
+       SAMPLE_NAME: hello_world
+    steps:
+    - name: Test simulate
+      run: echo $SAMPLE_NAME
+  build-62f19cc6b3-shell_module:
+    <<: *build-step
+    env:
+      ZEPHYR_COMMIT: 62f19cc6b3
+      SAMPLE_NAME: shell_module
+  simulate-62f19cc6b3-shell_module:
+    <<: *simulate-step
+    needs: [build-62f19cc6b3-shell_module]
+    env:
+      SAMPLE_NAME: shell_module
+  build-f72eb8d40d-hello_world:
+    <<: *build-step
+    env:
+      ZEPHYR_COMMIT: f72eb8d40d
+      SAMPLE_NAME: hello_world
+  simulate-f72eb8d40d-hello_world:
+    <<: *simulate-step
+    needs: [build-f72eb8d40d-hello_world]
+    env:
+      SAMPLE_NAME: hello_world
+  build-f72eb8d40d-shell_module:
+    <<: *build-step
+    env:
+      ZEPHYR_COMMIT: f72eb8d40d
+      SAMPLE_NAME: shell_module
+  simulate-f72eb8d40d-shell_module:
+    <<: *simulate-step
+    needs: [build-f72eb8d40d-shell_module]
+    env:
+      SAMPLE_NAME: shell_module
+  results:
+    container: ubuntu:bionic
+    runs-on: [self-hosted, Linux, X64]
+    needs: [simulate-62f19cc6b3-hello_world, simulate-62f19cc6b3-shell_module, simulate-f72eb8d40d-hello_world, simulate-f72eb8d40d-shell_module]
+    steps:
+    - name: Test results
+      run: echo "Working!!"

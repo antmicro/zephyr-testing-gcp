@@ -3,8 +3,7 @@ on: [push]
 
 jobs:
   build-62f19cc6b3-hello_world:
-    container: ubuntu:bionic
-    runs-on: [self-hosted, Linux, X64]
+    runs-on: ubuntu-20.04
     env:
       ZEPHYR_COMMIT: 62f19cc6b3
       SAMPLE_NAME: hello_world
@@ -12,8 +11,7 @@ jobs:
     - name: Test
       run: echo $SAMPLE_NAME
   simulate-62f19cc6b3-hello_world:
-    container: ubuntu:bionic
-    runs-on: [self-hosted, Linux, X64]
+    runs-on: ubuntu-20.04
     needs: [build-62f19cc6b3-hello_world]
     env:
        SAMPLE_NAME: hello_world
@@ -21,8 +19,7 @@ jobs:
     - name: Test simulate
       run: echo $SAMPLE_NAME
   build-62f19cc6b3-shell_module:
-    container: ubuntu:bionic
-    runs-on: [self-hosted, Linux, X64]
+    runs-on: ubuntu-20.04
     env:
       ZEPHYR_COMMIT: 62f19cc6b3
       SAMPLE_NAME: shell_module
@@ -30,8 +27,7 @@ jobs:
     - name: Test
       run: echo $SAMPLE_NAME
   simulate-62f19cc6b3-shell_module:
-    container: ubuntu:bionic
-    runs-on: [self-hosted, Linux, X64]
+    runs-on: ubuntu-20.04
     needs: [build-62f19cc6b3-shell_module]
     env:
        SAMPLE_NAME: shell_module
@@ -39,8 +35,7 @@ jobs:
     - name: Test simulate
       run: echo $SAMPLE_NAME
   build-f72eb8d40d-hello_world:
-    container: ubuntu:bionic
-    runs-on: [self-hosted, Linux, X64]
+    runs-on: ubuntu-20.04
     env:
       ZEPHYR_COMMIT: f72eb8d40d
       SAMPLE_NAME: hello_world
@@ -48,8 +43,7 @@ jobs:
     - name: Test
       run: echo $SAMPLE_NAME
   simulate-f72eb8d40d-hello_world:
-    container: ubuntu:bionic
-    runs-on: [self-hosted, Linux, X64]
+    runs-on: ubuntu-20.04
     needs: [build-f72eb8d40d-hello_world]
     env:
        SAMPLE_NAME: hello_world
@@ -57,8 +51,7 @@ jobs:
     - name: Test simulate
       run: echo $SAMPLE_NAME
   build-f72eb8d40d-shell_module:
-    container: ubuntu:bionic
-    runs-on: [self-hosted, Linux, X64]
+    runs-on: ubuntu-20.04
     env:
       ZEPHYR_COMMIT: f72eb8d40d
       SAMPLE_NAME: shell_module
@@ -66,8 +59,7 @@ jobs:
     - name: Test
       run: echo $SAMPLE_NAME
   simulate-f72eb8d40d-shell_module:
-    container: ubuntu:bionic
-    runs-on: [self-hosted, Linux, X64]
+    runs-on: ubuntu-20.04
     needs: [build-f72eb8d40d-shell_module]
     env:
        SAMPLE_NAME: shell_module
@@ -75,8 +67,7 @@ jobs:
     - name: Test simulate
       run: echo $SAMPLE_NAME
   results:
-    container: ubuntu:bionic
-    runs-on: [self-hosted, Linux, X64]
+    runs-on: ubuntu-20.04
     needs: [simulate-62f19cc6b3-hello_world, simulate-62f19cc6b3-shell_module, simulate-f72eb8d40d-hello_world, simulate-f72eb8d40d-shell_module]
     steps:
     - name: Test results

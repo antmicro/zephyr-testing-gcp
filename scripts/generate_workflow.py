@@ -22,8 +22,7 @@ def generate():
     for zephyr_commit, sample in commit_sample_product:
         tasks.append(f'''
   build-{zephyr_commit}-{sample}:
-    container: ubuntu:bionic
-    runs-on: [self-hosted, Linux, X64]
+    runs-on: ubuntu-20.04
     env:
       ZEPHYR_COMMIT: {zephyr_commit}
       SAMPLE_NAME: {sample}
@@ -32,8 +31,7 @@ def generate():
       run: echo $SAMPLE_NAME''')
         tasks.append(f'''
   simulate-{zephyr_commit}-{sample}:
-    container: ubuntu:bionic
-    runs-on: [self-hosted, Linux, X64]
+    runs-on: ubuntu-20.04
     needs: [build-{zephyr_commit}-{sample}]
     env:
        SAMPLE_NAME: {sample}
@@ -47,8 +45,7 @@ def generate():
         file.write("".join(tasks))
         file.write(f'''
   results:
-    container: ubuntu:bionic
-    runs-on: [self-hosted, Linux, X64]
+    runs-on: ubuntu-20.04
     needs: [{", ".join([f'simulate-{zephyr_commit}-{sample}' for zephyr_commit, sample in commit_sample_product])}]
     steps:
     - name: Test results

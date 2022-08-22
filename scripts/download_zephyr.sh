@@ -20,4 +20,4 @@ for i in $(seq 1 5); do west update 1>>../artifacts/build.log 2>&1 && break || s
 west espressif install 1>>../artifacts/build.log 2>&1
 cd ..
 
-tar cvf zephyr.tar zephyrproject zephyr-sdk
+tar cf zephyr.tar zephyrproject zephyr-sdk

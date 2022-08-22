@@ -70,10 +70,25 @@ jobs:
     needs: [build-6cfb18686e-hello_world]
     env:
        SAMPLE_NAME: hello_world
+       RENODE_VERSION: 1.13.1+20220731git8eca7310
     steps:
     - uses: actions/checkout@v2
-    - name: Test simulate
-      run: echo $SAMPLE_NAME
+    - name: Get artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: 6cfb18686e
+        path: artifacts/
+    - name: Prepare environment
+      run: ./scripts/prepare_environment.sh
+    - name: Prepare Renode
+      run: ./scripts/download_renode.sh
+    - name: Simulate
+      run: ./scripts/simulate.py
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: 6cfb18686e
+        path: artifacts/
   build-6cfb18686e-shell_module:
     runs-on: ubuntu-20.04
     needs: [prepare-zephyr-6cfb18686e]
@@ -110,10 +125,25 @@ jobs:
     needs: [build-6cfb18686e-shell_module]
     env:
        SAMPLE_NAME: shell_module
+       RENODE_VERSION: 1.13.1+20220731git8eca7310
     steps:
     - uses: actions/checkout@v2
-    - name: Test simulate
-      run: echo $SAMPLE_NAME
+    - name: Get artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: 6cfb18686e
+        path: artifacts/
+    - name: Prepare environment
+      run: ./scripts/prepare_environment.sh
+    - name: Prepare Renode
+      run: ./scripts/download_renode.sh
+    - name: Simulate
+      run: ./scripts/simulate.py
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: 6cfb18686e
+        path: artifacts/
   build-a41f4f30b5-hello_world:
     runs-on: ubuntu-20.04
     needs: [prepare-zephyr-a41f4f30b5]
@@ -150,10 +180,25 @@ jobs:
     needs: [build-a41f4f30b5-hello_world]
     env:
        SAMPLE_NAME: hello_world
+       RENODE_VERSION: 1.13.1+20220731git8eca7310
     steps:
     - uses: actions/checkout@v2
-    - name: Test simulate
-      run: echo $SAMPLE_NAME
+    - name: Get artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: a41f4f30b5
+        path: artifacts/
+    - name: Prepare environment
+      run: ./scripts/prepare_environment.sh
+    - name: Prepare Renode
+      run: ./scripts/download_renode.sh
+    - name: Simulate
+      run: ./scripts/simulate.py
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: a41f4f30b5
+        path: artifacts/
   build-a41f4f30b5-shell_module:
     runs-on: ubuntu-20.04
     needs: [prepare-zephyr-a41f4f30b5]
@@ -190,13 +235,39 @@ jobs:
     needs: [build-a41f4f30b5-shell_module]
     env:
        SAMPLE_NAME: shell_module
+       RENODE_VERSION: 1.13.1+20220731git8eca7310
     steps:
     - uses: actions/checkout@v2
-    - name: Test simulate
-      run: echo $SAMPLE_NAME
+    - name: Get artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: a41f4f30b5
+        path: artifacts/
+    - name: Prepare environment
+      run: ./scripts/prepare_environment.sh
+    - name: Prepare Renode
+      run: ./scripts/download_renode.sh
+    - name: Simulate
+      run: ./scripts/simulate.py
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: a41f4f30b5
+        path: artifacts/
   results:
     runs-on: ubuntu-20.04
     needs: [simulate-6cfb18686e-hello_world, simulate-6cfb18686e-shell_module, simulate-a41f4f30b5-hello_world, simulate-a41f4f30b5-shell_module]
     steps:
-    - name: Test results
-      run: echo "Working!!"
+    - name: Download binaries
+      uses: actions/download-artifact@v2
+      with:
+        path: results/
+    - name: Install dependencies
+      run: |
+        sudo apt update -qq
+        sudo apt install -y curl gnupg
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: result
+        path: results

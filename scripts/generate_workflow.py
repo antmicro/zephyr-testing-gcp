@@ -77,10 +77,25 @@ def generate():
     needs: [build-{zephyr_commit}-{sample}]
     env:
        SAMPLE_NAME: {sample}
+       RENODE_VERSION: 1.13.1+20220731git8eca7310
     steps:
     - uses: actions/checkout@v2
-    - name: Test simulate
-      run: echo $SAMPLE_NAME''')
+    - name: Get artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: {zephyr_commit}
+        path: artifacts/
+    - name: Prepare environment
+      run: ./scripts/prepare_environment.sh
+    - name: Prepare Renode
+      run: ./scripts/download_renode.sh
+    - name: Simulate
+      run: ./scripts/simulate.py
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: {zephyr_commit}
+        path: artifacts/''')
     with open(WORKFLOW_FILE, 'w') as file:
         file.write(f"name: {WORKFLOW_NAME}\n")
         file.write("on: [push]\n\n")
@@ -91,8 +106,19 @@ def generate():
     runs-on: ubuntu-20.04
     needs: [{", ".join([f'simulate-{zephyr_commit}-{sample}' for zephyr_commit, sample in commit_sample_product])}]
     steps:
-    - name: Test results
-      run: echo "Working!!"''')
+    - name: Download binaries
+      uses: actions/download-artifact@v2
+      with:
+        path: results/
+    - name: Install dependencies
+      run: |
+        sudo apt update -qq
+        sudo apt install -y curl gnupg
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: result
+        path: results''')
 
 if __name__ == '__main__':
     generate()

@@ -40,7 +40,11 @@ jobs:
     env:
       ZEPHYR_COMMIT: 6cfb18686e
       SAMPLE_NAME: hello_world
+      MICROPYTHON_VERSION: 97a7cc243b
     steps:
+    - uses: actions/checkout@v2
+    - name: Prepare environment
+      run: ./scripts/prepare_environment.sh
     - name: Get Zephyr
       uses: actions/download-artifact@v2
       with:
@@ -48,14 +52,26 @@ jobs:
         path: zephyr-artifact
     - name: Prepare Zephyr
       run: ./scripts/prepare_zephyr.sh
-    - name: Test
-      run: ls -la
+    - name: Prepare Micropython
+      run: ./scripts/prepare_micropython.sh
+    - name: Build boards
+      run: ./scripts/build.py
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: 6cfb18686e
+        path: artifacts/
+    - name: Delete Zephyr artifact
+      uses: geekyeggo/delete-artifact@v1
+      with:
+        name: zephyr-6cfb18686e
   simulate-6cfb18686e-hello_world:
     runs-on: ubuntu-20.04
     needs: [build-6cfb18686e-hello_world]
     env:
        SAMPLE_NAME: hello_world
     steps:
+    - uses: actions/checkout@v2
     - name: Test simulate
       run: echo $SAMPLE_NAME
   build-6cfb18686e-shell_module:
@@ -64,7 +80,11 @@ jobs:
     env:
       ZEPHYR_COMMIT: 6cfb18686e
       SAMPLE_NAME: shell_module
+      MICROPYTHON_VERSION: 97a7cc243b
     steps:
+    - uses: actions/checkout@v2
+    - name: Prepare environment
+      run: ./scripts/prepare_environment.sh
     - name: Get Zephyr
       uses: actions/download-artifact@v2
       with:
@@ -72,14 +92,26 @@ jobs:
         path: zephyr-artifact
     - name: Prepare Zephyr
       run: ./scripts/prepare_zephyr.sh
-    - name: Test
-      run: ls -la
+    - name: Prepare Micropython
+      run: ./scripts/prepare_micropython.sh
+    - name: Build boards
+      run: ./scripts/build.py
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: 6cfb18686e
+        path: artifacts/
+    - name: Delete Zephyr artifact
+      uses: geekyeggo/delete-artifact@v1
+      with:
+        name: zephyr-6cfb18686e
   simulate-6cfb18686e-shell_module:
     runs-on: ubuntu-20.04
     needs: [build-6cfb18686e-shell_module]
     env:
        SAMPLE_NAME: shell_module
     steps:
+    - uses: actions/checkout@v2
     - name: Test simulate
       run: echo $SAMPLE_NAME
   build-a41f4f30b5-hello_world:
@@ -88,7 +120,11 @@ jobs:
     env:
       ZEPHYR_COMMIT: a41f4f30b5
       SAMPLE_NAME: hello_world
+      MICROPYTHON_VERSION: 97a7cc243b
     steps:
+    - uses: actions/checkout@v2
+    - name: Prepare environment
+      run: ./scripts/prepare_environment.sh
     - name: Get Zephyr
       uses: actions/download-artifact@v2
       with:
@@ -96,14 +132,26 @@ jobs:
         path: zephyr-artifact
     - name: Prepare Zephyr
       run: ./scripts/prepare_zephyr.sh
-    - name: Test
-      run: ls -la
+    - name: Prepare Micropython
+      run: ./scripts/prepare_micropython.sh
+    - name: Build boards
+      run: ./scripts/build.py
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: a41f4f30b5
+        path: artifacts/
+    - name: Delete Zephyr artifact
+      uses: geekyeggo/delete-artifact@v1
+      with:
+        name: zephyr-a41f4f30b5
   simulate-a41f4f30b5-hello_world:
     runs-on: ubuntu-20.04
     needs: [build-a41f4f30b5-hello_world]
     env:
        SAMPLE_NAME: hello_world
     steps:
+    - uses: actions/checkout@v2
     - name: Test simulate
       run: echo $SAMPLE_NAME
   build-a41f4f30b5-shell_module:
@@ -112,7 +160,11 @@ jobs:
     env:
       ZEPHYR_COMMIT: a41f4f30b5
       SAMPLE_NAME: shell_module
+      MICROPYTHON_VERSION: 97a7cc243b
     steps:
+    - uses: actions/checkout@v2
+    - name: Prepare environment
+      run: ./scripts/prepare_environment.sh
     - name: Get Zephyr
       uses: actions/download-artifact@v2
       with:
@@ -120,14 +172,26 @@ jobs:
         path: zephyr-artifact
     - name: Prepare Zephyr
       run: ./scripts/prepare_zephyr.sh
-    - name: Test
-      run: ls -la
+    - name: Prepare Micropython
+      run: ./scripts/prepare_micropython.sh
+    - name: Build boards
+      run: ./scripts/build.py
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: a41f4f30b5
+        path: artifacts/
+    - name: Delete Zephyr artifact
+      uses: geekyeggo/delete-artifact@v1
+      with:
+        name: zephyr-a41f4f30b5
   simulate-a41f4f30b5-shell_module:
     runs-on: ubuntu-20.04
     needs: [build-a41f4f30b5-shell_module]
     env:
        SAMPLE_NAME: shell_module
     steps:
+    - uses: actions/checkout@v2
     - name: Test simulate
       run: echo $SAMPLE_NAME
   results:

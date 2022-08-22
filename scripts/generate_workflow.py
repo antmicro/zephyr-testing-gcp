@@ -46,7 +46,11 @@ def generate():
     env:
       ZEPHYR_COMMIT: {zephyr_commit}
       SAMPLE_NAME: {sample}
+      MICROPYTHON_VERSION: 97a7cc243b
     steps:
+    - uses: actions/checkout@v2
+    - name: Prepare environment
+      run: ./scripts/prepare_environment.sh
     - name: Get Zephyr
       uses: actions/download-artifact@v2
       with:
@@ -54,8 +58,19 @@ def generate():
         path: zephyr-artifact
     - name: Prepare Zephyr
       run: ./scripts/prepare_zephyr.sh
-    - name: Test
-      run: ls -la''')
+    - name: Prepare Micropython
+      run: ./scripts/prepare_micropython.sh
+    - name: Build boards
+      run: ./scripts/build.py
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: {zephyr_commit}
+        path: artifacts/
+    - name: Delete Zephyr artifact
+      uses: geekyeggo/delete-artifact@v1
+      with:
+        name: zephyr-{zephyr_commit}''')
         tasks.append(f'''
   simulate-{zephyr_commit}-{sample}:
     runs-on: ubuntu-20.04
@@ -63,6 +78,7 @@ def generate():
     env:
        SAMPLE_NAME: {sample}
     steps:
+    - uses: actions/checkout@v2
     - name: Test simulate
       run: echo $SAMPLE_NAME''')
     with open(WORKFLOW_FILE, 'w') as file:

@@ -96,12 +96,7 @@ def generate():
       with:
         name: {zephyr_commit}
         path: artifacts/''')
-    with open(WORKFLOW_FILE, 'w') as file:
-        file.write(f"name: {WORKFLOW_NAME}\n")
-        file.write("on: [push]\n\n")
-        file.write("jobs:")
-        file.write("".join(tasks))
-        file.write(f'''
+    tasks.append(f'''
   results:
     runs-on: ubuntu-20.04
     needs: [{", ".join([f'simulate-{zephyr_commit}-{sample}' for zephyr_commit, sample in commit_sample_product])}]
@@ -119,6 +114,11 @@ def generate():
       with:
         name: result
         path: results''')
+    with open(WORKFLOW_FILE, 'w') as file:
+        file.write(f"name: {WORKFLOW_NAME}\n")
+        file.write("on: [push]\n\n")
+        file.write("jobs:")
+        file.write("".join(tasks))
 
 if __name__ == '__main__':
     generate()

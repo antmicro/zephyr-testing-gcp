@@ -18,9 +18,10 @@ def get_zephyr_commits(first_commit, commit_num):
 
 def generate():
     commit_sample_product = list(itertools.product(get_zephyr_commits("HEAD", 2), SAMPLES))
-    zephyr_commit, sample = commit_sample_product[0]
-    tasks = [f'''
-  build-{zephyr_commit}-{sample}: &build-step
+    tasks = []
+    for zephyr_commit, sample in commit_sample_product:
+        tasks.append(f'''
+  build-{zephyr_commit}-{sample}:
     container: ubuntu:bionic
     runs-on: [self-hosted, Linux, X64]
     env:
@@ -28,9 +29,9 @@ def generate():
       SAMPLE_NAME: {sample}
     steps:
     - name: Test
-      run: echo $SAMPLE_NAME''',
-            f'''
-  simulate-{zephyr_commit}-{sample}: &simulate-step
+      run: echo $SAMPLE_NAME''')
+        tasks.append(f'''
+  simulate-{zephyr_commit}-{sample}:
     container: ubuntu:bionic
     runs-on: [self-hosted, Linux, X64]
     needs: [build-{zephyr_commit}-{sample}]
@@ -38,20 +39,7 @@ def generate():
        SAMPLE_NAME: {sample}
     steps:
     - name: Test simulate
-      run: echo $SAMPLE_NAME''']
-    for zephyr_commit, sample in commit_sample_product[1:]:
-        tasks.append(f'''
-  build-{zephyr_commit}-{sample}:
-    <<: *build-step
-    env:
-      ZEPHYR_COMMIT: {zephyr_commit}
-      SAMPLE_NAME: {sample}''')
-        tasks.append(f'''
-  simulate-{zephyr_commit}-{sample}:
-    <<: *simulate-step
-    needs: [build-{zephyr_commit}-{sample}]
-    env:
-      SAMPLE_NAME: {sample}''')
+      run: echo $SAMPLE_NAME''')
     with open(WORKFLOW_FILE, 'w') as file:
         file.write(f"name: {WORKFLOW_NAME}\n")
         file.write("on: [push]\n\n")

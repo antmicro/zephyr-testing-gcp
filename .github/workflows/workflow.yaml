@@ -2,12 +2,37 @@ name: workflow
 on: [push]
 
 jobs:
+  prepare-zephyr-62f19cc6b3:
+    runs-on: ubuntu-20.04
+    env:
+      ZEPHYR_COMMIT: 62f19cc6b3
+    steps:
+    - name: Download Zephyr
+      run: echo "Download Zephyr"
+    - name: Tar Zephyr
+      run: echo "Tar Zephyr"
+    - name: Pass Zephyr as artifact
+      run: echo "Pass Zephyr as artifact"
+  prepare-zephyr-f72eb8d40d:
+    runs-on: ubuntu-20.04
+    env:
+      ZEPHYR_COMMIT: f72eb8d40d
+    steps:
+    - name: Download Zephyr
+      run: echo "Download Zephyr"
+    - name: Tar Zephyr
+      run: echo "Tar Zephyr"
+    - name: Pass Zephyr as artifact
+      run: echo "Pass Zephyr as artifact"
   build-62f19cc6b3-hello_world:
     runs-on: ubuntu-20.04
+    needs: [prepare-zephyr-62f19cc6b3]
     env:
       ZEPHYR_COMMIT: 62f19cc6b3
       SAMPLE_NAME: hello_world
     steps:
+    - name: Get Zephyr
+      run: echo "Get Zephyr"
     - name: Test
       run: echo $SAMPLE_NAME
   simulate-62f19cc6b3-hello_world:
@@ -20,10 +45,13 @@ jobs:
       run: echo $SAMPLE_NAME
   build-62f19cc6b3-shell_module:
     runs-on: ubuntu-20.04
+    needs: [prepare-zephyr-62f19cc6b3]
     env:
       ZEPHYR_COMMIT: 62f19cc6b3
       SAMPLE_NAME: shell_module
     steps:
+    - name: Get Zephyr
+      run: echo "Get Zephyr"
     - name: Test
       run: echo $SAMPLE_NAME
   simulate-62f19cc6b3-shell_module:
@@ -36,10 +64,13 @@ jobs:
       run: echo $SAMPLE_NAME
   build-f72eb8d40d-hello_world:
     runs-on: ubuntu-20.04
+    needs: [prepare-zephyr-f72eb8d40d]
     env:
       ZEPHYR_COMMIT: f72eb8d40d
       SAMPLE_NAME: hello_world
     steps:
+    - name: Get Zephyr
+      run: echo "Get Zephyr"
     - name: Test
       run: echo $SAMPLE_NAME
   simulate-f72eb8d40d-hello_world:
@@ -52,10 +83,13 @@ jobs:
       run: echo $SAMPLE_NAME
   build-f72eb8d40d-shell_module:
     runs-on: ubuntu-20.04
+    needs: [prepare-zephyr-f72eb8d40d]
     env:
       ZEPHYR_COMMIT: f72eb8d40d
       SAMPLE_NAME: shell_module
     steps:
+    - name: Get Zephyr
+      run: echo "Get Zephyr"
     - name: Test
       run: echo $SAMPLE_NAME
   simulate-f72eb8d40d-shell_module:

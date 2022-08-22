@@ -17,16 +17,33 @@ def get_zephyr_commits(first_commit, commit_num):
     return [repo.commit(f"{first_commit}~{i}").hexsha[:10] for i in range(commit_num)]
 
 def generate():
-    commit_sample_product = list(itertools.product(get_zephyr_commits("HEAD", 2), SAMPLES))
+    zephyr_commits = get_zephyr_commits("HEAD", 2)
+    commit_sample_product = list(itertools.product(zephyr_commits, SAMPLES))
     tasks = []
+    for zephyr_commit in zephyr_commits:
+        tasks.append(f'''
+  prepare-zephyr-{zephyr_commit}:
+    runs-on: ubuntu-20.04
+    env:
+      ZEPHYR_COMMIT: {zephyr_commit}
+    steps:
+    - name: Download Zephyr
+      run: echo "Download Zephyr"
+    - name: Tar Zephyr
+      run: echo "Tar Zephyr"
+    - name: Pass Zephyr as artifact
+      run: echo "Pass Zephyr as artifact"''')
     for zephyr_commit, sample in commit_sample_product:
         tasks.append(f'''
   build-{zephyr_commit}-{sample}:
     runs-on: ubuntu-20.04
+    needs: [prepare-zephyr-{zephyr_commit}]
     env:
       ZEPHYR_COMMIT: {zephyr_commit}
       SAMPLE_NAME: {sample}
     steps:
+    - name: Get Zephyr
+      run: echo "Get Zephyr"
     - name: Test
       run: echo $SAMPLE_NAME''')
         tasks.append(f'''

@@ -17,7 +17,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: zephyr-6cfb18686e
-        path: zephyrproject.tar
+        path: zephyr.tar
   prepare-zephyr-a41f4f30b5:
     runs-on: ubuntu-20.04
     env:
@@ -33,7 +33,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: zephyr-a41f4f30b5
-        path: zephyrproject.tar
+        path: zephyr.tar
   build-6cfb18686e-hello_world:
     runs-on: ubuntu-20.04
     needs: [prepare-zephyr-6cfb18686e]

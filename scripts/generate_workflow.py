@@ -37,7 +37,7 @@ def generate():
       uses: actions/upload-artifact@v2
       with:
         name: zephyr-{zephyr_commit}
-        path: zephyrproject.tar''')
+        path: zephyr.tar''')
     for zephyr_commit, sample in commit_sample_product:
         tasks.append(f'''
   build-{zephyr_commit}-{sample}:

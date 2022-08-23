@@ -112,8 +112,8 @@ def generate():
         path: results/
     - name: Install dependencies
       run: |
-        sudo apt update -qq
-        sudo apt install -y curl gnupg
+        apt update -qq
+        apt install -y curl gnupg
     - name: Delete unnecessary artifacts
       uses: geekyeggo/delete-artifact@v1
       with:

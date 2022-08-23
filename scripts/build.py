@@ -281,11 +281,9 @@ if __name__ == '__main__':
     boards_to_run = filter(lambda x: all(map(lambda y: y != x.arch, omit_arch)), boards_to_run)
     omit_board = ('acrn', 'qemu', 'native', 'nsim', 'xenvm', 'xt-sim')
     boards_to_run = list(filter(lambda x: all(map(lambda y: y not in x.name, omit_board)), boards_to_run))
-    boards_to_run = boards_to_run[:3]
     total_boards = len(boards_to_run)
 
-    #for i, board in enumerate(boards_to_run, start=1):
-    with parallel_backend('multiprocessing', n_jobs=3):
+    with parallel_backend('multiprocessing', n_jobs=2):
         Parallel()(delayed(loop_wrapper)(board, i, total_boards, sample_name, sample_path) for i, board in enumerate(boards_to_run, start=1))
 
     boards_to_serialize = []

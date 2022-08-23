@@ -6,5 +6,5 @@ jobs:
     container: ubuntu:bionic
     runs-on: [self-hosted, Linux, X64]
     steps:
-    - name: Check nproc
-      run: nproc
+    - name: Check whoami
+      run: whoami

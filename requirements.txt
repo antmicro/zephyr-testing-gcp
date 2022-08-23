@@ -1,3 +1,4 @@
 west==0.13.*
 PyYAML==6.0
 GitPython==3.1.*
+joblib==1.1.0

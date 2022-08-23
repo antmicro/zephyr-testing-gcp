@@ -97,6 +97,11 @@ def generate():
     runs-on: ubuntu-20.04
     needs: [{", ".join([f'simulate-{zephyr_commit}-{sample}' for zephyr_commit, sample in commit_sample_product])}]
     steps:
+    - name: Delete unnecessary artifacts
+      uses: geekyeggo/delete-artifact@v1
+      with:
+        name: |
+          {newline.join([f"zephyr-{i}" for i in zephyr_commits])}
     - name: Download binaries
       uses: actions/download-artifact@v2
       with:
@@ -110,7 +115,6 @@ def generate():
       with:
         name: |
           {newline.join([i for i in zephyr_commits])}
-          {newline.join([f"zephyr-{i}" for i in zephyr_commits])}
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:

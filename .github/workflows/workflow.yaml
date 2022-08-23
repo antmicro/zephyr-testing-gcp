@@ -548,6 +548,12 @@ jobs:
     runs-on: ubuntu-20.04
     needs: [simulate-6cfb18686e-hello_world, simulate-6cfb18686e-shell_module, simulate-6cfb18686e-philosophers, simulate-6cfb18686e-micropython, simulate-6cfb18686e-tensorflow_lite_micro, simulate-a41f4f30b5-hello_world, simulate-a41f4f30b5-shell_module, simulate-a41f4f30b5-philosophers, simulate-a41f4f30b5-micropython, simulate-a41f4f30b5-tensorflow_lite_micro]
     steps:
+    - name: Delete unnecessary artifacts
+      uses: geekyeggo/delete-artifact@v1
+      with:
+        name: |
+          zephyr-6cfb18686e
+          zephyr-a41f4f30b5
     - name: Download binaries
       uses: actions/download-artifact@v2
       with:
@@ -562,8 +568,6 @@ jobs:
         name: |
           6cfb18686e
           a41f4f30b5
-          zephyr-6cfb18686e
-          zephyr-a41f4f30b5
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:

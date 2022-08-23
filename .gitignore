@@ -2,9 +2,9 @@ artifacts/
 renode_portable/
 zephyrproject/
 zephyr-sdk/
-snapshots/
-logs/
-micropython/
+./snapshots/
+./logs/
+./micropython/
 xtensa-esp32-elf/
 *.run
 *.html

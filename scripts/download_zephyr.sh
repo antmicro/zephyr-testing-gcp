@@ -3,7 +3,7 @@ set -e
 set -u
 set -x
 
-pip3 install west
+pip install west
 west init zephyrproject
 
 mkdir -p zephyr-sdk && cd zephyr-sdk
@@ -14,7 +14,7 @@ cd -
 cd zephyrproject/zephyr
 git checkout ${ZEPHYR_COMMIT}
 git apply ../../patches/zephyr/*.patch
-pip3 install -r scripts/requirements.txt 1>>../../artifacts/build.log 2>&1
+pip install -r scripts/requirements.txt 1>>../../artifacts/build.log 2>&1
 cd ..
 for i in $(seq 1 5); do west update 1>>../artifacts/build.log 2>&1 && break || sleep 5; done
 west espressif install 1>>../artifacts/build.log 2>&1

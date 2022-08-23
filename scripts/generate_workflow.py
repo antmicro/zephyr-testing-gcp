@@ -51,6 +51,7 @@ def generate():
       ZEPHYR_COMMIT: {zephyr_commit}
       SAMPLE_NAME: {sample}
       MICROPYTHON_VERSION: 97a7cc243b
+      NUMBER_OF_THREADS: {NUMBER_OF_THREADS}
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment

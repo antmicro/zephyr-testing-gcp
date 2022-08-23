@@ -285,8 +285,9 @@ if __name__ == '__main__':
     boards_to_run = boards_to_run[:4]
 
     total_boards = len(boards_to_run)
+    thread_number = int(os.getenv("NUMBER_OF_THREADS", 1))
 
-    with parallel_backend('multiprocessing', n_jobs=2):
+    with parallel_backend('multiprocessing', n_jobs=thread_number):
         Parallel()(delayed(loop_wrapper)(board, i, total_boards, sample_name, sample_path) for i, board in enumerate(boards_to_run, start=1))
 
     boards_to_serialize = []

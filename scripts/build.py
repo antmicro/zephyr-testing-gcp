@@ -98,7 +98,7 @@ def build_and_copy_bin(zephyr_platform, sample_path, args, sample_name, env):
                 shutil.copyfile(file_path, f"artifacts/{zephyr_sample_name}/{zephyr_sample_name}.dts")
             if file_name == file_list[2]:
                 shutil.copyfile(file_path, f"artifacts/{zephyr_sample_name}/{zephyr_sample_name}-config")
-    if os.path.isdir(build_path):
+    if os.path.isdir(f"{zephyr_path}/{build_path}"):
         shutil.rmtree(f"{zephyr_path}/{build_path}")
     return return_code, west_output
 
@@ -281,11 +281,7 @@ if __name__ == '__main__':
     boards_to_run = filter(lambda x: all(map(lambda y: y != x.arch, omit_arch)), boards_to_run)
     omit_board = ('acrn', 'qemu', 'native', 'nsim', 'xenvm', 'xt-sim')
     boards_to_run = list(filter(lambda x: all(map(lambda y: y not in x.name, omit_board)), boards_to_run))
-
-    boards_to_run = boards_to_run[:5]
-
     total_boards = len(boards_to_run)
-    build_jobs = int(os.getenv('BUILD_JOBS', 1))
 
     #for i, board in enumerate(boards_to_run, start=1):
     with parallel_backend('multiprocessing', n_jobs=3):

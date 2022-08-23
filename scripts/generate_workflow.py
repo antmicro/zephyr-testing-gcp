@@ -6,6 +6,8 @@ from git.exc import NoSuchPathError
 WORKFLOW_FILE = 'workflow.yaml'
 WORKFLOW_NAME = 'workflow'
 SAMPLES = ['hello_world', 'shell_module', 'philosophers', 'micropython', 'tensorflow_lite_micro']
+NUMBER_OF_THREADS = 2
+MAX_NUMBER_OF_COMMITS = 2
 
 def get_zephyr_commits(first_commit, commit_num):
     try:
@@ -16,7 +18,7 @@ def get_zephyr_commits(first_commit, commit_num):
     return [repo.commit(f"{first_commit}~{i}").hexsha[:10] for i in range(commit_num)]
 
 def generate():
-    zephyr_commits = get_zephyr_commits("6cfb18686e", 2)
+    zephyr_commits = get_zephyr_commits("6cfb18686e", MAX_NUMBER_OF_COMMITS)
     commit_sample_product = list(itertools.product(zephyr_commits, SAMPLES))
     tasks = []
     newline = '\n          '

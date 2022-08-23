@@ -3,7 +3,8 @@ on: [push]
 
 jobs:
   prepare-zephyr-6cfb18686e:
-    runs-on: ubuntu-20.04
+    container: ubuntu:bionic
+    runs-on: [self-hosted, Linux, X64]
     env:
       ZEPHYR_COMMIT: 6cfb18686e
       ZEPHYR_SDK_VERSION: 0.14.2
@@ -19,7 +20,8 @@ jobs:
         name: zephyr-6cfb18686e
         path: zephyr.tar
   prepare-zephyr-a41f4f30b5:
-    runs-on: ubuntu-20.04
+    container: ubuntu:bionic
+    runs-on: [self-hosted, Linux, X64]
     env:
       ZEPHYR_COMMIT: a41f4f30b5
       ZEPHYR_SDK_VERSION: 0.14.2
@@ -35,7 +37,8 @@ jobs:
         name: zephyr-a41f4f30b5
         path: zephyr.tar
   build-6cfb18686e-hello_world:
-    runs-on: ubuntu-20.04
+    container: ubuntu:bionic
+    runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-6cfb18686e]
     env:
       ZEPHYR_COMMIT: 6cfb18686e
@@ -62,7 +65,8 @@ jobs:
         name: 6cfb18686e
         path: artifacts/
   simulate-6cfb18686e-hello_world:
-    runs-on: ubuntu-20.04
+    container: ubuntu:bionic
+    runs-on: [self-hosted, Linux, X64]
     needs: [build-6cfb18686e-hello_world]
     env:
        SAMPLE_NAME: hello_world
@@ -86,7 +90,8 @@ jobs:
         name: 6cfb18686e
         path: artifacts/
   build-6cfb18686e-shell_module:
-    runs-on: ubuntu-20.04
+    container: ubuntu:bionic
+    runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-6cfb18686e]
     env:
       ZEPHYR_COMMIT: 6cfb18686e
@@ -113,7 +118,8 @@ jobs:
         name: 6cfb18686e
         path: artifacts/
   simulate-6cfb18686e-shell_module:
-    runs-on: ubuntu-20.04
+    container: ubuntu:bionic
+    runs-on: [self-hosted, Linux, X64]
     needs: [build-6cfb18686e-shell_module]
     env:
        SAMPLE_NAME: shell_module
@@ -137,7 +143,8 @@ jobs:
         name: 6cfb18686e
         path: artifacts/
   build-6cfb18686e-philosophers:
-    runs-on: ubuntu-20.04
+    container: ubuntu:bionic
+    runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-6cfb18686e]
     env:
       ZEPHYR_COMMIT: 6cfb18686e
@@ -164,7 +171,8 @@ jobs:
         name: 6cfb18686e
         path: artifacts/
   simulate-6cfb18686e-philosophers:
-    runs-on: ubuntu-20.04
+    container: ubuntu:bionic
+    runs-on: [self-hosted, Linux, X64]
     needs: [build-6cfb18686e-philosophers]
     env:
        SAMPLE_NAME: philosophers
@@ -188,7 +196,8 @@ jobs:
         name: 6cfb18686e
         path: artifacts/
   build-6cfb18686e-micropython:
-    runs-on: ubuntu-20.04
+    container: ubuntu:bionic
+    runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-6cfb18686e]
     env:
       ZEPHYR_COMMIT: 6cfb18686e
@@ -215,7 +224,8 @@ jobs:
         name: 6cfb18686e
         path: artifacts/
   simulate-6cfb18686e-micropython:
-    runs-on: ubuntu-20.04
+    container: ubuntu:bionic
+    runs-on: [self-hosted, Linux, X64]
     needs: [build-6cfb18686e-micropython]
     env:
        SAMPLE_NAME: micropython
@@ -239,7 +249,8 @@ jobs:
         name: 6cfb18686e
         path: artifacts/
   build-6cfb18686e-tensorflow_lite_micro:
-    runs-on: ubuntu-20.04
+    container: ubuntu:bionic
+    runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-6cfb18686e]
     env:
       ZEPHYR_COMMIT: 6cfb18686e
@@ -266,7 +277,8 @@ jobs:
         name: 6cfb18686e
         path: artifacts/
   simulate-6cfb18686e-tensorflow_lite_micro:
-    runs-on: ubuntu-20.04
+    container: ubuntu:bionic
+    runs-on: [self-hosted, Linux, X64]
     needs: [build-6cfb18686e-tensorflow_lite_micro]
     env:
        SAMPLE_NAME: tensorflow_lite_micro
@@ -290,7 +302,8 @@ jobs:
         name: 6cfb18686e
         path: artifacts/
   build-a41f4f30b5-hello_world:
-    runs-on: ubuntu-20.04
+    container: ubuntu:bionic
+    runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-a41f4f30b5]
     env:
       ZEPHYR_COMMIT: a41f4f30b5
@@ -317,7 +330,8 @@ jobs:
         name: a41f4f30b5
         path: artifacts/
   simulate-a41f4f30b5-hello_world:
-    runs-on: ubuntu-20.04
+    container: ubuntu:bionic
+    runs-on: [self-hosted, Linux, X64]
     needs: [build-a41f4f30b5-hello_world]
     env:
        SAMPLE_NAME: hello_world
@@ -341,7 +355,8 @@ jobs:
         name: a41f4f30b5
         path: artifacts/
   build-a41f4f30b5-shell_module:
-    runs-on: ubuntu-20.04
+    container: ubuntu:bionic
+    runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-a41f4f30b5]
     env:
       ZEPHYR_COMMIT: a41f4f30b5
@@ -368,7 +383,8 @@ jobs:
         name: a41f4f30b5
         path: artifacts/
   simulate-a41f4f30b5-shell_module:
-    runs-on: ubuntu-20.04
+    container: ubuntu:bionic
+    runs-on: [self-hosted, Linux, X64]
     needs: [build-a41f4f30b5-shell_module]
     env:
        SAMPLE_NAME: shell_module
@@ -392,7 +408,8 @@ jobs:
         name: a41f4f30b5
         path: artifacts/
   build-a41f4f30b5-philosophers:
-    runs-on: ubuntu-20.04
+    container: ubuntu:bionic
+    runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-a41f4f30b5]
     env:
       ZEPHYR_COMMIT: a41f4f30b5
@@ -419,7 +436,8 @@ jobs:
         name: a41f4f30b5
         path: artifacts/
   simulate-a41f4f30b5-philosophers:
-    runs-on: ubuntu-20.04
+    container: ubuntu:bionic
+    runs-on: [self-hosted, Linux, X64]
     needs: [build-a41f4f30b5-philosophers]
     env:
        SAMPLE_NAME: philosophers
@@ -443,7 +461,8 @@ jobs:
         name: a41f4f30b5
         path: artifacts/
   build-a41f4f30b5-micropython:
-    runs-on: ubuntu-20.04
+    container: ubuntu:bionic
+    runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-a41f4f30b5]
     env:
       ZEPHYR_COMMIT: a41f4f30b5
@@ -470,7 +489,8 @@ jobs:
         name: a41f4f30b5
         path: artifacts/
   simulate-a41f4f30b5-micropython:
-    runs-on: ubuntu-20.04
+    container: ubuntu:bionic
+    runs-on: [self-hosted, Linux, X64]
     needs: [build-a41f4f30b5-micropython]
     env:
        SAMPLE_NAME: micropython
@@ -494,7 +514,8 @@ jobs:
         name: a41f4f30b5
         path: artifacts/
   build-a41f4f30b5-tensorflow_lite_micro:
-    runs-on: ubuntu-20.04
+    container: ubuntu:bionic
+    runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-a41f4f30b5]
     env:
       ZEPHYR_COMMIT: a41f4f30b5
@@ -521,7 +542,8 @@ jobs:
         name: a41f4f30b5
         path: artifacts/
   simulate-a41f4f30b5-tensorflow_lite_micro:
-    runs-on: ubuntu-20.04
+    container: ubuntu:bionic
+    runs-on: [self-hosted, Linux, X64]
     needs: [build-a41f4f30b5-tensorflow_lite_micro]
     env:
        SAMPLE_NAME: tensorflow_lite_micro
@@ -545,7 +567,8 @@ jobs:
         name: a41f4f30b5
         path: artifacts/
   results:
-    runs-on: ubuntu-20.04
+    container: ubuntu:bionic
+    runs-on: [self-hosted, Linux, X64]
     needs: [simulate-6cfb18686e-hello_world, simulate-6cfb18686e-shell_module, simulate-6cfb18686e-philosophers, simulate-6cfb18686e-micropython, simulate-6cfb18686e-tensorflow_lite_micro, simulate-a41f4f30b5-hello_world, simulate-a41f4f30b5-shell_module, simulate-a41f4f30b5-philosophers, simulate-a41f4f30b5-micropython, simulate-a41f4f30b5-tensorflow_lite_micro]
     steps:
     - name: Delete unnecessary artifacts

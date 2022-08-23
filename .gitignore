@@ -1,10 +1,10 @@
-artifacts/
-renode_portable/
-zephyrproject/
-zephyr-sdk/
-./snapshots/
-./logs/
-./micropython/
+/artifacts/
+/renode_portable/
+/zephyrproject/
+/zephyr-sdk/
+snapshots/
+logs/
+/micropython/
 xtensa-esp32-elf/
 *.run
 *.html
@@ -12,6 +12,6 @@ xtensa-esp32-elf/
 *.overlay
 __pycache__
 monitor.txt*
-src
+/src
 micropython.build.log
 Makefile

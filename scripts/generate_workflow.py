@@ -23,7 +23,8 @@ def generate():
     for zephyr_commit in zephyr_commits:
         tasks.append(f'''
   prepare-zephyr-{zephyr_commit}:
-    runs-on: ubuntu-20.04
+    container: ubuntu:bionic
+    runs-on: [self-hosted, Linux, X64]
     env:
       ZEPHYR_COMMIT: {zephyr_commit}
       ZEPHYR_SDK_VERSION: 0.14.2
@@ -41,7 +42,8 @@ def generate():
     for zephyr_commit, sample in commit_sample_product:
         tasks.append(f'''
   build-{zephyr_commit}-{sample}:
-    runs-on: ubuntu-20.04
+    container: ubuntu:bionic
+    runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-{zephyr_commit}]
     env:
       ZEPHYR_COMMIT: {zephyr_commit}
@@ -69,7 +71,8 @@ def generate():
         path: artifacts/''')
         tasks.append(f'''
   simulate-{zephyr_commit}-{sample}:
-    runs-on: ubuntu-20.04
+    container: ubuntu:bionic
+    runs-on: [self-hosted, Linux, X64]
     needs: [build-{zephyr_commit}-{sample}]
     env:
        SAMPLE_NAME: {sample}
@@ -94,7 +97,8 @@ def generate():
         path: artifacts/''')
     tasks.append(f'''
   results:
-    runs-on: ubuntu-20.04
+    container: ubuntu:bionic
+    runs-on: [self-hosted, Linux, X64]
     needs: [{", ".join([f'simulate-{zephyr_commit}-{sample}' for zephyr_commit, sample in commit_sample_product])}]
     steps:
     - name: Delete unnecessary artifacts

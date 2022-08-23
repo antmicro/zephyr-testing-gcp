@@ -1,0 +1,10 @@
+name: workflow
+on: [push]
+
+jobs:
+  check-nproc:
+    container: ubuntu:bionic
+    runs-on: [self-hosted, Linux, X64]
+    steps:
+    - name: Check nproc
+      run: nproc

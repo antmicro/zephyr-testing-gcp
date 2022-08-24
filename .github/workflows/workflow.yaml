@@ -18,7 +18,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: zephyr-6cfb18686e
-        path: zephyr.tar
+        path: zephyr.tar.gz
   prepare-zephyr-a41f4f30b5:
     container: ubuntu:focal
     runs-on: [self-hosted, Linux, X64]
@@ -35,7 +35,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: zephyr-a41f4f30b5
-        path: zephyr.tar
+        path: zephyr.tar.gz
   build-6cfb18686e-hello_world:
     container: ubuntu:focal
     runs-on: [self-hosted, Linux, X64]
@@ -83,6 +83,8 @@ jobs:
       run: ./scripts/prepare_environment.sh
     - name: Prepare Renode
       run: ./scripts/download_renode.sh
+    - name: Add renode to PATH
+      run: export PATH=$PATH:`pwd`/renode_portable
     - name: Simulate
       run: ./scripts/simulate.py
     - name: Upload artifacts
@@ -137,6 +139,8 @@ jobs:
       run: ./scripts/prepare_environment.sh
     - name: Prepare Renode
       run: ./scripts/download_renode.sh
+    - name: Add renode to PATH
+      run: export PATH=$PATH:`pwd`/renode_portable
     - name: Simulate
       run: ./scripts/simulate.py
     - name: Upload artifacts
@@ -191,6 +195,8 @@ jobs:
       run: ./scripts/prepare_environment.sh
     - name: Prepare Renode
       run: ./scripts/download_renode.sh
+    - name: Add renode to PATH
+      run: export PATH=$PATH:`pwd`/renode_portable
     - name: Simulate
       run: ./scripts/simulate.py
     - name: Upload artifacts
@@ -245,6 +251,8 @@ jobs:
       run: ./scripts/prepare_environment.sh
     - name: Prepare Renode
       run: ./scripts/download_renode.sh
+    - name: Add renode to PATH
+      run: export PATH=$PATH:`pwd`/renode_portable
     - name: Simulate
       run: ./scripts/simulate.py
     - name: Upload artifacts
@@ -299,6 +307,8 @@ jobs:
       run: ./scripts/prepare_environment.sh
     - name: Prepare Renode
       run: ./scripts/download_renode.sh
+    - name: Add renode to PATH
+      run: export PATH=$PATH:`pwd`/renode_portable
     - name: Simulate
       run: ./scripts/simulate.py
     - name: Upload artifacts
@@ -353,6 +363,8 @@ jobs:
       run: ./scripts/prepare_environment.sh
     - name: Prepare Renode
       run: ./scripts/download_renode.sh
+    - name: Add renode to PATH
+      run: export PATH=$PATH:`pwd`/renode_portable
     - name: Simulate
       run: ./scripts/simulate.py
     - name: Upload artifacts
@@ -407,6 +419,8 @@ jobs:
       run: ./scripts/prepare_environment.sh
     - name: Prepare Renode
       run: ./scripts/download_renode.sh
+    - name: Add renode to PATH
+      run: export PATH=$PATH:`pwd`/renode_portable
     - name: Simulate
       run: ./scripts/simulate.py
     - name: Upload artifacts
@@ -461,6 +475,8 @@ jobs:
       run: ./scripts/prepare_environment.sh
     - name: Prepare Renode
       run: ./scripts/download_renode.sh
+    - name: Add renode to PATH
+      run: export PATH=$PATH:`pwd`/renode_portable
     - name: Simulate
       run: ./scripts/simulate.py
     - name: Upload artifacts
@@ -515,6 +531,8 @@ jobs:
       run: ./scripts/prepare_environment.sh
     - name: Prepare Renode
       run: ./scripts/download_renode.sh
+    - name: Add renode to PATH
+      run: export PATH=$PATH:`pwd`/renode_portable
     - name: Simulate
       run: ./scripts/simulate.py
     - name: Upload artifacts
@@ -569,6 +587,8 @@ jobs:
       run: ./scripts/prepare_environment.sh
     - name: Prepare Renode
       run: ./scripts/download_renode.sh
+    - name: Add renode to PATH
+      run: export PATH=$PATH:`pwd`/renode_portable
     - name: Simulate
       run: ./scripts/simulate.py
     - name: Upload artifacts

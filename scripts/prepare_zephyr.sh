@@ -3,7 +3,7 @@ set -e
 set -u
 set -x
 
-tar xzf zephyr-artifact/zephyr.tar.gz
+tar xf zephyr-artifact/zephyr.tar
 pip3 install -r requirements_build.txt
 cd zephyr-sdk
 ./setup.sh -t all -h -c

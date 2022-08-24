@@ -3,7 +3,7 @@ on: [push]
 
 jobs:
   prepare-zephyr-6cfb18686e:
-    container: ubuntu:bionic
+    container: ubuntu:focal
     runs-on: [self-hosted, Linux, X64]
     env:
       ZEPHYR_COMMIT: 6cfb18686e
@@ -20,7 +20,7 @@ jobs:
         name: zephyr-6cfb18686e
         path: zephyr.tar
   prepare-zephyr-a41f4f30b5:
-    container: ubuntu:bionic
+    container: ubuntu:focal
     runs-on: [self-hosted, Linux, X64]
     env:
       ZEPHYR_COMMIT: a41f4f30b5
@@ -37,13 +37,14 @@ jobs:
         name: zephyr-a41f4f30b5
         path: zephyr.tar
   build-6cfb18686e-hello_world:
-    container: ubuntu:bionic
+    container: ubuntu:focal
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-6cfb18686e]
     env:
       ZEPHYR_COMMIT: 6cfb18686e
       SAMPLE_NAME: hello_world
       MICROPYTHON_VERSION: 97a7cc243b
+      NUMBER_OF_THREADS: 2
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -65,7 +66,7 @@ jobs:
         name: 6cfb18686e
         path: artifacts/
   simulate-6cfb18686e-hello_world:
-    container: ubuntu:bionic
+    container: ubuntu:focal
     runs-on: [self-hosted, Linux, X64]
     needs: [build-6cfb18686e-hello_world]
     env:
@@ -90,13 +91,14 @@ jobs:
         name: 6cfb18686e
         path: artifacts/
   build-6cfb18686e-shell_module:
-    container: ubuntu:bionic
+    container: ubuntu:focal
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-6cfb18686e]
     env:
       ZEPHYR_COMMIT: 6cfb18686e
       SAMPLE_NAME: shell_module
       MICROPYTHON_VERSION: 97a7cc243b
+      NUMBER_OF_THREADS: 2
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -118,7 +120,7 @@ jobs:
         name: 6cfb18686e
         path: artifacts/
   simulate-6cfb18686e-shell_module:
-    container: ubuntu:bionic
+    container: ubuntu:focal
     runs-on: [self-hosted, Linux, X64]
     needs: [build-6cfb18686e-shell_module]
     env:
@@ -143,13 +145,14 @@ jobs:
         name: 6cfb18686e
         path: artifacts/
   build-6cfb18686e-philosophers:
-    container: ubuntu:bionic
+    container: ubuntu:focal
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-6cfb18686e]
     env:
       ZEPHYR_COMMIT: 6cfb18686e
       SAMPLE_NAME: philosophers
       MICROPYTHON_VERSION: 97a7cc243b
+      NUMBER_OF_THREADS: 2
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -171,7 +174,7 @@ jobs:
         name: 6cfb18686e
         path: artifacts/
   simulate-6cfb18686e-philosophers:
-    container: ubuntu:bionic
+    container: ubuntu:focal
     runs-on: [self-hosted, Linux, X64]
     needs: [build-6cfb18686e-philosophers]
     env:
@@ -196,13 +199,14 @@ jobs:
         name: 6cfb18686e
         path: artifacts/
   build-6cfb18686e-micropython:
-    container: ubuntu:bionic
+    container: ubuntu:focal
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-6cfb18686e]
     env:
       ZEPHYR_COMMIT: 6cfb18686e
       SAMPLE_NAME: micropython
       MICROPYTHON_VERSION: 97a7cc243b
+      NUMBER_OF_THREADS: 2
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -224,7 +228,7 @@ jobs:
         name: 6cfb18686e
         path: artifacts/
   simulate-6cfb18686e-micropython:
-    container: ubuntu:bionic
+    container: ubuntu:focal
     runs-on: [self-hosted, Linux, X64]
     needs: [build-6cfb18686e-micropython]
     env:
@@ -249,13 +253,14 @@ jobs:
         name: 6cfb18686e
         path: artifacts/
   build-6cfb18686e-tensorflow_lite_micro:
-    container: ubuntu:bionic
+    container: ubuntu:focal
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-6cfb18686e]
     env:
       ZEPHYR_COMMIT: 6cfb18686e
       SAMPLE_NAME: tensorflow_lite_micro
       MICROPYTHON_VERSION: 97a7cc243b
+      NUMBER_OF_THREADS: 2
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -277,7 +282,7 @@ jobs:
         name: 6cfb18686e
         path: artifacts/
   simulate-6cfb18686e-tensorflow_lite_micro:
-    container: ubuntu:bionic
+    container: ubuntu:focal
     runs-on: [self-hosted, Linux, X64]
     needs: [build-6cfb18686e-tensorflow_lite_micro]
     env:
@@ -302,13 +307,14 @@ jobs:
         name: 6cfb18686e
         path: artifacts/
   build-a41f4f30b5-hello_world:
-    container: ubuntu:bionic
+    container: ubuntu:focal
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-a41f4f30b5]
     env:
       ZEPHYR_COMMIT: a41f4f30b5
       SAMPLE_NAME: hello_world
       MICROPYTHON_VERSION: 97a7cc243b
+      NUMBER_OF_THREADS: 2
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -330,7 +336,7 @@ jobs:
         name: a41f4f30b5
         path: artifacts/
   simulate-a41f4f30b5-hello_world:
-    container: ubuntu:bionic
+    container: ubuntu:focal
     runs-on: [self-hosted, Linux, X64]
     needs: [build-a41f4f30b5-hello_world]
     env:
@@ -355,13 +361,14 @@ jobs:
         name: a41f4f30b5
         path: artifacts/
   build-a41f4f30b5-shell_module:
-    container: ubuntu:bionic
+    container: ubuntu:focal
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-a41f4f30b5]
     env:
       ZEPHYR_COMMIT: a41f4f30b5
       SAMPLE_NAME: shell_module
       MICROPYTHON_VERSION: 97a7cc243b
+      NUMBER_OF_THREADS: 2
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -383,7 +390,7 @@ jobs:
         name: a41f4f30b5
         path: artifacts/
   simulate-a41f4f30b5-shell_module:
-    container: ubuntu:bionic
+    container: ubuntu:focal
     runs-on: [self-hosted, Linux, X64]
     needs: [build-a41f4f30b5-shell_module]
     env:
@@ -408,13 +415,14 @@ jobs:
         name: a41f4f30b5
         path: artifacts/
   build-a41f4f30b5-philosophers:
-    container: ubuntu:bionic
+    container: ubuntu:focal
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-a41f4f30b5]
     env:
       ZEPHYR_COMMIT: a41f4f30b5
       SAMPLE_NAME: philosophers
       MICROPYTHON_VERSION: 97a7cc243b
+      NUMBER_OF_THREADS: 2
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -436,7 +444,7 @@ jobs:
         name: a41f4f30b5
         path: artifacts/
   simulate-a41f4f30b5-philosophers:
-    container: ubuntu:bionic
+    container: ubuntu:focal
     runs-on: [self-hosted, Linux, X64]
     needs: [build-a41f4f30b5-philosophers]
     env:
@@ -461,13 +469,14 @@ jobs:
         name: a41f4f30b5
         path: artifacts/
   build-a41f4f30b5-micropython:
-    container: ubuntu:bionic
+    container: ubuntu:focal
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-a41f4f30b5]
     env:
       ZEPHYR_COMMIT: a41f4f30b5
       SAMPLE_NAME: micropython
       MICROPYTHON_VERSION: 97a7cc243b
+      NUMBER_OF_THREADS: 2
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -489,7 +498,7 @@ jobs:
         name: a41f4f30b5
         path: artifacts/
   simulate-a41f4f30b5-micropython:
-    container: ubuntu:bionic
+    container: ubuntu:focal
     runs-on: [self-hosted, Linux, X64]
     needs: [build-a41f4f30b5-micropython]
     env:
@@ -514,13 +523,14 @@ jobs:
         name: a41f4f30b5
         path: artifacts/
   build-a41f4f30b5-tensorflow_lite_micro:
-    container: ubuntu:bionic
+    container: ubuntu:focal
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-a41f4f30b5]
     env:
       ZEPHYR_COMMIT: a41f4f30b5
       SAMPLE_NAME: tensorflow_lite_micro
       MICROPYTHON_VERSION: 97a7cc243b
+      NUMBER_OF_THREADS: 2
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -542,7 +552,7 @@ jobs:
         name: a41f4f30b5
         path: artifacts/
   simulate-a41f4f30b5-tensorflow_lite_micro:
-    container: ubuntu:bionic
+    container: ubuntu:focal
     runs-on: [self-hosted, Linux, X64]
     needs: [build-a41f4f30b5-tensorflow_lite_micro]
     env:
@@ -567,7 +577,7 @@ jobs:
         name: a41f4f30b5
         path: artifacts/
   results:
-    container: ubuntu:bionic
+    container: ubuntu:focal
     runs-on: [self-hosted, Linux, X64]
     needs: [simulate-6cfb18686e-hello_world, simulate-6cfb18686e-shell_module, simulate-6cfb18686e-philosophers, simulate-6cfb18686e-micropython, simulate-6cfb18686e-tensorflow_lite_micro, simulate-a41f4f30b5-hello_world, simulate-a41f4f30b5-shell_module, simulate-a41f4f30b5-philosophers, simulate-a41f4f30b5-micropython, simulate-a41f4f30b5-tensorflow_lite_micro]
     steps:

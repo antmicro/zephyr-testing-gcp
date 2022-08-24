@@ -25,7 +25,7 @@ def generate():
     for zephyr_commit in zephyr_commits:
         tasks.append(f'''
   prepare-zephyr-{zephyr_commit}:
-    container: ubuntu:bionic
+    container: ubuntu:focal
     runs-on: [self-hosted, Linux, X64]
     env:
       ZEPHYR_COMMIT: {zephyr_commit}
@@ -44,7 +44,7 @@ def generate():
     for zephyr_commit, sample in commit_sample_product:
         tasks.append(f'''
   build-{zephyr_commit}-{sample}:
-    container: ubuntu:bionic
+    container: ubuntu:focal
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-{zephyr_commit}]
     env:
@@ -74,7 +74,7 @@ def generate():
         path: artifacts/''')
         tasks.append(f'''
   simulate-{zephyr_commit}-{sample}:
-    container: ubuntu:bionic
+    container: ubuntu:focal
     runs-on: [self-hosted, Linux, X64]
     needs: [build-{zephyr_commit}-{sample}]
     env:
@@ -100,7 +100,7 @@ def generate():
         path: artifacts/''')
     tasks.append(f'''
   results:
-    container: ubuntu:bionic
+    container: ubuntu:focal
     runs-on: [self-hosted, Linux, X64]
     needs: [{", ".join([f'simulate-{zephyr_commit}-{sample}' for zephyr_commit, sample in commit_sample_product])}]
     steps:

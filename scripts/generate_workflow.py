@@ -91,6 +91,8 @@ def generate():
       run: ./scripts/prepare_environment.sh
     - name: Prepare Renode
       run: ./scripts/download_renode.sh
+    - name: Add renode to PATH
+      run: export PATH=$PATH:`pwd`/renode_portable
     - name: Simulate
       run: ./scripts/simulate.py
     - name: Upload artifacts

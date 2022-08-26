@@ -339,7 +339,7 @@ def loop_wrapper(b, i, total_boards, sample_name):
     return out
 
 def get_renode_version():
-    renode_ver = subprocess.run('renode -v', capture_output=True, shell=True).stdout.decode()
+    renode_ver = subprocess.run(f'./renode_portable/renode -v', capture_output=True, shell=True).stdout.decode()
     if renode_ver == "":
         return None
 

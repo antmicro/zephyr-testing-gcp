@@ -164,16 +164,14 @@ def get_board_yaml_path(board_name, board_path):
 
 def try_build(board_name, board_path, sample_name, sample_path):
     board_yaml = get_board_yaml_path(board_name, board_path)
-    if os.getenv('CI', False):
-        # check if additional custom config is available
-        config_path = f'configs/{sample_name}.conf'
-        if os.path.exists(config_path):
-            sample_args = f'-DCONF_FILE={os.path.realpath(config_path)}'
-        else:
-            sample_args = ''
+    config_path = f'configs/{sample_name}.conf'
+    if os.path.exists(config_path):
+        sample_args = f'-DCONF_FILE={os.path.realpath(config_path)}'
+    else:
+        sample_args = ''
 
-        # build the sample
-        build_sample(board_name, sample_name, f'samples/{sample_path}', sample_args, get_toolchain(board_yaml))
+    # build the sample
+    build_sample(board_name, sample_name, f'samples/{sample_path}', sample_args, get_toolchain(board_yaml))
 
 def get_boards():
     # the Zephyr utility has its own argument parsing, so avoid args clash
@@ -281,7 +279,6 @@ if __name__ == '__main__':
     boards_to_run = filter(lambda x: all(map(lambda y: y != x.arch, omit_arch)), boards_to_run)
     omit_board = ('acrn', 'qemu', 'native', 'nsim', 'xenvm', 'xt-sim')
     boards_to_run = list(filter(lambda x: all(map(lambda y: y not in x.name, omit_board)), boards_to_run))
-    boards_to_run = boards_to_run[:4]
     total_boards = len(boards_to_run)
     thread_number = int(os.getenv("NUMBER_OF_THREADS", 1))
 

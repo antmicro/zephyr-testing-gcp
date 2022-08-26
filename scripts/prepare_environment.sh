@@ -3,6 +3,8 @@ set -e
 set -u
 set -x
 
+echo $GITHUB_PATH
+
 mkdir -p artifacts/results
 apt -qqy update
 apt -qqy install software-properties-common

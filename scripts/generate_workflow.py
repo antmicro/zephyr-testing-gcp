@@ -9,6 +9,7 @@ MAX_NUMBER_OF_COMMITS = 2
 UBUNTU_VERSION = 'jammy'
 ZEPHYR_SDK_VERSION = '0.14.2'
 RENODE_VERSION = '1.13.1+20220731git8eca7310'
+LAST_ZEPHYR_COMMIT_FILE = 'last_zephyr_commit'
 
 def generate():
     commit_sample_product = list(itertools.product(range(MAX_NUMBER_OF_COMMITS), SAMPLES))
@@ -125,7 +126,7 @@ def generate():
 on:
   push:
     paths-ignore:
-      - 'last_zephyr_commit'
+      - '{LAST_ZEPHYR_COMMIT_FILE}'
   schedule:
     - cron: '0 3 * * *'
   workflow_dispatch:

@@ -11,7 +11,7 @@ curl -kL https://dl.antmicro.com/projects/renode/zephyr-sdk-${ZEPHYR_SDK_VERSION
 ./setup.sh -t all -h -c
 cd -
 HEAD=6cfb18686e
-LAST_COMMIT=$(cat last_commit)
+LAST_COMMIT=$(cat last_zephyr_commit)
 COMMITS=$(git -C zephyrproject/zephyr log --pretty=format:'%h' $LAST_COMMIT..$HEAD)
 
 cd zephyrproject/zephyr

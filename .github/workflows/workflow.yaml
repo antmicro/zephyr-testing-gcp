@@ -2,11 +2,11 @@ name: workflow
 on: [push]
 
 jobs:
-  prepare-zephyr-6cfb18686e:
+  prepare-zephyr-0:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     env:
-      ZEPHYR_COMMIT: 6cfb18686e
+      ZEPHYR_COMMIT: 0
       ZEPHYR_SDK_VERSION: 0.14.2
     steps:
     - uses: actions/checkout@v2
@@ -17,13 +17,13 @@ jobs:
     - name: Pass Zephyr as artifact
       uses: actions/upload-artifact@v2
       with:
-        name: zephyr-6cfb18686e
+        name: zephyr-0
         path: zephyr.tar.gz
-  prepare-zephyr-a41f4f30b5:
+  prepare-zephyr-1:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     env:
-      ZEPHYR_COMMIT: a41f4f30b5
+      ZEPHYR_COMMIT: 1
       ZEPHYR_SDK_VERSION: 0.14.2
     steps:
     - uses: actions/checkout@v2
@@ -34,14 +34,13 @@ jobs:
     - name: Pass Zephyr as artifact
       uses: actions/upload-artifact@v2
       with:
-        name: zephyr-a41f4f30b5
+        name: zephyr-1
         path: zephyr.tar.gz
-  build-6cfb18686e-hello_world:
+  build-0-hello_world:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
-    needs: [prepare-zephyr-6cfb18686e]
+    needs: [prepare-zephyr-0]
     env:
-      ZEPHYR_COMMIT: 6cfb18686e
       SAMPLE_NAME: hello_world
       MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 2
@@ -52,7 +51,7 @@ jobs:
     - name: Get Zephyr
       uses: actions/download-artifact@v2
       with:
-        name: zephyr-6cfb18686e
+        name: zephyr-0
         path: zephyr-artifact
     - name: Prepare Zephyr
       run: ./scripts/prepare_zephyr.sh
@@ -63,12 +62,12 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: 6cfb18686e
+        name: build-0
         path: artifacts/
-  simulate-6cfb18686e-hello_world:
+  simulate-0-hello_world:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
-    needs: [build-6cfb18686e-hello_world]
+    needs: [build-0-hello_world]
     env:
        SAMPLE_NAME: hello_world
        RENODE_VERSION: 1.13.1+20220731git8eca7310
@@ -77,7 +76,7 @@ jobs:
     - name: Get artifacts
       uses: actions/download-artifact@v2
       with:
-        name: 6cfb18686e
+        name: build-0
         path: artifacts/
     - name: Prepare environment
       run: ./scripts/prepare_environment.sh
@@ -85,17 +84,21 @@ jobs:
       run: ./scripts/download_renode.sh
     - name: Simulate
       run: ./scripts/simulate.py
+    - name: Get Zephyr commit
+      id: get-zephyr-commit
+      run: |
+        zephyr_commit=$(cat artifacts/zephyr.version)
+        echo '::set-output name=ZEPHYR_COMMIT::$zephyr_commit'
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: 6cfb18686e
+        name: ${ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }
         path: artifacts/
-  build-6cfb18686e-shell_module:
+  build-0-shell_module:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
-    needs: [prepare-zephyr-6cfb18686e]
+    needs: [prepare-zephyr-0]
     env:
-      ZEPHYR_COMMIT: 6cfb18686e
       SAMPLE_NAME: shell_module
       MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 2
@@ -106,7 +109,7 @@ jobs:
     - name: Get Zephyr
       uses: actions/download-artifact@v2
       with:
-        name: zephyr-6cfb18686e
+        name: zephyr-0
         path: zephyr-artifact
     - name: Prepare Zephyr
       run: ./scripts/prepare_zephyr.sh
@@ -117,12 +120,12 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: 6cfb18686e
+        name: build-0
         path: artifacts/
-  simulate-6cfb18686e-shell_module:
+  simulate-0-shell_module:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
-    needs: [build-6cfb18686e-shell_module]
+    needs: [build-0-shell_module]
     env:
        SAMPLE_NAME: shell_module
        RENODE_VERSION: 1.13.1+20220731git8eca7310
@@ -131,7 +134,7 @@ jobs:
     - name: Get artifacts
       uses: actions/download-artifact@v2
       with:
-        name: 6cfb18686e
+        name: build-0
         path: artifacts/
     - name: Prepare environment
       run: ./scripts/prepare_environment.sh
@@ -139,17 +142,21 @@ jobs:
       run: ./scripts/download_renode.sh
     - name: Simulate
       run: ./scripts/simulate.py
+    - name: Get Zephyr commit
+      id: get-zephyr-commit
+      run: |
+        zephyr_commit=$(cat artifacts/zephyr.version)
+        echo '::set-output name=ZEPHYR_COMMIT::$zephyr_commit'
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: 6cfb18686e
+        name: ${ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }
         path: artifacts/
-  build-6cfb18686e-philosophers:
+  build-0-philosophers:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
-    needs: [prepare-zephyr-6cfb18686e]
+    needs: [prepare-zephyr-0]
     env:
-      ZEPHYR_COMMIT: 6cfb18686e
       SAMPLE_NAME: philosophers
       MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 2
@@ -160,7 +167,7 @@ jobs:
     - name: Get Zephyr
       uses: actions/download-artifact@v2
       with:
-        name: zephyr-6cfb18686e
+        name: zephyr-0
         path: zephyr-artifact
     - name: Prepare Zephyr
       run: ./scripts/prepare_zephyr.sh
@@ -171,12 +178,12 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: 6cfb18686e
+        name: build-0
         path: artifacts/
-  simulate-6cfb18686e-philosophers:
+  simulate-0-philosophers:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
-    needs: [build-6cfb18686e-philosophers]
+    needs: [build-0-philosophers]
     env:
        SAMPLE_NAME: philosophers
        RENODE_VERSION: 1.13.1+20220731git8eca7310
@@ -185,7 +192,7 @@ jobs:
     - name: Get artifacts
       uses: actions/download-artifact@v2
       with:
-        name: 6cfb18686e
+        name: build-0
         path: artifacts/
     - name: Prepare environment
       run: ./scripts/prepare_environment.sh
@@ -193,17 +200,21 @@ jobs:
       run: ./scripts/download_renode.sh
     - name: Simulate
       run: ./scripts/simulate.py
+    - name: Get Zephyr commit
+      id: get-zephyr-commit
+      run: |
+        zephyr_commit=$(cat artifacts/zephyr.version)
+        echo '::set-output name=ZEPHYR_COMMIT::$zephyr_commit'
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: 6cfb18686e
+        name: ${ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }
         path: artifacts/
-  build-6cfb18686e-micropython:
+  build-0-micropython:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
-    needs: [prepare-zephyr-6cfb18686e]
+    needs: [prepare-zephyr-0]
     env:
-      ZEPHYR_COMMIT: 6cfb18686e
       SAMPLE_NAME: micropython
       MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 2
@@ -214,7 +225,7 @@ jobs:
     - name: Get Zephyr
       uses: actions/download-artifact@v2
       with:
-        name: zephyr-6cfb18686e
+        name: zephyr-0
         path: zephyr-artifact
     - name: Prepare Zephyr
       run: ./scripts/prepare_zephyr.sh
@@ -225,12 +236,12 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: 6cfb18686e
+        name: build-0
         path: artifacts/
-  simulate-6cfb18686e-micropython:
+  simulate-0-micropython:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
-    needs: [build-6cfb18686e-micropython]
+    needs: [build-0-micropython]
     env:
        SAMPLE_NAME: micropython
        RENODE_VERSION: 1.13.1+20220731git8eca7310
@@ -239,7 +250,7 @@ jobs:
     - name: Get artifacts
       uses: actions/download-artifact@v2
       with:
-        name: 6cfb18686e
+        name: build-0
         path: artifacts/
     - name: Prepare environment
       run: ./scripts/prepare_environment.sh
@@ -247,17 +258,21 @@ jobs:
       run: ./scripts/download_renode.sh
     - name: Simulate
       run: ./scripts/simulate.py
+    - name: Get Zephyr commit
+      id: get-zephyr-commit
+      run: |
+        zephyr_commit=$(cat artifacts/zephyr.version)
+        echo '::set-output name=ZEPHYR_COMMIT::$zephyr_commit'
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: 6cfb18686e
+        name: ${ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }
         path: artifacts/
-  build-6cfb18686e-tensorflow_lite_micro:
+  build-0-tensorflow_lite_micro:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
-    needs: [prepare-zephyr-6cfb18686e]
+    needs: [prepare-zephyr-0]
     env:
-      ZEPHYR_COMMIT: 6cfb18686e
       SAMPLE_NAME: tensorflow_lite_micro
       MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 2
@@ -268,7 +283,7 @@ jobs:
     - name: Get Zephyr
       uses: actions/download-artifact@v2
       with:
-        name: zephyr-6cfb18686e
+        name: zephyr-0
         path: zephyr-artifact
     - name: Prepare Zephyr
       run: ./scripts/prepare_zephyr.sh
@@ -279,12 +294,12 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: 6cfb18686e
+        name: build-0
         path: artifacts/
-  simulate-6cfb18686e-tensorflow_lite_micro:
+  simulate-0-tensorflow_lite_micro:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
-    needs: [build-6cfb18686e-tensorflow_lite_micro]
+    needs: [build-0-tensorflow_lite_micro]
     env:
        SAMPLE_NAME: tensorflow_lite_micro
        RENODE_VERSION: 1.13.1+20220731git8eca7310
@@ -293,7 +308,7 @@ jobs:
     - name: Get artifacts
       uses: actions/download-artifact@v2
       with:
-        name: 6cfb18686e
+        name: build-0
         path: artifacts/
     - name: Prepare environment
       run: ./scripts/prepare_environment.sh
@@ -301,17 +316,21 @@ jobs:
       run: ./scripts/download_renode.sh
     - name: Simulate
       run: ./scripts/simulate.py
+    - name: Get Zephyr commit
+      id: get-zephyr-commit
+      run: |
+        zephyr_commit=$(cat artifacts/zephyr.version)
+        echo '::set-output name=ZEPHYR_COMMIT::$zephyr_commit'
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: 6cfb18686e
+        name: ${ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }
         path: artifacts/
-  build-a41f4f30b5-hello_world:
+  build-1-hello_world:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
-    needs: [prepare-zephyr-a41f4f30b5]
+    needs: [prepare-zephyr-1]
     env:
-      ZEPHYR_COMMIT: a41f4f30b5
       SAMPLE_NAME: hello_world
       MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 2
@@ -322,7 +341,7 @@ jobs:
     - name: Get Zephyr
       uses: actions/download-artifact@v2
       with:
-        name: zephyr-a41f4f30b5
+        name: zephyr-1
         path: zephyr-artifact
     - name: Prepare Zephyr
       run: ./scripts/prepare_zephyr.sh
@@ -333,12 +352,12 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: a41f4f30b5
+        name: build-1
         path: artifacts/
-  simulate-a41f4f30b5-hello_world:
+  simulate-1-hello_world:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
-    needs: [build-a41f4f30b5-hello_world]
+    needs: [build-1-hello_world]
     env:
        SAMPLE_NAME: hello_world
        RENODE_VERSION: 1.13.1+20220731git8eca7310
@@ -347,7 +366,7 @@ jobs:
     - name: Get artifacts
       uses: actions/download-artifact@v2
       with:
-        name: a41f4f30b5
+        name: build-1
         path: artifacts/
     - name: Prepare environment
       run: ./scripts/prepare_environment.sh
@@ -355,17 +374,21 @@ jobs:
       run: ./scripts/download_renode.sh
     - name: Simulate
       run: ./scripts/simulate.py
+    - name: Get Zephyr commit
+      id: get-zephyr-commit
+      run: |
+        zephyr_commit=$(cat artifacts/zephyr.version)
+        echo '::set-output name=ZEPHYR_COMMIT::$zephyr_commit'
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: a41f4f30b5
+        name: ${ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }
         path: artifacts/
-  build-a41f4f30b5-shell_module:
+  build-1-shell_module:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
-    needs: [prepare-zephyr-a41f4f30b5]
+    needs: [prepare-zephyr-1]
     env:
-      ZEPHYR_COMMIT: a41f4f30b5
       SAMPLE_NAME: shell_module
       MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 2
@@ -376,7 +399,7 @@ jobs:
     - name: Get Zephyr
       uses: actions/download-artifact@v2
       with:
-        name: zephyr-a41f4f30b5
+        name: zephyr-1
         path: zephyr-artifact
     - name: Prepare Zephyr
       run: ./scripts/prepare_zephyr.sh
@@ -387,12 +410,12 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: a41f4f30b5
+        name: build-1
         path: artifacts/
-  simulate-a41f4f30b5-shell_module:
+  simulate-1-shell_module:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
-    needs: [build-a41f4f30b5-shell_module]
+    needs: [build-1-shell_module]
     env:
        SAMPLE_NAME: shell_module
        RENODE_VERSION: 1.13.1+20220731git8eca7310
@@ -401,7 +424,7 @@ jobs:
     - name: Get artifacts
       uses: actions/download-artifact@v2
       with:
-        name: a41f4f30b5
+        name: build-1
         path: artifacts/
     - name: Prepare environment
       run: ./scripts/prepare_environment.sh
@@ -409,17 +432,21 @@ jobs:
       run: ./scripts/download_renode.sh
     - name: Simulate
       run: ./scripts/simulate.py
+    - name: Get Zephyr commit
+      id: get-zephyr-commit
+      run: |
+        zephyr_commit=$(cat artifacts/zephyr.version)
+        echo '::set-output name=ZEPHYR_COMMIT::$zephyr_commit'
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: a41f4f30b5
+        name: ${ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }
         path: artifacts/
-  build-a41f4f30b5-philosophers:
+  build-1-philosophers:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
-    needs: [prepare-zephyr-a41f4f30b5]
+    needs: [prepare-zephyr-1]
     env:
-      ZEPHYR_COMMIT: a41f4f30b5
       SAMPLE_NAME: philosophers
       MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 2
@@ -430,7 +457,7 @@ jobs:
     - name: Get Zephyr
       uses: actions/download-artifact@v2
       with:
-        name: zephyr-a41f4f30b5
+        name: zephyr-1
         path: zephyr-artifact
     - name: Prepare Zephyr
       run: ./scripts/prepare_zephyr.sh
@@ -441,12 +468,12 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: a41f4f30b5
+        name: build-1
         path: artifacts/
-  simulate-a41f4f30b5-philosophers:
+  simulate-1-philosophers:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
-    needs: [build-a41f4f30b5-philosophers]
+    needs: [build-1-philosophers]
     env:
        SAMPLE_NAME: philosophers
        RENODE_VERSION: 1.13.1+20220731git8eca7310
@@ -455,7 +482,7 @@ jobs:
     - name: Get artifacts
       uses: actions/download-artifact@v2
       with:
-        name: a41f4f30b5
+        name: build-1
         path: artifacts/
     - name: Prepare environment
       run: ./scripts/prepare_environment.sh
@@ -463,17 +490,21 @@ jobs:
       run: ./scripts/download_renode.sh
     - name: Simulate
       run: ./scripts/simulate.py
+    - name: Get Zephyr commit
+      id: get-zephyr-commit
+      run: |
+        zephyr_commit=$(cat artifacts/zephyr.version)
+        echo '::set-output name=ZEPHYR_COMMIT::$zephyr_commit'
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: a41f4f30b5
+        name: ${ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }
         path: artifacts/
-  build-a41f4f30b5-micropython:
+  build-1-micropython:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
-    needs: [prepare-zephyr-a41f4f30b5]
+    needs: [prepare-zephyr-1]
     env:
-      ZEPHYR_COMMIT: a41f4f30b5
       SAMPLE_NAME: micropython
       MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 2
@@ -484,7 +515,7 @@ jobs:
     - name: Get Zephyr
       uses: actions/download-artifact@v2
       with:
-        name: zephyr-a41f4f30b5
+        name: zephyr-1
         path: zephyr-artifact
     - name: Prepare Zephyr
       run: ./scripts/prepare_zephyr.sh
@@ -495,12 +526,12 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: a41f4f30b5
+        name: build-1
         path: artifacts/
-  simulate-a41f4f30b5-micropython:
+  simulate-1-micropython:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
-    needs: [build-a41f4f30b5-micropython]
+    needs: [build-1-micropython]
     env:
        SAMPLE_NAME: micropython
        RENODE_VERSION: 1.13.1+20220731git8eca7310
@@ -509,7 +540,7 @@ jobs:
     - name: Get artifacts
       uses: actions/download-artifact@v2
       with:
-        name: a41f4f30b5
+        name: build-1
         path: artifacts/
     - name: Prepare environment
       run: ./scripts/prepare_environment.sh
@@ -517,17 +548,21 @@ jobs:
       run: ./scripts/download_renode.sh
     - name: Simulate
       run: ./scripts/simulate.py
+    - name: Get Zephyr commit
+      id: get-zephyr-commit
+      run: |
+        zephyr_commit=$(cat artifacts/zephyr.version)
+        echo '::set-output name=ZEPHYR_COMMIT::$zephyr_commit'
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: a41f4f30b5
+        name: ${ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }
         path: artifacts/
-  build-a41f4f30b5-tensorflow_lite_micro:
+  build-1-tensorflow_lite_micro:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
-    needs: [prepare-zephyr-a41f4f30b5]
+    needs: [prepare-zephyr-1]
     env:
-      ZEPHYR_COMMIT: a41f4f30b5
       SAMPLE_NAME: tensorflow_lite_micro
       MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 2
@@ -538,7 +573,7 @@ jobs:
     - name: Get Zephyr
       uses: actions/download-artifact@v2
       with:
-        name: zephyr-a41f4f30b5
+        name: zephyr-1
         path: zephyr-artifact
     - name: Prepare Zephyr
       run: ./scripts/prepare_zephyr.sh
@@ -549,12 +584,12 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: a41f4f30b5
+        name: build-1
         path: artifacts/
-  simulate-a41f4f30b5-tensorflow_lite_micro:
+  simulate-1-tensorflow_lite_micro:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
-    needs: [build-a41f4f30b5-tensorflow_lite_micro]
+    needs: [build-1-tensorflow_lite_micro]
     env:
        SAMPLE_NAME: tensorflow_lite_micro
        RENODE_VERSION: 1.13.1+20220731git8eca7310
@@ -563,7 +598,7 @@ jobs:
     - name: Get artifacts
       uses: actions/download-artifact@v2
       with:
-        name: a41f4f30b5
+        name: build-1
         path: artifacts/
     - name: Prepare environment
       run: ./scripts/prepare_environment.sh
@@ -571,22 +606,27 @@ jobs:
       run: ./scripts/download_renode.sh
     - name: Simulate
       run: ./scripts/simulate.py
+    - name: Get Zephyr commit
+      id: get-zephyr-commit
+      run: |
+        zephyr_commit=$(cat artifacts/zephyr.version)
+        echo '::set-output name=ZEPHYR_COMMIT::$zephyr_commit'
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: a41f4f30b5
+        name: ${ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }
         path: artifacts/
   results:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
-    needs: [simulate-6cfb18686e-hello_world, simulate-6cfb18686e-shell_module, simulate-6cfb18686e-philosophers, simulate-6cfb18686e-micropython, simulate-6cfb18686e-tensorflow_lite_micro, simulate-a41f4f30b5-hello_world, simulate-a41f4f30b5-shell_module, simulate-a41f4f30b5-philosophers, simulate-a41f4f30b5-micropython, simulate-a41f4f30b5-tensorflow_lite_micro]
+    needs: [simulate-0-hello_world, simulate-0-shell_module, simulate-0-philosophers, simulate-0-micropython, simulate-0-tensorflow_lite_micro, simulate-1-hello_world, simulate-1-shell_module, simulate-1-philosophers, simulate-1-micropython, simulate-1-tensorflow_lite_micro]
     steps:
     - name: Delete unnecessary artifacts
       uses: geekyeggo/delete-artifact@v1
       with:
         name: |
-          zephyr-6cfb18686e
-          zephyr-a41f4f30b5
+          zephyr-0
+          zephyr-1
     - name: Download binaries
       uses: actions/download-artifact@v2
       with:
@@ -599,8 +639,8 @@ jobs:
       uses: geekyeggo/delete-artifact@v1
       with:
         name: |
-          6cfb18686e
-          a41f4f30b5
+          0
+          1
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:

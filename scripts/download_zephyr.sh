@@ -11,8 +11,16 @@ curl -kL https://dl.antmicro.com/projects/renode/zephyr-sdk-${ZEPHYR_SDK_VERSION
 ./setup.sh -t all -h -c
 cd -
 
+LAST_COMMIT=$(cat last_commit)
+COMMITS=$(git -C zephyrproject/zephyr log --pretty=format:'%h' $LAST_COMMIT..6cfb18686e)
+
 cd zephyrproject/zephyr
-git checkout ${ZEPHYR_COMMIT}
+CURRENT_COMMIT=$(git rev-parse --short HEAD~${ZEPHYR_COMMIT})
+if [[ ! " ${COMMITS[*]} " =~ $CURRENT_COMMIT ]]; then
+	echo "Commit has already been built"
+	exit 1
+fi
+git checkout $CURRENT_COMMIT
 git apply ../../patches/zephyr/*.patch
 pip3 install -r scripts/requirements.txt
 cd ..

@@ -1,6 +1,11 @@
 name: workflow
-on: [push]
-
+on:
+  push:
+    paths-ignore:
+      - 'last_zephyr_commit'
+  schedule:
+    - cron: '0 3 * * *'
+  workflow_dispatch:
 jobs:
   prepare-zephyr-0:
     container: ubuntu:jammy
@@ -92,7 +97,7 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: ${ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }
+        name: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
         path: artifacts/
   build-0-shell_module:
     container: ubuntu:jammy
@@ -150,7 +155,7 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: ${ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }
+        name: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
         path: artifacts/
   build-0-philosophers:
     container: ubuntu:jammy
@@ -208,7 +213,7 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: ${ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }
+        name: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
         path: artifacts/
   build-0-micropython:
     container: ubuntu:jammy
@@ -266,7 +271,7 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: ${ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }
+        name: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
         path: artifacts/
   build-0-tensorflow_lite_micro:
     container: ubuntu:jammy
@@ -324,7 +329,7 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: ${ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }
+        name: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
         path: artifacts/
   build-1-hello_world:
     container: ubuntu:jammy
@@ -382,7 +387,7 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: ${ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }
+        name: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
         path: artifacts/
   build-1-shell_module:
     container: ubuntu:jammy
@@ -440,7 +445,7 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: ${ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }
+        name: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
         path: artifacts/
   build-1-philosophers:
     container: ubuntu:jammy
@@ -498,7 +503,7 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: ${ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }
+        name: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
         path: artifacts/
   build-1-micropython:
     container: ubuntu:jammy
@@ -556,7 +561,7 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: ${ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }
+        name: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
         path: artifacts/
   build-1-tensorflow_lite_micro:
     container: ubuntu:jammy
@@ -614,7 +619,7 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: ${ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }
+        name: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
         path: artifacts/
   results:
     container: ubuntu:jammy

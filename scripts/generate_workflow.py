@@ -92,7 +92,7 @@ def generate():
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
+        name: ${"{{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}"}
         path: artifacts/''')
     tasks.append(f'''
   results:
@@ -121,9 +121,15 @@ def generate():
         name: result
         path: results''')
     with open(WORKFLOW_FILE, 'w') as file:
-        file.write(f"name: {WORKFLOW_NAME}\n")
-        file.write("on: [push]\n\n")
-        file.write("jobs:")
+        file.write(f'''name: {WORKFLOW_NAME}
+on:
+  push:
+    paths-ignore:
+      - 'last_zephyr_commit'
+  schedule:
+    - cron: '0 3 * * *'
+  workflow_dispatch:
+jobs:''')
         file.write("".join(tasks))
 
 if __name__ == '__main__':

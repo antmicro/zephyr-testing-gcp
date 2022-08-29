@@ -92,9 +92,9 @@ def generate():
     - name: Get Zephyr commit
       id: get-zephyr-commit
       run: |
-        zephyr_commit=$(cat artifacts/zephyr.version)
-        echo $zephyr_commit
-        echo '::set-output name=ZEPHYR_COMMIT::$zephyr_commit'
+        ZEPHYR_COMMIT=$(cat artifacts/zephyr.version)
+        echo $ZEPHYR_COMMIT
+        echo '::set-output name=ZEPHYR_COMMIT::$ZEPHYR_COMMIT'
     - name: Debug zephyr_commit
       run: echo ${"{{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}"}
     - name: Upload artifacts

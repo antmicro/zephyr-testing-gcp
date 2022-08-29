@@ -3,7 +3,7 @@ on: [push]
 
 jobs:
   prepare-zephyr-6cfb18686e:
-    container: ubuntu:focal
+    container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     env:
       ZEPHYR_COMMIT: 6cfb18686e
@@ -20,7 +20,7 @@ jobs:
         name: zephyr-6cfb18686e
         path: zephyr.tar.gz
   prepare-zephyr-a41f4f30b5:
-    container: ubuntu:focal
+    container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     env:
       ZEPHYR_COMMIT: a41f4f30b5
@@ -37,7 +37,7 @@ jobs:
         name: zephyr-a41f4f30b5
         path: zephyr.tar.gz
   build-6cfb18686e-hello_world:
-    container: ubuntu:focal
+    container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-6cfb18686e]
     env:
@@ -66,7 +66,7 @@ jobs:
         name: 6cfb18686e
         path: artifacts/
   simulate-6cfb18686e-hello_world:
-    container: ubuntu:focal
+    container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [build-6cfb18686e-hello_world]
     env:
@@ -91,7 +91,7 @@ jobs:
         name: 6cfb18686e
         path: artifacts/
   build-6cfb18686e-shell_module:
-    container: ubuntu:focal
+    container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-6cfb18686e]
     env:
@@ -120,7 +120,7 @@ jobs:
         name: 6cfb18686e
         path: artifacts/
   simulate-6cfb18686e-shell_module:
-    container: ubuntu:focal
+    container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [build-6cfb18686e-shell_module]
     env:
@@ -145,7 +145,7 @@ jobs:
         name: 6cfb18686e
         path: artifacts/
   build-6cfb18686e-philosophers:
-    container: ubuntu:focal
+    container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-6cfb18686e]
     env:
@@ -174,7 +174,7 @@ jobs:
         name: 6cfb18686e
         path: artifacts/
   simulate-6cfb18686e-philosophers:
-    container: ubuntu:focal
+    container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [build-6cfb18686e-philosophers]
     env:
@@ -199,7 +199,7 @@ jobs:
         name: 6cfb18686e
         path: artifacts/
   build-6cfb18686e-micropython:
-    container: ubuntu:focal
+    container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-6cfb18686e]
     env:
@@ -228,7 +228,7 @@ jobs:
         name: 6cfb18686e
         path: artifacts/
   simulate-6cfb18686e-micropython:
-    container: ubuntu:focal
+    container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [build-6cfb18686e-micropython]
     env:
@@ -253,7 +253,7 @@ jobs:
         name: 6cfb18686e
         path: artifacts/
   build-6cfb18686e-tensorflow_lite_micro:
-    container: ubuntu:focal
+    container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-6cfb18686e]
     env:
@@ -282,7 +282,7 @@ jobs:
         name: 6cfb18686e
         path: artifacts/
   simulate-6cfb18686e-tensorflow_lite_micro:
-    container: ubuntu:focal
+    container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [build-6cfb18686e-tensorflow_lite_micro]
     env:
@@ -307,7 +307,7 @@ jobs:
         name: 6cfb18686e
         path: artifacts/
   build-a41f4f30b5-hello_world:
-    container: ubuntu:focal
+    container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-a41f4f30b5]
     env:
@@ -336,7 +336,7 @@ jobs:
         name: a41f4f30b5
         path: artifacts/
   simulate-a41f4f30b5-hello_world:
-    container: ubuntu:focal
+    container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [build-a41f4f30b5-hello_world]
     env:
@@ -361,7 +361,7 @@ jobs:
         name: a41f4f30b5
         path: artifacts/
   build-a41f4f30b5-shell_module:
-    container: ubuntu:focal
+    container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-a41f4f30b5]
     env:
@@ -390,7 +390,7 @@ jobs:
         name: a41f4f30b5
         path: artifacts/
   simulate-a41f4f30b5-shell_module:
-    container: ubuntu:focal
+    container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [build-a41f4f30b5-shell_module]
     env:
@@ -415,7 +415,7 @@ jobs:
         name: a41f4f30b5
         path: artifacts/
   build-a41f4f30b5-philosophers:
-    container: ubuntu:focal
+    container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-a41f4f30b5]
     env:
@@ -444,7 +444,7 @@ jobs:
         name: a41f4f30b5
         path: artifacts/
   simulate-a41f4f30b5-philosophers:
-    container: ubuntu:focal
+    container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [build-a41f4f30b5-philosophers]
     env:
@@ -469,7 +469,7 @@ jobs:
         name: a41f4f30b5
         path: artifacts/
   build-a41f4f30b5-micropython:
-    container: ubuntu:focal
+    container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-a41f4f30b5]
     env:
@@ -498,7 +498,7 @@ jobs:
         name: a41f4f30b5
         path: artifacts/
   simulate-a41f4f30b5-micropython:
-    container: ubuntu:focal
+    container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [build-a41f4f30b5-micropython]
     env:
@@ -523,7 +523,7 @@ jobs:
         name: a41f4f30b5
         path: artifacts/
   build-a41f4f30b5-tensorflow_lite_micro:
-    container: ubuntu:focal
+    container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-a41f4f30b5]
     env:
@@ -552,7 +552,7 @@ jobs:
         name: a41f4f30b5
         path: artifacts/
   simulate-a41f4f30b5-tensorflow_lite_micro:
-    container: ubuntu:focal
+    container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [build-a41f4f30b5-tensorflow_lite_micro]
     env:
@@ -577,7 +577,7 @@ jobs:
         name: a41f4f30b5
         path: artifacts/
   results:
-    container: ubuntu:focal
+    container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [simulate-6cfb18686e-hello_world, simulate-6cfb18686e-shell_module, simulate-6cfb18686e-philosophers, simulate-6cfb18686e-micropython, simulate-6cfb18686e-tensorflow_lite_micro, simulate-a41f4f30b5-hello_world, simulate-a41f4f30b5-shell_module, simulate-a41f4f30b5-philosophers, simulate-a41f4f30b5-micropython, simulate-a41f4f30b5-tensorflow_lite_micro]
     steps:

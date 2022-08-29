@@ -8,6 +8,7 @@ WORKFLOW_NAME = 'workflow'
 SAMPLES = ['hello_world', 'shell_module', 'philosophers', 'micropython', 'tensorflow_lite_micro']
 NUMBER_OF_THREADS = 2
 MAX_NUMBER_OF_COMMITS = 2
+UBUNTU_VERSION = 'jammy'
 
 def get_zephyr_commits(first_commit, commit_num):
     try:
@@ -25,7 +26,7 @@ def generate():
     for zephyr_commit in zephyr_commits:
         tasks.append(f'''
   prepare-zephyr-{zephyr_commit}:
-    container: ubuntu:focal
+    container: ubuntu:{UBUNTU_VERSION}
     runs-on: [self-hosted, Linux, X64]
     env:
       ZEPHYR_COMMIT: {zephyr_commit}
@@ -44,7 +45,7 @@ def generate():
     for zephyr_commit, sample in commit_sample_product:
         tasks.append(f'''
   build-{zephyr_commit}-{sample}:
-    container: ubuntu:focal
+    container: ubuntu:{UBUNTU_VERSION}
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-{zephyr_commit}]
     env:
@@ -74,7 +75,7 @@ def generate():
         path: artifacts/''')
         tasks.append(f'''
   simulate-{zephyr_commit}-{sample}:
-    container: ubuntu:focal
+    container: ubuntu:{UBUNTU_VERSION}
     runs-on: [self-hosted, Linux, X64]
     needs: [build-{zephyr_commit}-{sample}]
     env:
@@ -100,7 +101,7 @@ def generate():
         path: artifacts/''')
     tasks.append(f'''
   results:
-    container: ubuntu:focal
+    container: ubuntu:{UBUNTU_VERSION}
     runs-on: [self-hosted, Linux, X64]
     needs: [{", ".join([f'simulate-{zephyr_commit}-{sample}' for zephyr_commit, sample in commit_sample_product])}]
     steps:

@@ -59,6 +59,8 @@ def generate():
       run: ./scripts/prepare_micropython.sh
     - name: Build boards
       run: ./scripts/build.py
+    - name: Echo Zephyr commit
+      run: cat artifacts/zephyr.version
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
@@ -89,6 +91,7 @@ def generate():
       id: get-zephyr-commit
       run: |
         zephyr_commit=$(cat artifacts/zephyr.version)
+        echo $zephyr_commit
         echo '::set-output name=ZEPHYR_COMMIT::$zephyr_commit'
     - name: Upload artifacts
       uses: actions/upload-artifact@v2

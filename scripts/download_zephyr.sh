@@ -10,12 +10,12 @@ mkdir -p zephyr-sdk && cd zephyr-sdk
 curl -kL https://dl.antmicro.com/projects/renode/zephyr-sdk-${ZEPHYR_SDK_VERSION}_linux-x86_64.tar.gz | tar xz --strip 1
 ./setup.sh -t all -h -c
 cd -
-
+HEAD=6cfb18686e
 LAST_COMMIT=$(cat last_commit)
-COMMITS=$(git -C zephyrproject/zephyr log --pretty=format:'%h' $LAST_COMMIT..6cfb18686e)
+COMMITS=$(git -C zephyrproject/zephyr log --pretty=format:'%h' $LAST_COMMIT..$HEAD)
 
 cd zephyrproject/zephyr
-CURRENT_COMMIT=$(git rev-parse --short HEAD~${ZEPHYR_COMMIT})
+CURRENT_COMMIT=$(git rev-parse --short $HEAD~${ZEPHYR_COMMIT})
 if [[ ! " ${COMMITS[*]} " =~ $CURRENT_COMMIT ]]; then
 	echo "Commit has already been built"
 	exit 1

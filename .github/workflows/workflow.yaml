@@ -75,9 +75,11 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [build-0-hello_world]
+    outputs:
+      ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
-       SAMPLE_NAME: hello_world
-       RENODE_VERSION: 1.13.1+20220731git8eca7310
+      SAMPLE_NAME: hello_world
+      RENODE_VERSION: 1.13.1+20220731git8eca7310
     steps:
     - uses: actions/checkout@v2
     - name: Get artifacts
@@ -97,6 +99,8 @@ jobs:
         zephyr_commit=$(cat artifacts/zephyr.version)
         echo $zephyr_commit
         echo '::set-output name=ZEPHYR_COMMIT::$zephyr_commit'
+    - name: Debug zephyr_commit
+      run: echo ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
@@ -136,9 +140,11 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [build-0-shell_module]
+    outputs:
+      ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
-       SAMPLE_NAME: shell_module
-       RENODE_VERSION: 1.13.1+20220731git8eca7310
+      SAMPLE_NAME: shell_module
+      RENODE_VERSION: 1.13.1+20220731git8eca7310
     steps:
     - uses: actions/checkout@v2
     - name: Get artifacts
@@ -158,6 +164,8 @@ jobs:
         zephyr_commit=$(cat artifacts/zephyr.version)
         echo $zephyr_commit
         echo '::set-output name=ZEPHYR_COMMIT::$zephyr_commit'
+    - name: Debug zephyr_commit
+      run: echo ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
@@ -197,9 +205,11 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [build-0-philosophers]
+    outputs:
+      ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
-       SAMPLE_NAME: philosophers
-       RENODE_VERSION: 1.13.1+20220731git8eca7310
+      SAMPLE_NAME: philosophers
+      RENODE_VERSION: 1.13.1+20220731git8eca7310
     steps:
     - uses: actions/checkout@v2
     - name: Get artifacts
@@ -219,6 +229,8 @@ jobs:
         zephyr_commit=$(cat artifacts/zephyr.version)
         echo $zephyr_commit
         echo '::set-output name=ZEPHYR_COMMIT::$zephyr_commit'
+    - name: Debug zephyr_commit
+      run: echo ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
@@ -258,9 +270,11 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [build-0-micropython]
+    outputs:
+      ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
-       SAMPLE_NAME: micropython
-       RENODE_VERSION: 1.13.1+20220731git8eca7310
+      SAMPLE_NAME: micropython
+      RENODE_VERSION: 1.13.1+20220731git8eca7310
     steps:
     - uses: actions/checkout@v2
     - name: Get artifacts
@@ -280,6 +294,8 @@ jobs:
         zephyr_commit=$(cat artifacts/zephyr.version)
         echo $zephyr_commit
         echo '::set-output name=ZEPHYR_COMMIT::$zephyr_commit'
+    - name: Debug zephyr_commit
+      run: echo ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
@@ -319,9 +335,11 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [build-0-tensorflow_lite_micro]
+    outputs:
+      ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
-       SAMPLE_NAME: tensorflow_lite_micro
-       RENODE_VERSION: 1.13.1+20220731git8eca7310
+      SAMPLE_NAME: tensorflow_lite_micro
+      RENODE_VERSION: 1.13.1+20220731git8eca7310
     steps:
     - uses: actions/checkout@v2
     - name: Get artifacts
@@ -341,6 +359,8 @@ jobs:
         zephyr_commit=$(cat artifacts/zephyr.version)
         echo $zephyr_commit
         echo '::set-output name=ZEPHYR_COMMIT::$zephyr_commit'
+    - name: Debug zephyr_commit
+      run: echo ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
@@ -380,9 +400,11 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [build-1-hello_world]
+    outputs:
+      ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
-       SAMPLE_NAME: hello_world
-       RENODE_VERSION: 1.13.1+20220731git8eca7310
+      SAMPLE_NAME: hello_world
+      RENODE_VERSION: 1.13.1+20220731git8eca7310
     steps:
     - uses: actions/checkout@v2
     - name: Get artifacts
@@ -402,6 +424,8 @@ jobs:
         zephyr_commit=$(cat artifacts/zephyr.version)
         echo $zephyr_commit
         echo '::set-output name=ZEPHYR_COMMIT::$zephyr_commit'
+    - name: Debug zephyr_commit
+      run: echo ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
@@ -441,9 +465,11 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [build-1-shell_module]
+    outputs:
+      ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
-       SAMPLE_NAME: shell_module
-       RENODE_VERSION: 1.13.1+20220731git8eca7310
+      SAMPLE_NAME: shell_module
+      RENODE_VERSION: 1.13.1+20220731git8eca7310
     steps:
     - uses: actions/checkout@v2
     - name: Get artifacts
@@ -463,6 +489,8 @@ jobs:
         zephyr_commit=$(cat artifacts/zephyr.version)
         echo $zephyr_commit
         echo '::set-output name=ZEPHYR_COMMIT::$zephyr_commit'
+    - name: Debug zephyr_commit
+      run: echo ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
@@ -502,9 +530,11 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [build-1-philosophers]
+    outputs:
+      ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
-       SAMPLE_NAME: philosophers
-       RENODE_VERSION: 1.13.1+20220731git8eca7310
+      SAMPLE_NAME: philosophers
+      RENODE_VERSION: 1.13.1+20220731git8eca7310
     steps:
     - uses: actions/checkout@v2
     - name: Get artifacts
@@ -524,6 +554,8 @@ jobs:
         zephyr_commit=$(cat artifacts/zephyr.version)
         echo $zephyr_commit
         echo '::set-output name=ZEPHYR_COMMIT::$zephyr_commit'
+    - name: Debug zephyr_commit
+      run: echo ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
@@ -563,9 +595,11 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [build-1-micropython]
+    outputs:
+      ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
-       SAMPLE_NAME: micropython
-       RENODE_VERSION: 1.13.1+20220731git8eca7310
+      SAMPLE_NAME: micropython
+      RENODE_VERSION: 1.13.1+20220731git8eca7310
     steps:
     - uses: actions/checkout@v2
     - name: Get artifacts
@@ -585,6 +619,8 @@ jobs:
         zephyr_commit=$(cat artifacts/zephyr.version)
         echo $zephyr_commit
         echo '::set-output name=ZEPHYR_COMMIT::$zephyr_commit'
+    - name: Debug zephyr_commit
+      run: echo ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
@@ -624,9 +660,11 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [build-1-tensorflow_lite_micro]
+    outputs:
+      ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
-       SAMPLE_NAME: tensorflow_lite_micro
-       RENODE_VERSION: 1.13.1+20220731git8eca7310
+      SAMPLE_NAME: tensorflow_lite_micro
+      RENODE_VERSION: 1.13.1+20220731git8eca7310
     steps:
     - uses: actions/checkout@v2
     - name: Get artifacts
@@ -646,6 +684,8 @@ jobs:
         zephyr_commit=$(cat artifacts/zephyr.version)
         echo $zephyr_commit
         echo '::set-output name=ZEPHYR_COMMIT::$zephyr_commit'
+    - name: Debug zephyr_commit
+      run: echo ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
@@ -678,3 +718,10 @@ jobs:
       with:
         name: result
         path: results
+    - name: Update latest Zephyr commit
+      run: echo ${{ needs.simulate-0-hello_world.outputs.ZEPHYR_COMMIT }} > last_zephyr_commit
+    - name: Commit latest Zephyr commit
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: Update latest Zephyr commit
+        file_pattern: last_zephyr_commit

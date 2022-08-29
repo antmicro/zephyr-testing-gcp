@@ -71,9 +71,11 @@ def generate():
     container: ubuntu:{UBUNTU_VERSION}
     runs-on: [self-hosted, Linux, X64]
     needs: [build-{zephyr_commit}-{sample}]
+    outputs:
+      ZEPHYR_COMMIT: ${'{{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}'}
     env:
-       SAMPLE_NAME: {sample}
-       RENODE_VERSION: {RENODE_VERSION}
+      SAMPLE_NAME: {sample}
+      RENODE_VERSION: {RENODE_VERSION}
     steps:
     - uses: actions/checkout@v2
     - name: Get artifacts
@@ -93,6 +95,8 @@ def generate():
         zephyr_commit=$(cat artifacts/zephyr.version)
         echo $zephyr_commit
         echo '::set-output name=ZEPHYR_COMMIT::$zephyr_commit'
+    - name: Debug zephyr_commit
+      run: echo ${"{{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}"}
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
@@ -123,7 +127,14 @@ def generate():
       uses: actions/upload-artifact@v2
       with:
         name: result
-        path: results''')
+        path: results
+    - name: Update latest Zephyr commit
+      run: echo ${'{{ needs.simulate-0-hello_world.outputs.ZEPHYR_COMMIT }}'} > {LAST_ZEPHYR_COMMIT_FILE}
+    - name: Commit latest Zephyr commit
+      uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: Update latest Zephyr commit
+        file_pattern: {LAST_ZEPHYR_COMMIT_FILE}''')
     with open(WORKFLOW_FILE, 'w') as file:
         file.write(f'''name: {WORKFLOW_NAME}
 on:

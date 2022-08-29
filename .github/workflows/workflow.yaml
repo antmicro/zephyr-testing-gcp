@@ -620,6 +620,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [simulate-0-hello_world, simulate-0-shell_module, simulate-0-philosophers, simulate-0-micropython, simulate-0-tensorflow_lite_micro, simulate-1-hello_world, simulate-1-shell_module, simulate-1-philosophers, simulate-1-micropython, simulate-1-tensorflow_lite_micro]
+    if: always()
     steps:
     - name: Delete unnecessary artifacts
       uses: geekyeggo/delete-artifact@v1
@@ -627,6 +628,8 @@ jobs:
         name: |
           zephyr-0
           zephyr-1
+          build-0
+          build-1
     - name: Download binaries
       uses: actions/download-artifact@v2
       with:
@@ -635,12 +638,6 @@ jobs:
       run: |
         apt update -qq
         apt install -y curl gnupg
-    - name: Delete unnecessary artifacts
-      uses: geekyeggo/delete-artifact@v1
-      with:
-        name: |
-          0
-          1
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:

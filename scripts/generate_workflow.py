@@ -99,12 +99,14 @@ def generate():
     container: ubuntu:{UBUNTU_VERSION}
     runs-on: [self-hosted, Linux, X64]
     needs: [{", ".join([f'simulate-{zephyr_commit}-{sample}' for zephyr_commit, sample in commit_sample_product])}]
+    if: always()
     steps:
     - name: Delete unnecessary artifacts
       uses: geekyeggo/delete-artifact@v1
       with:
         name: |
           {newline.join([f"zephyr-{i}" for i in range(MAX_NUMBER_OF_COMMITS)])}
+          {newline.join([f"build-{i}" for i in range(MAX_NUMBER_OF_COMMITS)])}
     - name: Download binaries
       uses: actions/download-artifact@v2
       with:
@@ -113,11 +115,6 @@ def generate():
       run: |
         apt update -qq
         apt install -y curl gnupg
-    - name: Delete unnecessary artifacts
-      uses: geekyeggo/delete-artifact@v1
-      with:
-        name: |
-          {newline.join([str(i) for i in range(MAX_NUMBER_OF_COMMITS)])}
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:

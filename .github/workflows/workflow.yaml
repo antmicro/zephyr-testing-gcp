@@ -14,6 +14,7 @@ jobs:
       ZEPHYR_COMMIT: 0
       ZEPHYR_SDK_VERSION: 0.14.2
     steps:
+    - run: nproc
     - uses: actions/checkout@v2
     - name: Prepare environment
       run: ./scripts/prepare_environment.sh
@@ -31,6 +32,7 @@ jobs:
       ZEPHYR_COMMIT: 1
       ZEPHYR_SDK_VERSION: 0.14.2
     steps:
+    - run: nproc
     - uses: actions/checkout@v2
     - name: Prepare environment
       run: ./scripts/prepare_environment.sh
@@ -48,7 +50,7 @@ jobs:
     env:
       SAMPLE_NAME: hello_world
       MICROPYTHON_VERSION: 97a7cc243b
-      NUMBER_OF_THREADS: 2
+      NUMBER_OF_THREADS: 32
     steps:
     - uses: actions/checkout@v2
     - name: Get sargraph
@@ -121,10 +123,7 @@ jobs:
       id: get-zephyr-commit
       run: |
         ZEPHYR_COMMIT=$(cat artifacts/zephyr.version)
-        echo $ZEPHYR_COMMIT
         echo "::set-output name=ZEPHYR_COMMIT::$ZEPHYR_COMMIT"
-    - name: Debug zephyr_commit
-      run: echo ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
@@ -137,7 +136,7 @@ jobs:
     env:
       SAMPLE_NAME: shell_module
       MICROPYTHON_VERSION: 97a7cc243b
-      NUMBER_OF_THREADS: 2
+      NUMBER_OF_THREADS: 32
     steps:
     - uses: actions/checkout@v2
     - name: Get sargraph
@@ -210,10 +209,7 @@ jobs:
       id: get-zephyr-commit
       run: |
         ZEPHYR_COMMIT=$(cat artifacts/zephyr.version)
-        echo $ZEPHYR_COMMIT
         echo "::set-output name=ZEPHYR_COMMIT::$ZEPHYR_COMMIT"
-    - name: Debug zephyr_commit
-      run: echo ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
@@ -226,7 +222,7 @@ jobs:
     env:
       SAMPLE_NAME: philosophers
       MICROPYTHON_VERSION: 97a7cc243b
-      NUMBER_OF_THREADS: 2
+      NUMBER_OF_THREADS: 32
     steps:
     - uses: actions/checkout@v2
     - name: Get sargraph
@@ -299,10 +295,7 @@ jobs:
       id: get-zephyr-commit
       run: |
         ZEPHYR_COMMIT=$(cat artifacts/zephyr.version)
-        echo $ZEPHYR_COMMIT
         echo "::set-output name=ZEPHYR_COMMIT::$ZEPHYR_COMMIT"
-    - name: Debug zephyr_commit
-      run: echo ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
@@ -315,7 +308,7 @@ jobs:
     env:
       SAMPLE_NAME: micropython
       MICROPYTHON_VERSION: 97a7cc243b
-      NUMBER_OF_THREADS: 2
+      NUMBER_OF_THREADS: 32
     steps:
     - uses: actions/checkout@v2
     - name: Get sargraph
@@ -388,10 +381,7 @@ jobs:
       id: get-zephyr-commit
       run: |
         ZEPHYR_COMMIT=$(cat artifacts/zephyr.version)
-        echo $ZEPHYR_COMMIT
         echo "::set-output name=ZEPHYR_COMMIT::$ZEPHYR_COMMIT"
-    - name: Debug zephyr_commit
-      run: echo ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
@@ -404,7 +394,7 @@ jobs:
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       MICROPYTHON_VERSION: 97a7cc243b
-      NUMBER_OF_THREADS: 2
+      NUMBER_OF_THREADS: 32
     steps:
     - uses: actions/checkout@v2
     - name: Get sargraph
@@ -477,10 +467,7 @@ jobs:
       id: get-zephyr-commit
       run: |
         ZEPHYR_COMMIT=$(cat artifacts/zephyr.version)
-        echo $ZEPHYR_COMMIT
         echo "::set-output name=ZEPHYR_COMMIT::$ZEPHYR_COMMIT"
-    - name: Debug zephyr_commit
-      run: echo ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
@@ -493,7 +480,7 @@ jobs:
     env:
       SAMPLE_NAME: hello_world
       MICROPYTHON_VERSION: 97a7cc243b
-      NUMBER_OF_THREADS: 2
+      NUMBER_OF_THREADS: 32
     steps:
     - uses: actions/checkout@v2
     - name: Get sargraph
@@ -566,10 +553,7 @@ jobs:
       id: get-zephyr-commit
       run: |
         ZEPHYR_COMMIT=$(cat artifacts/zephyr.version)
-        echo $ZEPHYR_COMMIT
         echo "::set-output name=ZEPHYR_COMMIT::$ZEPHYR_COMMIT"
-    - name: Debug zephyr_commit
-      run: echo ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
@@ -582,7 +566,7 @@ jobs:
     env:
       SAMPLE_NAME: shell_module
       MICROPYTHON_VERSION: 97a7cc243b
-      NUMBER_OF_THREADS: 2
+      NUMBER_OF_THREADS: 32
     steps:
     - uses: actions/checkout@v2
     - name: Get sargraph
@@ -655,10 +639,7 @@ jobs:
       id: get-zephyr-commit
       run: |
         ZEPHYR_COMMIT=$(cat artifacts/zephyr.version)
-        echo $ZEPHYR_COMMIT
         echo "::set-output name=ZEPHYR_COMMIT::$ZEPHYR_COMMIT"
-    - name: Debug zephyr_commit
-      run: echo ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
@@ -671,7 +652,7 @@ jobs:
     env:
       SAMPLE_NAME: philosophers
       MICROPYTHON_VERSION: 97a7cc243b
-      NUMBER_OF_THREADS: 2
+      NUMBER_OF_THREADS: 32
     steps:
     - uses: actions/checkout@v2
     - name: Get sargraph
@@ -744,10 +725,7 @@ jobs:
       id: get-zephyr-commit
       run: |
         ZEPHYR_COMMIT=$(cat artifacts/zephyr.version)
-        echo $ZEPHYR_COMMIT
         echo "::set-output name=ZEPHYR_COMMIT::$ZEPHYR_COMMIT"
-    - name: Debug zephyr_commit
-      run: echo ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
@@ -760,7 +738,7 @@ jobs:
     env:
       SAMPLE_NAME: micropython
       MICROPYTHON_VERSION: 97a7cc243b
-      NUMBER_OF_THREADS: 2
+      NUMBER_OF_THREADS: 32
     steps:
     - uses: actions/checkout@v2
     - name: Get sargraph
@@ -833,10 +811,7 @@ jobs:
       id: get-zephyr-commit
       run: |
         ZEPHYR_COMMIT=$(cat artifacts/zephyr.version)
-        echo $ZEPHYR_COMMIT
         echo "::set-output name=ZEPHYR_COMMIT::$ZEPHYR_COMMIT"
-    - name: Debug zephyr_commit
-      run: echo ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
@@ -849,7 +824,7 @@ jobs:
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       MICROPYTHON_VERSION: 97a7cc243b
-      NUMBER_OF_THREADS: 2
+      NUMBER_OF_THREADS: 32
     steps:
     - uses: actions/checkout@v2
     - name: Get sargraph
@@ -922,10 +897,7 @@ jobs:
       id: get-zephyr-commit
       run: |
         ZEPHYR_COMMIT=$(cat artifacts/zephyr.version)
-        echo $ZEPHYR_COMMIT
         echo "::set-output name=ZEPHYR_COMMIT::$ZEPHYR_COMMIT"
-    - name: Debug zephyr_commit
-      run: echo ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:

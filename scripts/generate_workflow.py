@@ -108,7 +108,10 @@ def generate():
     runs-on: [self-hosted, Linux, X64]
     needs: [{", ".join([f'simulate-{zephyr_commit}-{sample}' for zephyr_commit, sample in commit_sample_product])}]
     if: always()
+    env:
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
     steps:
+    - uses: actions/checkout@v2
     - name: Delete unnecessary artifacts
       uses: geekyeggo/delete-artifact@v1
       with:
@@ -124,10 +127,12 @@ def generate():
         apt update -qq
         apt install -y curl gnupg
     - name: Upload artifacts
-      uses: actions/upload-artifact@v2
+      run: gsutil cp -r results/* gs://gcp-distributed-job-test-bucket
+    - name: Delete the rest of the artifacts
+      uses: geekyeggo/delete-artifact@v1
       with:
-        name: result
-        path: results
+        name: |
+          {newline.join([f"${'{{'} needs.simulate-{i}-hello_world.outputs.ZEPHYR_COMMIT {'}}'}" for i in range(MAX_NUMBER_OF_COMMITS)])}
     - name: Update latest Zephyr commit
       run: echo ${'{{ needs.simulate-0-hello_world.outputs.ZEPHYR_COMMIT }}'} > {LAST_ZEPHYR_COMMIT_FILE}
     - name: Commit latest Zephyr commit

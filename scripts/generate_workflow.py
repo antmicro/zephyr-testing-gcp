@@ -4,7 +4,7 @@ import itertools
 WORKFLOW_FILE = 'workflow.yaml'
 WORKFLOW_NAME = 'workflow'
 SAMPLES = ['hello_world', 'shell_module', 'philosophers', 'micropython', 'tensorflow_lite_micro']
-NUMBER_OF_THREADS = 2
+NUMBER_OF_THREADS = 32
 MAX_NUMBER_OF_COMMITS = 2
 UBUNTU_VERSION = 'jammy'
 ZEPHYR_SDK_VERSION = '0.14.2'
@@ -24,6 +24,7 @@ def generate():
       ZEPHYR_COMMIT: {zephyr_commit}
       ZEPHYR_SDK_VERSION: {ZEPHYR_SDK_VERSION}
     steps:
+    - run: nproc
     - uses: actions/checkout@v2
     - name: Prepare environment
       run: ./scripts/prepare_environment.sh

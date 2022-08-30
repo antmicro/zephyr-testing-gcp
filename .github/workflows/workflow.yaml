@@ -51,6 +51,12 @@ jobs:
       NUMBER_OF_THREADS: 2
     steps:
     - uses: actions/checkout@v2
+    - name: Get sargraph
+      uses: actions/checkout@v2
+      with:
+        repository: antmicro/sargraph
+        path: sargraph
+        fetch-depth: 0
     - name: Prepare environment
       run: ./scripts/prepare_environment.sh
     - name: Get Zephyr
@@ -62,8 +68,14 @@ jobs:
       run: ./scripts/prepare_zephyr.sh
     - name: Prepare Micropython
       run: ./scripts/prepare_micropython.sh
+    - name: Start sargraph
+      run: ./sargraph/sargraph.py build start
     - name: Build boards
       run: ./scripts/build.py
+    - name: Stop sargraph
+      run: |
+        ./sargraph/sargraph.py build stop
+        mv plot.png artifacts/build_hello_world_plot.png
     - name: Echo Zephyr commit
       run: cat artifacts/zephyr.version
     - name: Upload artifacts
@@ -82,6 +94,12 @@ jobs:
       RENODE_VERSION: 1.13.1+20220731git8eca7310
     steps:
     - uses: actions/checkout@v2
+    - name: Get sargraph
+      uses: actions/checkout@v2
+      with:
+        repository: antmicro/sargraph
+        path: sargraph
+        fetch-depth: 0
     - name: Get artifacts
       uses: actions/download-artifact@v2
       with:
@@ -91,8 +109,14 @@ jobs:
       run: ./scripts/prepare_environment.sh
     - name: Prepare Renode
       run: ./scripts/download_renode.sh
+    - name: Start sargraph
+      run: ./sargraph/sargraph.py simulate start
     - name: Simulate
       run: ./scripts/simulate.py
+    - name: Stop sargraph
+      run: |
+        ./sargraph/sargraph.py simulate stop
+        mv plot.png artifacts/simulate_hello_world_plot.png
     - name: Get Zephyr commit
       id: get-zephyr-commit
       run: |
@@ -116,6 +140,12 @@ jobs:
       NUMBER_OF_THREADS: 2
     steps:
     - uses: actions/checkout@v2
+    - name: Get sargraph
+      uses: actions/checkout@v2
+      with:
+        repository: antmicro/sargraph
+        path: sargraph
+        fetch-depth: 0
     - name: Prepare environment
       run: ./scripts/prepare_environment.sh
     - name: Get Zephyr
@@ -127,8 +157,14 @@ jobs:
       run: ./scripts/prepare_zephyr.sh
     - name: Prepare Micropython
       run: ./scripts/prepare_micropython.sh
+    - name: Start sargraph
+      run: ./sargraph/sargraph.py build start
     - name: Build boards
       run: ./scripts/build.py
+    - name: Stop sargraph
+      run: |
+        ./sargraph/sargraph.py build stop
+        mv plot.png artifacts/build_shell_module_plot.png
     - name: Echo Zephyr commit
       run: cat artifacts/zephyr.version
     - name: Upload artifacts
@@ -147,6 +183,12 @@ jobs:
       RENODE_VERSION: 1.13.1+20220731git8eca7310
     steps:
     - uses: actions/checkout@v2
+    - name: Get sargraph
+      uses: actions/checkout@v2
+      with:
+        repository: antmicro/sargraph
+        path: sargraph
+        fetch-depth: 0
     - name: Get artifacts
       uses: actions/download-artifact@v2
       with:
@@ -156,8 +198,14 @@ jobs:
       run: ./scripts/prepare_environment.sh
     - name: Prepare Renode
       run: ./scripts/download_renode.sh
+    - name: Start sargraph
+      run: ./sargraph/sargraph.py simulate start
     - name: Simulate
       run: ./scripts/simulate.py
+    - name: Stop sargraph
+      run: |
+        ./sargraph/sargraph.py simulate stop
+        mv plot.png artifacts/simulate_shell_module_plot.png
     - name: Get Zephyr commit
       id: get-zephyr-commit
       run: |
@@ -181,6 +229,12 @@ jobs:
       NUMBER_OF_THREADS: 2
     steps:
     - uses: actions/checkout@v2
+    - name: Get sargraph
+      uses: actions/checkout@v2
+      with:
+        repository: antmicro/sargraph
+        path: sargraph
+        fetch-depth: 0
     - name: Prepare environment
       run: ./scripts/prepare_environment.sh
     - name: Get Zephyr
@@ -192,8 +246,14 @@ jobs:
       run: ./scripts/prepare_zephyr.sh
     - name: Prepare Micropython
       run: ./scripts/prepare_micropython.sh
+    - name: Start sargraph
+      run: ./sargraph/sargraph.py build start
     - name: Build boards
       run: ./scripts/build.py
+    - name: Stop sargraph
+      run: |
+        ./sargraph/sargraph.py build stop
+        mv plot.png artifacts/build_philosophers_plot.png
     - name: Echo Zephyr commit
       run: cat artifacts/zephyr.version
     - name: Upload artifacts
@@ -212,6 +272,12 @@ jobs:
       RENODE_VERSION: 1.13.1+20220731git8eca7310
     steps:
     - uses: actions/checkout@v2
+    - name: Get sargraph
+      uses: actions/checkout@v2
+      with:
+        repository: antmicro/sargraph
+        path: sargraph
+        fetch-depth: 0
     - name: Get artifacts
       uses: actions/download-artifact@v2
       with:
@@ -221,8 +287,14 @@ jobs:
       run: ./scripts/prepare_environment.sh
     - name: Prepare Renode
       run: ./scripts/download_renode.sh
+    - name: Start sargraph
+      run: ./sargraph/sargraph.py simulate start
     - name: Simulate
       run: ./scripts/simulate.py
+    - name: Stop sargraph
+      run: |
+        ./sargraph/sargraph.py simulate stop
+        mv plot.png artifacts/simulate_philosophers_plot.png
     - name: Get Zephyr commit
       id: get-zephyr-commit
       run: |
@@ -246,6 +318,12 @@ jobs:
       NUMBER_OF_THREADS: 2
     steps:
     - uses: actions/checkout@v2
+    - name: Get sargraph
+      uses: actions/checkout@v2
+      with:
+        repository: antmicro/sargraph
+        path: sargraph
+        fetch-depth: 0
     - name: Prepare environment
       run: ./scripts/prepare_environment.sh
     - name: Get Zephyr
@@ -257,8 +335,14 @@ jobs:
       run: ./scripts/prepare_zephyr.sh
     - name: Prepare Micropython
       run: ./scripts/prepare_micropython.sh
+    - name: Start sargraph
+      run: ./sargraph/sargraph.py build start
     - name: Build boards
       run: ./scripts/build.py
+    - name: Stop sargraph
+      run: |
+        ./sargraph/sargraph.py build stop
+        mv plot.png artifacts/build_micropython_plot.png
     - name: Echo Zephyr commit
       run: cat artifacts/zephyr.version
     - name: Upload artifacts
@@ -277,6 +361,12 @@ jobs:
       RENODE_VERSION: 1.13.1+20220731git8eca7310
     steps:
     - uses: actions/checkout@v2
+    - name: Get sargraph
+      uses: actions/checkout@v2
+      with:
+        repository: antmicro/sargraph
+        path: sargraph
+        fetch-depth: 0
     - name: Get artifacts
       uses: actions/download-artifact@v2
       with:
@@ -286,8 +376,14 @@ jobs:
       run: ./scripts/prepare_environment.sh
     - name: Prepare Renode
       run: ./scripts/download_renode.sh
+    - name: Start sargraph
+      run: ./sargraph/sargraph.py simulate start
     - name: Simulate
       run: ./scripts/simulate.py
+    - name: Stop sargraph
+      run: |
+        ./sargraph/sargraph.py simulate stop
+        mv plot.png artifacts/simulate_micropython_plot.png
     - name: Get Zephyr commit
       id: get-zephyr-commit
       run: |
@@ -311,6 +407,12 @@ jobs:
       NUMBER_OF_THREADS: 2
     steps:
     - uses: actions/checkout@v2
+    - name: Get sargraph
+      uses: actions/checkout@v2
+      with:
+        repository: antmicro/sargraph
+        path: sargraph
+        fetch-depth: 0
     - name: Prepare environment
       run: ./scripts/prepare_environment.sh
     - name: Get Zephyr
@@ -322,8 +424,14 @@ jobs:
       run: ./scripts/prepare_zephyr.sh
     - name: Prepare Micropython
       run: ./scripts/prepare_micropython.sh
+    - name: Start sargraph
+      run: ./sargraph/sargraph.py build start
     - name: Build boards
       run: ./scripts/build.py
+    - name: Stop sargraph
+      run: |
+        ./sargraph/sargraph.py build stop
+        mv plot.png artifacts/build_tensorflow_lite_micro_plot.png
     - name: Echo Zephyr commit
       run: cat artifacts/zephyr.version
     - name: Upload artifacts
@@ -342,6 +450,12 @@ jobs:
       RENODE_VERSION: 1.13.1+20220731git8eca7310
     steps:
     - uses: actions/checkout@v2
+    - name: Get sargraph
+      uses: actions/checkout@v2
+      with:
+        repository: antmicro/sargraph
+        path: sargraph
+        fetch-depth: 0
     - name: Get artifacts
       uses: actions/download-artifact@v2
       with:
@@ -351,8 +465,14 @@ jobs:
       run: ./scripts/prepare_environment.sh
     - name: Prepare Renode
       run: ./scripts/download_renode.sh
+    - name: Start sargraph
+      run: ./sargraph/sargraph.py simulate start
     - name: Simulate
       run: ./scripts/simulate.py
+    - name: Stop sargraph
+      run: |
+        ./sargraph/sargraph.py simulate stop
+        mv plot.png artifacts/simulate_tensorflow_lite_micro_plot.png
     - name: Get Zephyr commit
       id: get-zephyr-commit
       run: |
@@ -376,6 +496,12 @@ jobs:
       NUMBER_OF_THREADS: 2
     steps:
     - uses: actions/checkout@v2
+    - name: Get sargraph
+      uses: actions/checkout@v2
+      with:
+        repository: antmicro/sargraph
+        path: sargraph
+        fetch-depth: 0
     - name: Prepare environment
       run: ./scripts/prepare_environment.sh
     - name: Get Zephyr
@@ -387,8 +513,14 @@ jobs:
       run: ./scripts/prepare_zephyr.sh
     - name: Prepare Micropython
       run: ./scripts/prepare_micropython.sh
+    - name: Start sargraph
+      run: ./sargraph/sargraph.py build start
     - name: Build boards
       run: ./scripts/build.py
+    - name: Stop sargraph
+      run: |
+        ./sargraph/sargraph.py build stop
+        mv plot.png artifacts/build_hello_world_plot.png
     - name: Echo Zephyr commit
       run: cat artifacts/zephyr.version
     - name: Upload artifacts
@@ -407,6 +539,12 @@ jobs:
       RENODE_VERSION: 1.13.1+20220731git8eca7310
     steps:
     - uses: actions/checkout@v2
+    - name: Get sargraph
+      uses: actions/checkout@v2
+      with:
+        repository: antmicro/sargraph
+        path: sargraph
+        fetch-depth: 0
     - name: Get artifacts
       uses: actions/download-artifact@v2
       with:
@@ -416,8 +554,14 @@ jobs:
       run: ./scripts/prepare_environment.sh
     - name: Prepare Renode
       run: ./scripts/download_renode.sh
+    - name: Start sargraph
+      run: ./sargraph/sargraph.py simulate start
     - name: Simulate
       run: ./scripts/simulate.py
+    - name: Stop sargraph
+      run: |
+        ./sargraph/sargraph.py simulate stop
+        mv plot.png artifacts/simulate_hello_world_plot.png
     - name: Get Zephyr commit
       id: get-zephyr-commit
       run: |
@@ -441,6 +585,12 @@ jobs:
       NUMBER_OF_THREADS: 2
     steps:
     - uses: actions/checkout@v2
+    - name: Get sargraph
+      uses: actions/checkout@v2
+      with:
+        repository: antmicro/sargraph
+        path: sargraph
+        fetch-depth: 0
     - name: Prepare environment
       run: ./scripts/prepare_environment.sh
     - name: Get Zephyr
@@ -452,8 +602,14 @@ jobs:
       run: ./scripts/prepare_zephyr.sh
     - name: Prepare Micropython
       run: ./scripts/prepare_micropython.sh
+    - name: Start sargraph
+      run: ./sargraph/sargraph.py build start
     - name: Build boards
       run: ./scripts/build.py
+    - name: Stop sargraph
+      run: |
+        ./sargraph/sargraph.py build stop
+        mv plot.png artifacts/build_shell_module_plot.png
     - name: Echo Zephyr commit
       run: cat artifacts/zephyr.version
     - name: Upload artifacts
@@ -472,6 +628,12 @@ jobs:
       RENODE_VERSION: 1.13.1+20220731git8eca7310
     steps:
     - uses: actions/checkout@v2
+    - name: Get sargraph
+      uses: actions/checkout@v2
+      with:
+        repository: antmicro/sargraph
+        path: sargraph
+        fetch-depth: 0
     - name: Get artifacts
       uses: actions/download-artifact@v2
       with:
@@ -481,8 +643,14 @@ jobs:
       run: ./scripts/prepare_environment.sh
     - name: Prepare Renode
       run: ./scripts/download_renode.sh
+    - name: Start sargraph
+      run: ./sargraph/sargraph.py simulate start
     - name: Simulate
       run: ./scripts/simulate.py
+    - name: Stop sargraph
+      run: |
+        ./sargraph/sargraph.py simulate stop
+        mv plot.png artifacts/simulate_shell_module_plot.png
     - name: Get Zephyr commit
       id: get-zephyr-commit
       run: |
@@ -506,6 +674,12 @@ jobs:
       NUMBER_OF_THREADS: 2
     steps:
     - uses: actions/checkout@v2
+    - name: Get sargraph
+      uses: actions/checkout@v2
+      with:
+        repository: antmicro/sargraph
+        path: sargraph
+        fetch-depth: 0
     - name: Prepare environment
       run: ./scripts/prepare_environment.sh
     - name: Get Zephyr
@@ -517,8 +691,14 @@ jobs:
       run: ./scripts/prepare_zephyr.sh
     - name: Prepare Micropython
       run: ./scripts/prepare_micropython.sh
+    - name: Start sargraph
+      run: ./sargraph/sargraph.py build start
     - name: Build boards
       run: ./scripts/build.py
+    - name: Stop sargraph
+      run: |
+        ./sargraph/sargraph.py build stop
+        mv plot.png artifacts/build_philosophers_plot.png
     - name: Echo Zephyr commit
       run: cat artifacts/zephyr.version
     - name: Upload artifacts
@@ -537,6 +717,12 @@ jobs:
       RENODE_VERSION: 1.13.1+20220731git8eca7310
     steps:
     - uses: actions/checkout@v2
+    - name: Get sargraph
+      uses: actions/checkout@v2
+      with:
+        repository: antmicro/sargraph
+        path: sargraph
+        fetch-depth: 0
     - name: Get artifacts
       uses: actions/download-artifact@v2
       with:
@@ -546,8 +732,14 @@ jobs:
       run: ./scripts/prepare_environment.sh
     - name: Prepare Renode
       run: ./scripts/download_renode.sh
+    - name: Start sargraph
+      run: ./sargraph/sargraph.py simulate start
     - name: Simulate
       run: ./scripts/simulate.py
+    - name: Stop sargraph
+      run: |
+        ./sargraph/sargraph.py simulate stop
+        mv plot.png artifacts/simulate_philosophers_plot.png
     - name: Get Zephyr commit
       id: get-zephyr-commit
       run: |
@@ -571,6 +763,12 @@ jobs:
       NUMBER_OF_THREADS: 2
     steps:
     - uses: actions/checkout@v2
+    - name: Get sargraph
+      uses: actions/checkout@v2
+      with:
+        repository: antmicro/sargraph
+        path: sargraph
+        fetch-depth: 0
     - name: Prepare environment
       run: ./scripts/prepare_environment.sh
     - name: Get Zephyr
@@ -582,8 +780,14 @@ jobs:
       run: ./scripts/prepare_zephyr.sh
     - name: Prepare Micropython
       run: ./scripts/prepare_micropython.sh
+    - name: Start sargraph
+      run: ./sargraph/sargraph.py build start
     - name: Build boards
       run: ./scripts/build.py
+    - name: Stop sargraph
+      run: |
+        ./sargraph/sargraph.py build stop
+        mv plot.png artifacts/build_micropython_plot.png
     - name: Echo Zephyr commit
       run: cat artifacts/zephyr.version
     - name: Upload artifacts
@@ -602,6 +806,12 @@ jobs:
       RENODE_VERSION: 1.13.1+20220731git8eca7310
     steps:
     - uses: actions/checkout@v2
+    - name: Get sargraph
+      uses: actions/checkout@v2
+      with:
+        repository: antmicro/sargraph
+        path: sargraph
+        fetch-depth: 0
     - name: Get artifacts
       uses: actions/download-artifact@v2
       with:
@@ -611,8 +821,14 @@ jobs:
       run: ./scripts/prepare_environment.sh
     - name: Prepare Renode
       run: ./scripts/download_renode.sh
+    - name: Start sargraph
+      run: ./sargraph/sargraph.py simulate start
     - name: Simulate
       run: ./scripts/simulate.py
+    - name: Stop sargraph
+      run: |
+        ./sargraph/sargraph.py simulate stop
+        mv plot.png artifacts/simulate_micropython_plot.png
     - name: Get Zephyr commit
       id: get-zephyr-commit
       run: |
@@ -636,6 +852,12 @@ jobs:
       NUMBER_OF_THREADS: 2
     steps:
     - uses: actions/checkout@v2
+    - name: Get sargraph
+      uses: actions/checkout@v2
+      with:
+        repository: antmicro/sargraph
+        path: sargraph
+        fetch-depth: 0
     - name: Prepare environment
       run: ./scripts/prepare_environment.sh
     - name: Get Zephyr
@@ -647,8 +869,14 @@ jobs:
       run: ./scripts/prepare_zephyr.sh
     - name: Prepare Micropython
       run: ./scripts/prepare_micropython.sh
+    - name: Start sargraph
+      run: ./sargraph/sargraph.py build start
     - name: Build boards
       run: ./scripts/build.py
+    - name: Stop sargraph
+      run: |
+        ./sargraph/sargraph.py build stop
+        mv plot.png artifacts/build_tensorflow_lite_micro_plot.png
     - name: Echo Zephyr commit
       run: cat artifacts/zephyr.version
     - name: Upload artifacts
@@ -667,6 +895,12 @@ jobs:
       RENODE_VERSION: 1.13.1+20220731git8eca7310
     steps:
     - uses: actions/checkout@v2
+    - name: Get sargraph
+      uses: actions/checkout@v2
+      with:
+        repository: antmicro/sargraph
+        path: sargraph
+        fetch-depth: 0
     - name: Get artifacts
       uses: actions/download-artifact@v2
       with:
@@ -676,8 +910,14 @@ jobs:
       run: ./scripts/prepare_environment.sh
     - name: Prepare Renode
       run: ./scripts/download_renode.sh
+    - name: Start sargraph
+      run: ./sargraph/sargraph.py simulate start
     - name: Simulate
       run: ./scripts/simulate.py
+    - name: Stop sargraph
+      run: |
+        ./sargraph/sargraph.py simulate stop
+        mv plot.png artifacts/simulate_tensorflow_lite_micro_plot.png
     - name: Get Zephyr commit
       id: get-zephyr-commit
       run: |

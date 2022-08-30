@@ -5,6 +5,7 @@
 snapshots/
 logs/
 /micropython/
+/sargraph/
 xtensa-esp32-elf/
 *.run
 *.html

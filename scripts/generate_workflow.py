@@ -46,6 +46,12 @@ def generate():
       NUMBER_OF_THREADS: {NUMBER_OF_THREADS}
     steps:
     - uses: actions/checkout@v2
+    - name: Get sargraph
+      uses: actions/checkout@v2
+      with:
+        repository: antmicro/sargraph
+        path: sargraph
+        fetch-depth: 0
     - name: Prepare environment
       run: ./scripts/prepare_environment.sh
     - name: Get Zephyr
@@ -57,8 +63,14 @@ def generate():
       run: ./scripts/prepare_zephyr.sh
     - name: Prepare Micropython
       run: ./scripts/prepare_micropython.sh
+    - name: Start sargraph
+      run: ./sargraph/sargraph.py build start
     - name: Build boards
       run: ./scripts/build.py
+    - name: Stop sargraph
+      run: |
+        ./sargraph/sargraph.py build stop
+        mv plot.png artifacts/build_{sample}_plot.png
     - name: Echo Zephyr commit
       run: cat artifacts/zephyr.version
     - name: Upload artifacts
@@ -72,12 +84,18 @@ def generate():
     runs-on: [self-hosted, Linux, X64]
     needs: [build-{zephyr_commit}-{sample}]
     outputs:
-      ZEPHYR_COMMIT: ${'{{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}'}
+      ZEPHYR_COMMIT: ${{{{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}}}
     env:
       SAMPLE_NAME: {sample}
       RENODE_VERSION: {RENODE_VERSION}
     steps:
     - uses: actions/checkout@v2
+    - name: Get sargraph
+      uses: actions/checkout@v2
+      with:
+        repository: antmicro/sargraph
+        path: sargraph
+        fetch-depth: 0
     - name: Get artifacts
       uses: actions/download-artifact@v2
       with:
@@ -87,8 +105,14 @@ def generate():
       run: ./scripts/prepare_environment.sh
     - name: Prepare Renode
       run: ./scripts/download_renode.sh
+    - name: Start sargraph
+      run: ./sargraph/sargraph.py simulate start
     - name: Simulate
       run: ./scripts/simulate.py
+    - name: Stop sargraph
+      run: |
+        ./sargraph/sargraph.py simulate stop
+        mv plot.png artifacts/simulate_{sample}_plot.png
     - name: Get Zephyr commit
       id: get-zephyr-commit
       run: |
@@ -96,11 +120,11 @@ def generate():
         echo $ZEPHYR_COMMIT
         echo "::set-output name=ZEPHYR_COMMIT::$ZEPHYR_COMMIT"
     - name: Debug zephyr_commit
-      run: echo ${"{{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}"}
+      run: echo ${{{{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}}}
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: ${"{{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}"}
+        name: ${{{{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}}}
         path: artifacts/''')
     tasks.append(f'''
   results:
@@ -135,9 +159,9 @@ def generate():
       uses: geekyeggo/delete-artifact@v1
       with:
         name: |
-          {newline.join([f"${'{{'} needs.simulate-{i}-hello_world.outputs.ZEPHYR_COMMIT {'}}'}" for i in range(MAX_NUMBER_OF_COMMITS)])}
+          {newline.join([f"${{{{ needs.simulate-{i}-hello_world.outputs.ZEPHYR_COMMIT }}}}" for i in range(MAX_NUMBER_OF_COMMITS)])}
     - name: Update latest Zephyr commit
-      run: echo ${'{{ needs.simulate-0-hello_world.outputs.ZEPHYR_COMMIT }}'} > {LAST_ZEPHYR_COMMIT_FILE}
+      run: echo ${{{{ needs.simulate-0-hello_world.outputs.ZEPHYR_COMMIT }}}} > {LAST_ZEPHYR_COMMIT_FILE}
     - name: Commit latest Zephyr commit
       uses: stefanzweifel/git-auto-commit-action@v4
       with:

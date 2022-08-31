@@ -7,7 +7,7 @@ pip3 install west
 west init zephyrproject
 
 mkdir -p zephyr-sdk && cd zephyr-sdk
-curl -kL https://dl.antmicro.com/projects/renode/zephyr-sdk-${ZEPHYR_SDK_VERSION}_linux-x86_64.tar.gz | tar xz --strip 1
+curl --no-progress-meter -kL https://dl.antmicro.com/projects/renode/zephyr-sdk-${ZEPHYR_SDK_VERSION}_linux-x86_64.tar.gz | tar xz --strip 1
 ./setup.sh -t all -h -c
 cd -
 HEAD=f136070088

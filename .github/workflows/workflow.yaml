@@ -14,7 +14,6 @@ jobs:
       ZEPHYR_COMMIT: 0
       ZEPHYR_SDK_VERSION: 0.14.2
     steps:
-    - run: nproc
     - uses: actions/checkout@v2
     - name: Prepare environment
       run: ./scripts/prepare_environment.sh
@@ -32,7 +31,6 @@ jobs:
       ZEPHYR_COMMIT: 1
       ZEPHYR_SDK_VERSION: 0.14.2
     steps:
-    - run: nproc
     - uses: actions/checkout@v2
     - name: Prepare environment
       run: ./scripts/prepare_environment.sh
@@ -94,6 +92,7 @@ jobs:
     env:
       SAMPLE_NAME: hello_world
       RENODE_VERSION: 1.13.1+20220731git8eca7310
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
     steps:
     - uses: actions/checkout@v2
     - name: Get sargraph
@@ -124,11 +123,12 @@ jobs:
       run: |
         ZEPHYR_COMMIT=$(cat artifacts/zephyr.version)
         echo "::set-output name=ZEPHYR_COMMIT::$ZEPHYR_COMMIT"
+    - name: Install dependencies
+      run: ./scripts/prepare_gcp.sh
     - name: Upload artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
-        path: artifacts/
+      run: |
+        mv artifacts/ ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
+        gsutil cp -r ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }} gs://gcp-distributed-job-test-bucket
   build-0-shell_module:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
@@ -180,6 +180,7 @@ jobs:
     env:
       SAMPLE_NAME: shell_module
       RENODE_VERSION: 1.13.1+20220731git8eca7310
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
     steps:
     - uses: actions/checkout@v2
     - name: Get sargraph
@@ -210,11 +211,12 @@ jobs:
       run: |
         ZEPHYR_COMMIT=$(cat artifacts/zephyr.version)
         echo "::set-output name=ZEPHYR_COMMIT::$ZEPHYR_COMMIT"
+    - name: Install dependencies
+      run: ./scripts/prepare_gcp.sh
     - name: Upload artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
-        path: artifacts/
+      run: |
+        mv artifacts/ ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
+        gsutil cp -r ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }} gs://gcp-distributed-job-test-bucket
   build-0-philosophers:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
@@ -266,6 +268,7 @@ jobs:
     env:
       SAMPLE_NAME: philosophers
       RENODE_VERSION: 1.13.1+20220731git8eca7310
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
     steps:
     - uses: actions/checkout@v2
     - name: Get sargraph
@@ -296,11 +299,12 @@ jobs:
       run: |
         ZEPHYR_COMMIT=$(cat artifacts/zephyr.version)
         echo "::set-output name=ZEPHYR_COMMIT::$ZEPHYR_COMMIT"
+    - name: Install dependencies
+      run: ./scripts/prepare_gcp.sh
     - name: Upload artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
-        path: artifacts/
+      run: |
+        mv artifacts/ ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
+        gsutil cp -r ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }} gs://gcp-distributed-job-test-bucket
   build-0-micropython:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
@@ -352,6 +356,7 @@ jobs:
     env:
       SAMPLE_NAME: micropython
       RENODE_VERSION: 1.13.1+20220731git8eca7310
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
     steps:
     - uses: actions/checkout@v2
     - name: Get sargraph
@@ -382,11 +387,12 @@ jobs:
       run: |
         ZEPHYR_COMMIT=$(cat artifacts/zephyr.version)
         echo "::set-output name=ZEPHYR_COMMIT::$ZEPHYR_COMMIT"
+    - name: Install dependencies
+      run: ./scripts/prepare_gcp.sh
     - name: Upload artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
-        path: artifacts/
+      run: |
+        mv artifacts/ ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
+        gsutil cp -r ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }} gs://gcp-distributed-job-test-bucket
   build-0-tensorflow_lite_micro:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
@@ -438,6 +444,7 @@ jobs:
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       RENODE_VERSION: 1.13.1+20220731git8eca7310
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
     steps:
     - uses: actions/checkout@v2
     - name: Get sargraph
@@ -468,11 +475,12 @@ jobs:
       run: |
         ZEPHYR_COMMIT=$(cat artifacts/zephyr.version)
         echo "::set-output name=ZEPHYR_COMMIT::$ZEPHYR_COMMIT"
+    - name: Install dependencies
+      run: ./scripts/prepare_gcp.sh
     - name: Upload artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
-        path: artifacts/
+      run: |
+        mv artifacts/ ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
+        gsutil cp -r ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }} gs://gcp-distributed-job-test-bucket
   build-1-hello_world:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
@@ -524,6 +532,7 @@ jobs:
     env:
       SAMPLE_NAME: hello_world
       RENODE_VERSION: 1.13.1+20220731git8eca7310
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
     steps:
     - uses: actions/checkout@v2
     - name: Get sargraph
@@ -554,11 +563,12 @@ jobs:
       run: |
         ZEPHYR_COMMIT=$(cat artifacts/zephyr.version)
         echo "::set-output name=ZEPHYR_COMMIT::$ZEPHYR_COMMIT"
+    - name: Install dependencies
+      run: ./scripts/prepare_gcp.sh
     - name: Upload artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
-        path: artifacts/
+      run: |
+        mv artifacts/ ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
+        gsutil cp -r ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }} gs://gcp-distributed-job-test-bucket
   build-1-shell_module:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
@@ -610,6 +620,7 @@ jobs:
     env:
       SAMPLE_NAME: shell_module
       RENODE_VERSION: 1.13.1+20220731git8eca7310
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
     steps:
     - uses: actions/checkout@v2
     - name: Get sargraph
@@ -640,11 +651,12 @@ jobs:
       run: |
         ZEPHYR_COMMIT=$(cat artifacts/zephyr.version)
         echo "::set-output name=ZEPHYR_COMMIT::$ZEPHYR_COMMIT"
+    - name: Install dependencies
+      run: ./scripts/prepare_gcp.sh
     - name: Upload artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
-        path: artifacts/
+      run: |
+        mv artifacts/ ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
+        gsutil cp -r ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }} gs://gcp-distributed-job-test-bucket
   build-1-philosophers:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
@@ -696,6 +708,7 @@ jobs:
     env:
       SAMPLE_NAME: philosophers
       RENODE_VERSION: 1.13.1+20220731git8eca7310
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
     steps:
     - uses: actions/checkout@v2
     - name: Get sargraph
@@ -726,11 +739,12 @@ jobs:
       run: |
         ZEPHYR_COMMIT=$(cat artifacts/zephyr.version)
         echo "::set-output name=ZEPHYR_COMMIT::$ZEPHYR_COMMIT"
+    - name: Install dependencies
+      run: ./scripts/prepare_gcp.sh
     - name: Upload artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
-        path: artifacts/
+      run: |
+        mv artifacts/ ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
+        gsutil cp -r ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }} gs://gcp-distributed-job-test-bucket
   build-1-micropython:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
@@ -782,6 +796,7 @@ jobs:
     env:
       SAMPLE_NAME: micropython
       RENODE_VERSION: 1.13.1+20220731git8eca7310
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
     steps:
     - uses: actions/checkout@v2
     - name: Get sargraph
@@ -812,11 +827,12 @@ jobs:
       run: |
         ZEPHYR_COMMIT=$(cat artifacts/zephyr.version)
         echo "::set-output name=ZEPHYR_COMMIT::$ZEPHYR_COMMIT"
+    - name: Install dependencies
+      run: ./scripts/prepare_gcp.sh
     - name: Upload artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
-        path: artifacts/
+      run: |
+        mv artifacts/ ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
+        gsutil cp -r ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }} gs://gcp-distributed-job-test-bucket
   build-1-tensorflow_lite_micro:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
@@ -868,6 +884,7 @@ jobs:
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       RENODE_VERSION: 1.13.1+20220731git8eca7310
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
     steps:
     - uses: actions/checkout@v2
     - name: Get sargraph
@@ -898,21 +915,20 @@ jobs:
       run: |
         ZEPHYR_COMMIT=$(cat artifacts/zephyr.version)
         echo "::set-output name=ZEPHYR_COMMIT::$ZEPHYR_COMMIT"
+    - name: Install dependencies
+      run: ./scripts/prepare_gcp.sh
     - name: Upload artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
-        path: artifacts/
+      run: |
+        mv artifacts/ ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
+        gsutil cp -r ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }} gs://gcp-distributed-job-test-bucket
   results:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [simulate-0-hello_world, simulate-0-shell_module, simulate-0-philosophers, simulate-0-micropython, simulate-0-tensorflow_lite_micro, simulate-1-hello_world, simulate-1-shell_module, simulate-1-philosophers, simulate-1-micropython, simulate-1-tensorflow_lite_micro]
     if: always()
-    env:
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
     steps:
     - uses: actions/checkout@v2
-    - name: Delete unnecessary artifacts
+    - name: Delete artifacts
       uses: geekyeggo/delete-artifact@v1
       with:
         name: |
@@ -920,23 +936,6 @@ jobs:
           zephyr-1
           build-0
           build-1
-    - name: Download binaries
-      uses: actions/download-artifact@v2
-      with:
-        path: results/
-    - name: Install dependencies
-      run: |
-        apt update -qq
-        apt install -y curl gnupg
-        echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
-        curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
-        apt -qqy update && apt -qqy install google-cloud-cli
-    - name: Upload artifacts
-      run: gsutil cp -r results/* gs://gcp-distributed-job-test-bucket
-    - name: Delete the rest of the artifacts
-      uses: geekyeggo/delete-artifact@v1
-      with:
-        name: |
           ${{ needs.simulate-0-hello_world.outputs.ZEPHYR_COMMIT }}
           ${{ needs.simulate-1-hello_world.outputs.ZEPHYR_COMMIT }}
     - name: Update latest Zephyr commit

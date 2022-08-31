@@ -24,7 +24,6 @@ def generate():
       ZEPHYR_COMMIT: {zephyr_commit}
       ZEPHYR_SDK_VERSION: {ZEPHYR_SDK_VERSION}
     steps:
-    - run: nproc
     - uses: actions/checkout@v2
     - name: Prepare environment
       run: ./scripts/prepare_environment.sh
@@ -89,6 +88,7 @@ def generate():
     env:
       SAMPLE_NAME: {sample}
       RENODE_VERSION: {RENODE_VERSION}
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
     steps:
     - uses: actions/checkout@v2
     - name: Get sargraph
@@ -119,44 +119,26 @@ def generate():
       run: |
         ZEPHYR_COMMIT=$(cat artifacts/zephyr.version)
         echo "::set-output name=ZEPHYR_COMMIT::$ZEPHYR_COMMIT"
+    - name: Install dependencies
+      run: ./scripts/prepare_gcp.sh
     - name: Upload artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: ${{{{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}}}
-        path: artifacts/''')
+      run: |
+        mv artifacts/ ${{{{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}}}
+        gsutil cp -r ${{{{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}}} gs://gcp-distributed-job-test-bucket''')
     tasks.append(f'''
   results:
     container: ubuntu:{UBUNTU_VERSION}
     runs-on: [self-hosted, Linux, X64]
     needs: [{", ".join([f'simulate-{zephyr_commit}-{sample}' for zephyr_commit, sample in commit_sample_product])}]
     if: always()
-    env:
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
     steps:
     - uses: actions/checkout@v2
-    - name: Delete unnecessary artifacts
+    - name: Delete artifacts
       uses: geekyeggo/delete-artifact@v1
       with:
         name: |
           {newline.join([f"zephyr-{i}" for i in range(MAX_NUMBER_OF_COMMITS)])}
           {newline.join([f"build-{i}" for i in range(MAX_NUMBER_OF_COMMITS)])}
-    - name: Download binaries
-      uses: actions/download-artifact@v2
-      with:
-        path: results/
-    - name: Install dependencies
-      run: |
-        apt update -qq
-        apt install -y curl gnupg
-        echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
-        curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
-        apt -qqy update && apt -qqy install google-cloud-cli
-    - name: Upload artifacts
-      run: gsutil cp -r results/* gs://gcp-distributed-job-test-bucket
-    - name: Delete the rest of the artifacts
-      uses: geekyeggo/delete-artifact@v1
-      with:
-        name: |
           {newline.join([f"${{{{ needs.simulate-{i}-hello_world.outputs.ZEPHYR_COMMIT }}}}" for i in range(MAX_NUMBER_OF_COMMITS)])}
     - name: Update latest Zephyr commit
       run: echo ${{{{ needs.simulate-0-hello_world.outputs.ZEPHYR_COMMIT }}}} > {LAST_ZEPHYR_COMMIT_FILE}

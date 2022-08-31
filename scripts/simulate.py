@@ -125,7 +125,7 @@ def run_in_renode(renode_platform, zephyr_platform, sample_name, uart_name, scri
         ))
 
     try:
-        process = subprocess.Popen(f"./renode_portable/renode-test --kill-stale-renode-instances artifacts/{zephyr_platform}-{sample_name}/{zephyr_platform}-{sample_name}.robot".split(), start_new_session=True)
+        process = subprocess.Popen(f"./renode_portable/renode-test --kill-stale-renode-instances {artifacts_dict['robot'].format(board_name=zephyr_platform, sample_name=sample_name)}".split(), start_new_session=True)
         pgid = os.getpgid(process.pid)
         _, __ = process.communicate(timeout=30)
         ret = process.returncode
@@ -328,10 +328,6 @@ def loop_wrapper(b, i, total_boards, sample_name):
     if total_boards > 1:
         print(f">> [{i} / {total_boards}] -- {board_name} --")
     out = None
-
-    artifacts_path = f'artifacts/{board_name}-{sample_name}'
-    if not os.path.exists(artifacts_path):
-        os.mkdir(artifacts_path)
 
     out = run_renode_simulation(b, sample_name)
     if total_boards > 1:

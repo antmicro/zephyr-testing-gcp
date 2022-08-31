@@ -28,25 +28,7 @@ def green(text):
     return Fore.GREEN + (text or '') + Style.RESET_ALL
 
 zephyr_path = 'zephyrproject/zephyr'
-artifacts_dict = {
-    'asciinema':    'artifacts/{board_name}-{sample_name}/{board_name}-{sample_name}-asciinema',
-    'config':       'artifacts/{board_name}-{sample_name}/{board_name}-{sample_name}-config',
-    'dts':          'artifacts/{board_name}-{sample_name}/{board_name}-{sample_name}.dts',
-    'elf':          'artifacts/{board_name}-{sample_name}/{board_name}-zephyr-{sample_name}.elf',
-    'log':          'artifacts/{board_name}-{sample_name}/{board_name}-{sample_name}.html',
-    'monitor':      'artifacts/{board_name}-{sample_name}/{board_name}-{sample_name}_monitor.txt',
-    'profiling':    'artifacts/{board_name}-{sample_name}/{board_name}-{sample_name}-profile',
-    'repl':         'artifacts/{board_name}-{sample_name}/{board_name}-{sample_name}.repl',
-    'resc':         'artifacts/{board_name}-{sample_name}/{board_name}-{sample_name}.resc',
-    'robot':        'artifacts/{board_name}-{sample_name}/{board_name}-{sample_name}.robot',
-    'save':         'artifacts/{board_name}-{sample_name}/{board_name}-{sample_name}.{sample_name}_on_{board_name}.fail.save',
-    'sbom-app':     'artifacts/{board_name}-{sample_name}/{board_name}-{sample_name}-app.spdx',
-    'sbom-build':   'artifacts/{board_name}-{sample_name}/{board_name}-{sample_name}-build.spdx',
-    'sbom-zephyr':  'artifacts/{board_name}-{sample_name}/{board_name}-{sample_name}-zephyr.spdx',
-    'zip':          'artifacts/{board_name}-{sample_name}/{board_name}-{sample_name}.zip',
-    'zip-sbom':     'artifacts/{board_name}-{sample_name}/{board_name}-{sample_name}-sbom.zip',
-    'zephyr-log':   'artifacts/{board_name}-{sample_name}/{board_name}-{sample_name}-zephyr.log',
-}
+
 
 def get_board_path(board):
     return str(board.dir).replace(os.getcwd()+'/','').replace(zephyr_path+'/','')
@@ -127,7 +109,7 @@ def build_sample(zephyr_platform, sample_name, sample_path, sample_args, toolcha
     args = f'-- {sample_args}' if sample_args != '' else ''
     return_code, west_output = build_and_copy_bin(zephyr_platform, sample_path, args, sample_name, env)
     # try increasing flash size if the sample doesn't fit in it
-    dts_filename = artifacts_dict['dts'].format(board_name=zephyr_platform, sample_name=sample_name)
+    dts_filename = 'artifacts/{board_name}-{sample_name}/{board_name}-{sample_name}.dts'.format(board_name=zephyr_platform, sample_name=sample_name)
     m = re.search(r"region `FLASH' overflowed by (\d+) bytes", west_output)
     if return_code:
         if m is not None and os.path.exists(dts_filename):
@@ -248,10 +230,6 @@ def loop_wrapper(b, i, total_boards, sample_name, sample_path):
     remote_board = next(remote_board, None)
     out = None
 
-    artifacts_path = f'artifacts/{board_name}-{sample_name}'
-    if not os.path.exists(artifacts_path):
-        os.mkdir(artifacts_path)
-
     try_build(board_name, get_board_path(flat_boards[board_name]), sample_name, sample_path)
     if total_boards > 1:
         print(f"<< [{i} / {total_boards}] -- {board_name} --")
@@ -279,6 +257,7 @@ if __name__ == '__main__':
     boards_to_run = filter(lambda x: all(map(lambda y: y != x.arch, omit_arch)), boards_to_run)
     omit_board = ('acrn', 'qemu', 'native', 'nsim', 'xenvm', 'xt-sim')
     boards_to_run = list(filter(lambda x: all(map(lambda y: y not in x.name, omit_board)), boards_to_run))
+    boards_to_run = boards_to_run[:2]
     total_boards = len(boards_to_run)
     thread_number = int(os.getenv("NUMBER_OF_THREADS", 1))
 

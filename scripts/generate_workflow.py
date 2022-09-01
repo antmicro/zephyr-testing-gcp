@@ -44,6 +44,7 @@ def generate():
       SAMPLE_NAME: {sample}
       MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: {NUMBER_OF_THREADS}
+      GHA_MACHINE_TYPE: "n2-standard-32"
     steps:
     - uses: actions/checkout@v2
     - name: Get sargraph
@@ -87,6 +88,7 @@ def generate():
       SAMPLE_NAME: {sample}
       RENODE_VERSION: {RENODE_VERSION}
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
+      GHA_MACHINE_TYPE: "n2-standard-32"
     steps:
     - uses: actions/checkout@v2
     - name: Get sargraph

@@ -71,12 +71,10 @@ def generate():
       run: |
         ./sargraph/sargraph.py build stop
         mv plot.png artifacts/build_{sample}_plot.png
-    - name: Echo Zephyr commit
-      run: cat artifacts/zephyr.version
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: build-{zephyr_commit}
+        name: build-{zephyr_commit}-{sample}
         path: artifacts/''')
         tasks.append(f'''
   simulate-{zephyr_commit}-{sample}:
@@ -138,8 +136,7 @@ def generate():
       with:
         name: |
           {newline.join([f"zephyr-{i}" for i in range(MAX_NUMBER_OF_COMMITS)])}
-          {newline.join([f"build-{i}" for i in range(MAX_NUMBER_OF_COMMITS)])}
-          {newline.join([f"${{{{ needs.simulate-{i}-hello_world.outputs.ZEPHYR_COMMIT }}}}" for i in range(MAX_NUMBER_OF_COMMITS)])}
+          {newline.join([f"build-{commit}-{sample}" for commit, sample in commit_sample_product])}
     - name: Update latest Zephyr commit
       run: echo ${{{{ needs.simulate-0-hello_world.outputs.ZEPHYR_COMMIT }}}} > {LAST_ZEPHYR_COMMIT_FILE}
     - name: Commit latest Zephyr commit

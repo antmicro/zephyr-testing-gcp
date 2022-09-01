@@ -102,7 +102,7 @@ jobs:
     - name: Get artifacts
       uses: actions/download-artifact@v2
       with:
-        name: build-0
+        name: build-0-hello_world
         path: artifacts/
     - name: Prepare environment
       run: ./scripts/prepare_environment.sh
@@ -188,7 +188,7 @@ jobs:
     - name: Get artifacts
       uses: actions/download-artifact@v2
       with:
-        name: build-0
+        name: build-0-shell_module
         path: artifacts/
     - name: Prepare environment
       run: ./scripts/prepare_environment.sh
@@ -274,7 +274,7 @@ jobs:
     - name: Get artifacts
       uses: actions/download-artifact@v2
       with:
-        name: build-0
+        name: build-0-philosophers
         path: artifacts/
     - name: Prepare environment
       run: ./scripts/prepare_environment.sh
@@ -360,7 +360,7 @@ jobs:
     - name: Get artifacts
       uses: actions/download-artifact@v2
       with:
-        name: build-0
+        name: build-0-micropython
         path: artifacts/
     - name: Prepare environment
       run: ./scripts/prepare_environment.sh
@@ -446,7 +446,7 @@ jobs:
     - name: Get artifacts
       uses: actions/download-artifact@v2
       with:
-        name: build-0
+        name: build-0-tensorflow_lite_micro
         path: artifacts/
     - name: Prepare environment
       run: ./scripts/prepare_environment.sh
@@ -532,7 +532,7 @@ jobs:
     - name: Get artifacts
       uses: actions/download-artifact@v2
       with:
-        name: build-1
+        name: build-1-hello_world
         path: artifacts/
     - name: Prepare environment
       run: ./scripts/prepare_environment.sh
@@ -618,7 +618,7 @@ jobs:
     - name: Get artifacts
       uses: actions/download-artifact@v2
       with:
-        name: build-1
+        name: build-1-shell_module
         path: artifacts/
     - name: Prepare environment
       run: ./scripts/prepare_environment.sh
@@ -704,7 +704,7 @@ jobs:
     - name: Get artifacts
       uses: actions/download-artifact@v2
       with:
-        name: build-1
+        name: build-1-philosophers
         path: artifacts/
     - name: Prepare environment
       run: ./scripts/prepare_environment.sh
@@ -790,7 +790,7 @@ jobs:
     - name: Get artifacts
       uses: actions/download-artifact@v2
       with:
-        name: build-1
+        name: build-1-micropython
         path: artifacts/
     - name: Prepare environment
       run: ./scripts/prepare_environment.sh
@@ -876,7 +876,7 @@ jobs:
     - name: Get artifacts
       uses: actions/download-artifact@v2
       with:
-        name: build-1
+        name: build-1-tensorflow_lite_micro
         path: artifacts/
     - name: Prepare environment
       run: ./scripts/prepare_environment.sh

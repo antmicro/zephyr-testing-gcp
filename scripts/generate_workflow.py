@@ -98,7 +98,7 @@ def generate():
     - name: Get artifacts
       uses: actions/download-artifact@v2
       with:
-        name: build-{zephyr_commit}
+        name: build-{zephyr_commit}-{sample}
         path: artifacts/
     - name: Prepare environment
       run: ./scripts/prepare_environment.sh

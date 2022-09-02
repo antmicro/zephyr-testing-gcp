@@ -146,7 +146,7 @@ def generate():
     - name: Commit latest Zephyr commit
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
-        commit_message: Update latest Zephyr commit
+        commit_message: Update latest Zephyr commit ${{{{ needs.simulate-0-hello_world.outputs.ZEPHYR_COMMIT }}}}
         file_pattern: {LAST_ZEPHYR_COMMIT_FILE}''')
     with open(WORKFLOW_FILE, 'w') as file:
         file.write(f'''name: {WORKFLOW_NAME}

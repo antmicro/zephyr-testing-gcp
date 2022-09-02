@@ -4,7 +4,8 @@ import itertools
 WORKFLOW_FILE = 'workflow.yaml'
 WORKFLOW_NAME = 'workflow'
 SAMPLES = ['hello_world', 'shell_module', 'philosophers', 'micropython', 'tensorflow_lite_micro']
-NUMBER_OF_THREADS = 32
+NUMBER_OF_THREADS_BUILD = 32
+NUMBER_OF_THREADS_SIMULATE = 28
 MAX_NUMBER_OF_COMMITS = 2
 UBUNTU_VERSION = 'jammy'
 ZEPHYR_SDK_VERSION = '0.14.2'
@@ -43,7 +44,7 @@ def generate():
     env:
       SAMPLE_NAME: {sample}
       MICROPYTHON_VERSION: 97a7cc243b
-      NUMBER_OF_THREADS: {NUMBER_OF_THREADS}
+      NUMBER_OF_THREADS: {NUMBER_OF_THREADS_BUILD}
       GHA_MACHINE_TYPE: "n2-standard-32"
     steps:
     - uses: actions/checkout@v2
@@ -87,6 +88,7 @@ def generate():
     env:
       SAMPLE_NAME: {sample}
       RENODE_VERSION: {RENODE_VERSION}
+      NUMBER_OF_THREADS: {NUMBER_OF_THREADS_SIMULATE}
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
       GHA_MACHINE_TYPE: "n2-standard-32"
     steps:

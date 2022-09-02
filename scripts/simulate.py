@@ -5,13 +5,12 @@ import json
 import os
 import re
 import shutil
-import signal
 import subprocess
 import sys
-import time
 import zipfile
 from argparse import Namespace
 from dts2repl import dts2repl
+import xml.etree.ElementTree as ET
 
 from colorama import init
 init()
@@ -28,6 +27,7 @@ def green(text):
     return Fore.GREEN + (text or '') + Style.RESET_ALL
 
 zephyr_path = 'zephyrproject/zephyr'
+robots_yaml = 'artifacts/robots.yaml'
 artifacts_dict = {
     'asciinema':    'artifacts/{board_name}-{sample_name}/{board_name}-{sample_name}-asciinema',
     'config':       'artifacts/{board_name}-{sample_name}/{board_name}-{sample_name}-config',
@@ -82,94 +82,6 @@ robot_templates = {
     'tensorflow_lite_micro': robot_template_tflm,
 }
 
-def run_in_renode(renode_platform, zephyr_platform, sample_name, uart_name, script=None):
-    rm_files = ('log.html', 'logs', 'monitor.txt')
-    format_args = {
-        'board_name': zephyr_platform,
-        'sample_name': sample_name,
-    }
-    resc_filename = artifacts_dict['resc'].format(**format_args)
-    repl_filename = artifacts_dict['repl'].format(**format_args)
-    robot_filename = artifacts_dict['robot'].format(**format_args)
-    monitor_filename = artifacts_dict['monitor'].format(**format_args)
-    log_filename = artifacts_dict['log'].format(**format_args)
-    config_filename = artifacts_dict['config'].format(**format_args)
-    save_filename = artifacts_dict['save'].format(**format_args)
-
-    if os.path.exists(f"renode_portable/platforms/{renode_platform}"):
-        shutil.copy2(f"renode_portable/platforms/{renode_platform}", repl_filename)
-
-    # it's a repl, not a resc, generate relevant resc file
-    renode_platform = renode_platform[:-5]
-    with open(resc_filename, "w") as resc_file:
-        resc_file.write(resc_template.render(
-            renode_platform=renode_platform,
-            zephyr_platform=zephyr_platform,
-            path_to_artifacts="artifacts",
-            sample_name=sample_name,
-            uart_name=uart_name,
-            script=script
-        ))
-
-    # get CONFIG_BOARD as defined in the config file
-    with open(config_filename) as f:
-        m = re.search(r'CONFIG_BOARD="(.*)"', f.read())
-        config_board_name = m.group(1)
-
-    with open(robot_filename, "w") as robot_file:
-        robot_file.write(robot_templates[sample_name].render(
-            board_name=zephyr_platform,
-            config_board_name=config_board_name,
-            uart_name=uart_name,
-            sample_name=sample_name
-        ))
-
-    try:
-        process = subprocess.Popen(f"./renode_portable/renode-test --kill-stale-renode-instances {artifacts_dict['robot'].format(board_name=zephyr_platform, sample_name=sample_name)}".split(), start_new_session=True)
-        pgid = os.getpgid(process.pid)
-        _, __ = process.communicate(timeout=30)
-        ret = process.returncode
-    except subprocess.TimeoutExpired:
-        # We send two interrupt signals to shut down Robot
-        print(f"Timeout running tests for {zephyr_platform}-{sample_name}")
-        os.killpg(pgid, signal.SIGINT)
-        os.killpg(pgid, signal.SIGINT)
-        process.terminate()
-        ret = 1
-
-    snapshot_path = os.path.join("snapshots", os.path.basename(save_filename))
-    if os.path.exists(snapshot_path):
-        shutil.copy2(snapshot_path, save_filename)
-
-    if os.path.exists("monitor.txt"):
-        with open("monitor.txt") as f:
-            monitor = f.read().split('\n')
-
-        # save only the first 100 lines of logs
-        monitor = '\n'.join(monitor[:100])
-        with open(monitor_filename, "w") as f:
-            f.write(monitor)
-
-    # give Renode 1s of time if Robot logs were not yet generated
-    if not os.path.exists("log.html"):
-        time.sleep(1)
-    if os.path.exists("log.html"):
-        shutil.copy2("log.html", log_filename);
-
-    # clean unneeded artifacts
-    for f in rm_files:
-        if os.path.exists(f):
-            if os.path.isdir(f):
-                shutil.rmtree(f)
-            else:
-                os.remove(f)
-
-    if ret:
-        print(red("Test failed."))
-        return False
-    else:
-        print(green("Test passed."))
-        return True
 
 def conv_zephyr_mem_usage(val):
     if val.endswith(' B'):
@@ -214,92 +126,135 @@ def get_artifacts_list(platform):
 
     return ret
 
-def run_renode_simulation(board, sample_name):
-    result = {
-        'board_name': board['name'],
-        'board_path': board['path'],
+def prepare_robot_file(renode_platform, zephyr_platform, sample_name, uart_name, script=None):
+    format_args = {
+        'board_name': zephyr_platform,
         'sample_name': sample_name,
-        'status': 'NOT BUILT',
-        'uart_name': '',
     }
-    elf_filename = artifacts_dict['elf'].format(**result)
-    dts_filename = artifacts_dict['dts'].format(**result)
-    repl_filename = artifacts_dict['repl'].format(**result)
-    save_filename = artifacts_dict['save'].format(**result)
-    zephyr_log_filename = artifacts_dict['zephyr-log'].format(**result)
+    resc_filename = artifacts_dict['resc'].format(**format_args)
+    repl_filename = artifacts_dict['repl'].format(**format_args)
+    robot_filename = artifacts_dict['robot'].format(**format_args)
+    monitor_filename = artifacts_dict['monitor'].format(**format_args)
+    log_filename = artifacts_dict['log'].format(**format_args)
+    config_filename = artifacts_dict['config'].format(**format_args)
+    save_filename = artifacts_dict['save'].format(**format_args)
+    if os.path.exists(f"renode_portable/platforms/{renode_platform}"):
+        shutil.copy2(f"renode_portable/platforms/{renode_platform}", repl_filename)
 
-    if os.path.exists(elf_filename):
-        result['status'] = 'BUILT'
+    # it's a repl, not a resc, generate relevant resc file
+    renode_platform = renode_platform[:-5]
+    with open(resc_filename, "w") as resc_file:
+        resc_file.write(resc_template.render(
+            renode_platform=renode_platform,
+            zephyr_platform=zephyr_platform,
+            path_to_artifacts="artifacts",
+            sample_name=sample_name,
+            uart_name=uart_name,
+            script=script
+        ))
+    # get CONFIG_BOARD as defined in the config file
+    with open(config_filename) as f:
+        m = re.search(r'CONFIG_BOARD="(.*)"', f.read())
+        config_board_name = m.group(1)
+    with open(robot_filename, "w") as robot_file:
+        robot_file.write(robot_templates[sample_name].render(
+            board_name=zephyr_platform,
+            config_board_name=config_board_name,
+            uart_name=uart_name,
+            sample_name=sample_name
+        ))
 
-    uart = try_match_board(board)
+def run_renode_simulation(boards, sample_name, thread_number):
+    robots = []
+    result = []
+    for board in boards:
+        result.append({
+            'board_name': board['name'],
+            'board_path': board['path'],
+            'sample_name': sample_name,
+            'status': 'NOT BUILT',
+            'uart_name': '',
+        })
+        elf_filename = artifacts_dict['elf'].format(**result[-1])
+        dts_filename = artifacts_dict['dts'].format(**result[-1])
+        repl_filename = artifacts_dict['repl'].format(**result[-1])
 
-    result['arch'] = board['arch']
-    result['board_full_name'] = board['full_name']
+        if os.path.exists(elf_filename):
+            result[-1]['status'] = 'BUILT'
 
-    dts_path = f'{zephyr_path}/{result["board_path"]}/{result["board_name"]}.dts'
-    result['cpu'] = get_cpu_name(result['arch'], dts_path)
-    cpu_dep_chain = dts2repl.get_cpu_dep_chain(result['arch'], dts_path, zephyr_path, [])
+        uart = try_match_board(board)
 
-    extra_cmd = None
+        result[-1]['arch'] = board['arch']
+        result[-1]['board_full_name'] = board['full_name']
 
-    if uart is None:
-        print("No uart. Cannot run test.")
-    else:
-        result['uart_name'] = uart
+        dts_path = f'{zephyr_path}/{result[-1]["board_path"]}/{result[-1]["board_name"]}.dts'
+        result[-1]['cpu'] = get_cpu_name(result[-1]['arch'], dts_path)
+        cpu_dep_chain = dts2repl.get_cpu_dep_chain(result[-1]['arch'], dts_path, zephyr_path, [])
 
-    if uart is not None and result['status'] != 'NOT BUILT':
-        passed = False
+        extra_cmd = None
 
-        print(f"Autogenerating repl for {bold(board['name'])} using device tree.")
-        fake_args = Namespace(filename=dts_filename, overlays=",".join(cpu_dep_chain + [board['name']]))
-        repl = dts2repl.generate(fake_args)
-        with open(repl_filename, 'w') as repl_file:
-            repl_file.write(repl)
+        if uart is None:
+            print(f"{board['name']}-{sample_name}: No uart. Cannot run test.")
+        else:
+            result[-1]['uart_name'] = uart
 
-        if "cortex-m" in repl:
-            extra_cmd = 'cpu0 VectorTableOffset `sysbus GetSymbolAddress "_vector_table"`'
-        elif "RiscV" in repl:
-            extra_cmd = f"cpu0 EnableProfiler true $ORIGIN/{board['name']}-{sample_name}-profile true"
+        if uart is not None and result[-1]['status'] != 'NOT BUILT':
+            print(f"Autogenerating repl for {bold(board['name'])} using device tree.")
+            fake_args = Namespace(filename=dts_filename, overlays=",".join(cpu_dep_chain + [board['name']]))
+            repl = dts2repl.generate(fake_args)
+            with open(repl_filename, 'w') as repl_file:
+                repl_file.write(repl)
 
-        passed = run_in_renode(repl_filename, board['name'], sample_name, uart, extra_cmd)
-        result['repl_type'] = 'AUTO'
-        result['repl_name'] = f"{board['name']}-{sample_name}.repl"
-        if passed:
-            # state snapshot was created by the previously failed run (dict-matched)
-            if os.path.exists(save_filename):
-                os.remove(save_filename)
-            result['status'] = 'PASSED'
+            if "cortex-m" in repl:
+                extra_cmd = 'cpu0 VectorTableOffset `sysbus GetSymbolAddress "_vector_table"`'
+            elif "RiscV" in repl:
+                extra_cmd = f"cpu0 EnableProfiler true $ORIGIN/{board['name']}-{sample_name}-profile true"
+            prepare_robot_file(repl_filename, board['name'], sample_name, uart, extra_cmd)
+            robots.append(artifacts_dict['robot'].format(board_name=board['name'], sample_name=sample_name))
+            result[-1]['repl_type'] = 'AUTO'
+            result[-1]['repl_name'] = f"{board['name']}-{sample_name}.repl"
+    with open(robots_yaml, 'w') as file:
+        for robot in robots:
+            file.write(f"- {robot}\n")
+    print(subprocess.check_output(f"./renode_portable/renode-test -t {robots_yaml} -j {thread_number}".split()).decode())
+    robot_output = ET.parse("robot_output.xml").getroot()
+    stats = robot_output.findall(".//statistics/suite/stat")[1:]
+    stats = {stat.attrib['name']: int(stat.attrib['pass']) for stat in stats}
 
-    # create zip archive with all artifacts
-    result['files'] = get_artifacts_list(result)
-    create_zip_archive(result)
+    for res in result:
+        test_name = f"{res['board_name']}-{res['sample_name']}"
+        if test_name in stats and stats[test_name] > 0:
+            res['status'] = 'PASSED'
 
-    # create zip archive with sboms
-    sbom_zip_name = artifacts_dict['zip-sbom'].format(**result)
-    create_zip_archive(result, zip_name=sbom_zip_name, files=['sbom-app', 'sbom-zephyr', 'sbom-build'])
+        # create zip archive with all artifacts
+        res['files'] = get_artifacts_list(res)
+        create_zip_archive(res)
 
-    # get memory usage
-    memory = {}
-    if result['status'] != 'NOT BUILT':
-        with open(zephyr_log_filename) as f:
-            match = re.findall(r"(?P<region>\w+){1}:\s*(?P<used>\d+\s+\w{1,2})\s*(?P<size>\d+\s+\w{1,2})\s*(?P<percentage>\d+.\d+%)", f.read())
-        for m in match:
-            region, used, size, _ = m
-            memory[region] = {
-                'used': conv_zephyr_mem_usage(used),
-                'size': conv_zephyr_mem_usage(size),
-            }
+        # create zip archive with sboms
+        sbom_zip_name = artifacts_dict['zip-sbom'].format(**res)
+        create_zip_archive(res, zip_name=sbom_zip_name, files=['sbom-app', 'sbom-zephyr', 'sbom-build'])
 
-        # check if flash size was increased
-        if os.path.exists(dts_filename + '.orig') and 'FLASH' in memory:
-            _, flash_size = find_flash_size(dts_filename + '.orig')
-            flash_size = int(flash_size[-1], 16)
-            memory['FLASH'].update({
-                'size': flash_size,
-            })
+        # get memory usage
+        memory = {}
+        if res['status'] != 'NOT BUILT':
+            with open(artifacts_dict['zephyr-log'].format(**res)) as f:
+                match = re.findall(r"(?P<region>\w+){1}:\s*(?P<used>\d+\s+\w{1,2})\s*(?P<size>\d+\s+\w{1,2})\s*(?P<percentage>\d+.\d+%)", f.read())
+            for m in match:
+                region, used, size, _ = m
+                memory[region] = {
+                    'used': conv_zephyr_mem_usage(used),
+                    'size': conv_zephyr_mem_usage(size),
+                }
 
-    result['memory'] = memory
+            # check if flash size was increased
+            if os.path.exists(artifacts_dict['dts'].format(**res) + '.orig') and 'FLASH' in memory:
+                _, flash_size = find_flash_size(artifacts_dict['dts'].format(**res) + '.orig')
+                flash_size = int(flash_size[-1], 16)
+                memory['FLASH'].update({
+                    'size': flash_size,
+                })
 
+        res['memory'] = memory
     return result
 
 def try_match_board(board):
@@ -322,17 +277,6 @@ def get_sample_name_path():
     sample_name = os.getenv('SAMPLE_NAME')
     idx = list(map(lambda x: x[0], samples)).index(sample_name) if sample_name is not None else 0
     return samples[idx]
-
-def loop_wrapper(b, i, total_boards, sample_name):
-    board_name = b if isinstance(b, str) else b["name"]
-    if total_boards > 1:
-        print(f">> [{i} / {total_boards}] -- {board_name} --")
-    out = None
-
-    out = run_renode_simulation(b, sample_name)
-    if total_boards > 1:
-        print(f"<< [{i} / {total_boards}] -- {board_name} --")
-    return out
 
 def get_renode_version():
     renode_ver = subprocess.run(f'./renode_portable/renode -v', capture_output=True, shell=True).stdout.decode()
@@ -360,11 +304,10 @@ if __name__ == '__main__':
     sample_name, _ = get_sample_name_path()
     with open("artifacts/built_boards.json") as file:
         boards_to_run = json.loads(file.read())
-
     total_boards = len(boards_to_run)
-    sim_jobs = int(os.getenv('SIM_JOBS', 1))
+    thread_number = int(os.getenv("NUMBER_OF_THREADS", 1))
 
-    results = [loop_wrapper(b, i, total_boards, sample_name) for i, b in enumerate(boards_to_run, start=1)]
+    results = run_renode_simulation(boards_to_run, sample_name, thread_number)
 
     with open(f"artifacts/results/results-{sample_name}_all.json", "w") as f:
         json.dump(results, f)

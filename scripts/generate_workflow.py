@@ -27,7 +27,7 @@ def generate():
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
-      run: ./scripts/prepare_environment.sh
+      run: ./scripts/prepare_prepare.sh
     - name: Download Zephyr
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
@@ -48,14 +48,8 @@ def generate():
       GHA_MACHINE_TYPE: "n2-standard-32"
     steps:
     - uses: actions/checkout@v2
-    - name: Get sargraph
-      uses: actions/checkout@v2
-      with:
-        repository: antmicro/sargraph
-        path: sargraph
-        fetch-depth: 0
     - name: Prepare environment
-      run: ./scripts/prepare_environment.sh
+      run: ./scripts/prepare_build.sh
     - name: Get Zephyr
       uses: actions/download-artifact@v2
       with:
@@ -65,14 +59,14 @@ def generate():
       run: ./scripts/prepare_zephyr.sh
     - name: Prepare Micropython
       run: ./scripts/prepare_micropython.sh
-    - name: Start sargraph
-      run: ./sargraph/sargraph.py build start
     - name: Build boards
       run: ./scripts/build.py
-    - name: Stop sargraph
-      run: |
-        ./sargraph/sargraph.py build stop
-        mv plot.png artifacts/build_{sample}_plot.png
+    - name: Upload load graphs
+      uses: actions/upload-artifact@v2
+      with:
+        name: plots
+        path: |
+          **/plot_*.svg
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
@@ -93,36 +87,35 @@ def generate():
       GHA_MACHINE_TYPE: "n2-standard-32"
     steps:
     - uses: actions/checkout@v2
-    - name: Get sargraph
-      uses: actions/checkout@v2
-      with:
-        repository: antmicro/sargraph
-        path: sargraph
-        fetch-depth: 0
     - name: Get artifacts
       uses: actions/download-artifact@v2
       with:
         name: build-{zephyr_commit}-{sample}
         path: artifacts/
+    - name: Get plots
+      uses: actions/download-artifact@v2
+      with:
+        name: plots
+        path: artifacts/plots
     - name: Prepare environment
-      run: ./scripts/prepare_environment.sh
+      run: ./scripts/prepare_simulate.sh
     - name: Prepare Renode
       run: ./scripts/download_renode.sh
-    - name: Start sargraph
-      run: ./sargraph/sargraph.py simulate start
     - name: Simulate
       run: ./scripts/simulate.py
-    - name: Stop sargraph
-      run: |
-        ./sargraph/sargraph.py simulate stop
-        mv plot.png artifacts/simulate_{sample}_plot.png
     - name: Get Zephyr commit
       id: get-zephyr-commit
       run: |
         ZEPHYR_COMMIT=$(cat artifacts/zephyr.version)
         echo "::set-output name=ZEPHYR_COMMIT::$ZEPHYR_COMMIT"
-    - name: Install dependencies
-      run: ./scripts/prepare_gcp.sh
+    - name: Upload load graphs
+      uses: actions/upload-artifact@v2
+      with:
+        name: plots
+        path: |
+          **/plot_*.svg
+    - name: Move plots to artifacts
+      run: mv plot_*.svg artifacts/plots
     - name: Upload artifacts
       run: |
         mv artifacts/ ${{{{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}}}

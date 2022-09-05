@@ -27,7 +27,7 @@ def generate():
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
-      run: ./scripts/prepare_prepare.sh
+      run: ./scripts/environment_prepare.sh
     - name: Download Zephyr
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
@@ -49,7 +49,7 @@ def generate():
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
-      run: ./scripts/prepare_build.sh
+      run: ./scripts/environment_build.sh
     - name: Get Zephyr
       uses: actions/download-artifact@v2
       with:
@@ -98,7 +98,7 @@ def generate():
         name: plots
         path: artifacts/plots
     - name: Prepare environment
-      run: ./scripts/prepare_simulate.sh
+      run: ./scripts/environment_simulate.sh
     - name: Prepare Renode
       run: ./scripts/download_renode.sh
     - name: Simulate

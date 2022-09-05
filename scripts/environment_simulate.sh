@@ -12,3 +12,4 @@ curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key --keyring /
 apt -qqy update
 apt -qqy install python3-dev python3-pip python3-setuptools python3-tk python3-wheel gnupg google-cloud-cli
 pip3 install --upgrade pip
+pip3 install -r requirements_simulate.txt

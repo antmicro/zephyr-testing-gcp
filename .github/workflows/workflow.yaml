@@ -91,7 +91,7 @@ jobs:
     env:
       SAMPLE_NAME: hello_world
       RENODE_VERSION: 1.13.1+20220731git8eca7310
-      NUMBER_OF_THREADS: 28
+      NUMBER_OF_THREADS: 2
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
       GHA_MACHINE_TYPE: "n2-standard-32"
     steps:
@@ -129,7 +129,7 @@ jobs:
     - name: Upload artifacts
       run: |
         mv artifacts/ ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
-        gsutil cp -r ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }} gs://gcp-distributed-job-test-bucket
+        gsutil -m cp -r ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }} gs://gcp-distributed-job-test-bucket
   build-0-shell_module:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
@@ -180,7 +180,7 @@ jobs:
     env:
       SAMPLE_NAME: shell_module
       RENODE_VERSION: 1.13.1+20220731git8eca7310
-      NUMBER_OF_THREADS: 28
+      NUMBER_OF_THREADS: 2
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
       GHA_MACHINE_TYPE: "n2-standard-32"
     steps:
@@ -218,7 +218,7 @@ jobs:
     - name: Upload artifacts
       run: |
         mv artifacts/ ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
-        gsutil cp -r ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }} gs://gcp-distributed-job-test-bucket
+        gsutil -m cp -r ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }} gs://gcp-distributed-job-test-bucket
   build-0-philosophers:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
@@ -269,7 +269,7 @@ jobs:
     env:
       SAMPLE_NAME: philosophers
       RENODE_VERSION: 1.13.1+20220731git8eca7310
-      NUMBER_OF_THREADS: 28
+      NUMBER_OF_THREADS: 2
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
       GHA_MACHINE_TYPE: "n2-standard-32"
     steps:
@@ -307,7 +307,7 @@ jobs:
     - name: Upload artifacts
       run: |
         mv artifacts/ ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
-        gsutil cp -r ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }} gs://gcp-distributed-job-test-bucket
+        gsutil -m cp -r ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }} gs://gcp-distributed-job-test-bucket
   build-0-micropython:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
@@ -358,7 +358,7 @@ jobs:
     env:
       SAMPLE_NAME: micropython
       RENODE_VERSION: 1.13.1+20220731git8eca7310
-      NUMBER_OF_THREADS: 28
+      NUMBER_OF_THREADS: 2
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
       GHA_MACHINE_TYPE: "n2-standard-32"
     steps:
@@ -396,7 +396,7 @@ jobs:
     - name: Upload artifacts
       run: |
         mv artifacts/ ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
-        gsutil cp -r ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }} gs://gcp-distributed-job-test-bucket
+        gsutil -m cp -r ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }} gs://gcp-distributed-job-test-bucket
   build-0-tensorflow_lite_micro:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
@@ -447,7 +447,7 @@ jobs:
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       RENODE_VERSION: 1.13.1+20220731git8eca7310
-      NUMBER_OF_THREADS: 28
+      NUMBER_OF_THREADS: 2
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
       GHA_MACHINE_TYPE: "n2-standard-32"
     steps:
@@ -485,7 +485,7 @@ jobs:
     - name: Upload artifacts
       run: |
         mv artifacts/ ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
-        gsutil cp -r ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }} gs://gcp-distributed-job-test-bucket
+        gsutil -m cp -r ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }} gs://gcp-distributed-job-test-bucket
   build-1-hello_world:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
@@ -536,7 +536,7 @@ jobs:
     env:
       SAMPLE_NAME: hello_world
       RENODE_VERSION: 1.13.1+20220731git8eca7310
-      NUMBER_OF_THREADS: 28
+      NUMBER_OF_THREADS: 2
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
       GHA_MACHINE_TYPE: "n2-standard-32"
     steps:
@@ -574,7 +574,7 @@ jobs:
     - name: Upload artifacts
       run: |
         mv artifacts/ ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
-        gsutil cp -r ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }} gs://gcp-distributed-job-test-bucket
+        gsutil -m cp -r ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }} gs://gcp-distributed-job-test-bucket
   build-1-shell_module:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
@@ -625,7 +625,7 @@ jobs:
     env:
       SAMPLE_NAME: shell_module
       RENODE_VERSION: 1.13.1+20220731git8eca7310
-      NUMBER_OF_THREADS: 28
+      NUMBER_OF_THREADS: 2
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
       GHA_MACHINE_TYPE: "n2-standard-32"
     steps:
@@ -663,7 +663,7 @@ jobs:
     - name: Upload artifacts
       run: |
         mv artifacts/ ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
-        gsutil cp -r ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }} gs://gcp-distributed-job-test-bucket
+        gsutil -m cp -r ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }} gs://gcp-distributed-job-test-bucket
   build-1-philosophers:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
@@ -714,7 +714,7 @@ jobs:
     env:
       SAMPLE_NAME: philosophers
       RENODE_VERSION: 1.13.1+20220731git8eca7310
-      NUMBER_OF_THREADS: 28
+      NUMBER_OF_THREADS: 2
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
       GHA_MACHINE_TYPE: "n2-standard-32"
     steps:
@@ -752,7 +752,7 @@ jobs:
     - name: Upload artifacts
       run: |
         mv artifacts/ ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
-        gsutil cp -r ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }} gs://gcp-distributed-job-test-bucket
+        gsutil -m cp -r ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }} gs://gcp-distributed-job-test-bucket
   build-1-micropython:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
@@ -803,7 +803,7 @@ jobs:
     env:
       SAMPLE_NAME: micropython
       RENODE_VERSION: 1.13.1+20220731git8eca7310
-      NUMBER_OF_THREADS: 28
+      NUMBER_OF_THREADS: 2
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
       GHA_MACHINE_TYPE: "n2-standard-32"
     steps:
@@ -841,7 +841,7 @@ jobs:
     - name: Upload artifacts
       run: |
         mv artifacts/ ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
-        gsutil cp -r ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }} gs://gcp-distributed-job-test-bucket
+        gsutil -m cp -r ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }} gs://gcp-distributed-job-test-bucket
   build-1-tensorflow_lite_micro:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
@@ -892,7 +892,7 @@ jobs:
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       RENODE_VERSION: 1.13.1+20220731git8eca7310
-      NUMBER_OF_THREADS: 28
+      NUMBER_OF_THREADS: 2
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
       GHA_MACHINE_TYPE: "n2-standard-32"
     steps:
@@ -930,7 +930,7 @@ jobs:
     - name: Upload artifacts
       run: |
         mv artifacts/ ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
-        gsutil cp -r ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }} gs://gcp-distributed-job-test-bucket
+        gsutil -m cp -r ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }} gs://gcp-distributed-job-test-bucket
   results:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]

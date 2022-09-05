@@ -5,7 +5,7 @@ WORKFLOW_FILE = 'workflow.yaml'
 WORKFLOW_NAME = 'workflow'
 SAMPLES = ['hello_world', 'shell_module', 'philosophers', 'micropython', 'tensorflow_lite_micro']
 NUMBER_OF_THREADS_BUILD = 32
-NUMBER_OF_THREADS_SIMULATE = 28
+NUMBER_OF_THREADS_SIMULATE = 2
 MAX_NUMBER_OF_COMMITS = 2
 UBUNTU_VERSION = 'jammy'
 ZEPHYR_SDK_VERSION = '0.14.2'
@@ -126,7 +126,7 @@ def generate():
     - name: Upload artifacts
       run: |
         mv artifacts/ ${{{{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}}}
-        gsutil cp -r ${{{{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}}} gs://gcp-distributed-job-test-bucket''')
+        gsutil -m cp -r ${{{{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}}} gs://gcp-distributed-job-test-bucket''')
     tasks.append(f'''
   results:
     container: ubuntu:{UBUNTU_VERSION}

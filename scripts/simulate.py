@@ -216,7 +216,11 @@ def run_renode_simulation(boards, sample_name, thread_number):
     with open(robots_yaml, 'w') as file:
         for robot in robots:
             file.write(f"- {robot}\n")
-    print(subprocess.check_output(f"./renode_portable/renode-test -t {robots_yaml} -j {thread_number}".split()).decode())
+    try:
+        out = subprocess.check_output(f"./renode_portable/renode-test -t {robots_yaml} -j {thread_number}".split())
+    except subprocess.CalledProcessError as err:
+        out = err.output
+    print(out.decode())
     robot_output = ET.parse("robot_output.xml").getroot()
     stats = robot_output.findall(".//statistics/suite/stat")[1:]
     stats = {stat.attrib['name']: int(stat.attrib['pass']) for stat in stats}

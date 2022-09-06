@@ -9,7 +9,7 @@ west init zephyrproject
 mkdir -p zephyr-sdk && cd zephyr-sdk
 curl --no-progress-meter -kL https://dl.antmicro.com/projects/renode/zephyr-sdk-${ZEPHYR_SDK_VERSION}_linux-x86_64.tar.gz | tar xz --strip 1
 cd -
-HEAD=f136070088
+HEAD=6cfb18686e
 LAST_COMMIT=$(cat last_zephyr_commit)
 COMMITS=$(git -C zephyrproject/zephyr log --pretty=format:'%h' $LAST_COMMIT..$HEAD)
 

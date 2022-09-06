@@ -3,6 +3,7 @@ Suite Setup     Setup
 Suite Teardown  Teardown
 Test Teardown   Test Teardown
 Resource        ${RENODEKEYWORDS}
+Test timeout	30 s
 
 *** Test Cases ***
 {{sample_name}} on {{board_name}}

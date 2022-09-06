@@ -8,6 +8,7 @@ import shutil
 import subprocess
 import sys
 import zipfile
+import time
 from argparse import Namespace
 from dts2repl import dts2repl
 import xml.etree.ElementTree as ET
@@ -216,11 +217,7 @@ def run_renode_simulation(boards, sample_name, thread_number):
     with open(robots_yaml, 'w') as file:
         for robot in robots:
             file.write(f"- {robot}\n")
-    try:
-        out = subprocess.check_output(f"./renode_portable/renode-test -t {robots_yaml} -j {thread_number}".split())
-    except subprocess.CalledProcessError as err:
-        out = err.output
-    print(out.decode())
+    subprocess.run(f"./renode_portable/renode-test -t {robots_yaml} -j {thread_number}".split())
     robot_output = ET.parse("robot_output.xml").getroot()
     stats = robot_output.findall(".//statistics/suite/stat")[1:]
     stats = {stat.attrib['name']: int(stat.attrib['pass']) for stat in stats}

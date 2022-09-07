@@ -24,6 +24,7 @@ def generate():
     env:
       ZEPHYR_COMMIT: {zephyr_commit}
       ZEPHYR_SDK_VERSION: {ZEPHYR_SDK_VERSION}
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -46,6 +47,7 @@ def generate():
       MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: {NUMBER_OF_THREADS_BUILD}
       GHA_MACHINE_TYPE: "n2-standard-32"
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment

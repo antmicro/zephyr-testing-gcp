@@ -13,6 +13,7 @@ jobs:
     env:
       ZEPHYR_COMMIT: 0
       ZEPHYR_SDK_VERSION: 0.14.2
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -30,6 +31,7 @@ jobs:
     env:
       ZEPHYR_COMMIT: 1
       ZEPHYR_SDK_VERSION: 0.14.2
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -50,6 +52,7 @@ jobs:
       MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -119,6 +122,7 @@ jobs:
       MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -188,6 +192,7 @@ jobs:
       MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -257,6 +262,7 @@ jobs:
       MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -326,6 +332,7 @@ jobs:
       MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -395,6 +402,7 @@ jobs:
       MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -464,6 +472,7 @@ jobs:
       MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -533,6 +542,7 @@ jobs:
       MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -602,6 +612,7 @@ jobs:
       MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -671,6 +682,7 @@ jobs:
       MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment

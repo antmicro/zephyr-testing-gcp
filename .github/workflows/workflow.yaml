@@ -90,10 +90,10 @@ jobs:
       GHA_MACHINE_TYPE: "n2-standard-32"
     steps:
     - uses: actions/checkout@v2
-    - name: Get artifacts
-      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-0-hello_world/artifacts artifacts/
     - name: Prepare environment
       run: ./scripts/environment_simulate.sh
+    - name: Get artifacts
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-0-hello_world/artifacts artifacts/
     - name: Prepare Renode
       run: ./scripts/download_renode.sh
     - name: Simulate
@@ -160,10 +160,10 @@ jobs:
       GHA_MACHINE_TYPE: "n2-standard-32"
     steps:
     - uses: actions/checkout@v2
-    - name: Get artifacts
-      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-0-shell_module/artifacts artifacts/
     - name: Prepare environment
       run: ./scripts/environment_simulate.sh
+    - name: Get artifacts
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-0-shell_module/artifacts artifacts/
     - name: Prepare Renode
       run: ./scripts/download_renode.sh
     - name: Simulate
@@ -230,10 +230,10 @@ jobs:
       GHA_MACHINE_TYPE: "n2-standard-32"
     steps:
     - uses: actions/checkout@v2
-    - name: Get artifacts
-      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-0-philosophers/artifacts artifacts/
     - name: Prepare environment
       run: ./scripts/environment_simulate.sh
+    - name: Get artifacts
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-0-philosophers/artifacts artifacts/
     - name: Prepare Renode
       run: ./scripts/download_renode.sh
     - name: Simulate
@@ -300,10 +300,10 @@ jobs:
       GHA_MACHINE_TYPE: "n2-standard-32"
     steps:
     - uses: actions/checkout@v2
-    - name: Get artifacts
-      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-0-micropython/artifacts artifacts/
     - name: Prepare environment
       run: ./scripts/environment_simulate.sh
+    - name: Get artifacts
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-0-micropython/artifacts artifacts/
     - name: Prepare Renode
       run: ./scripts/download_renode.sh
     - name: Simulate
@@ -370,10 +370,10 @@ jobs:
       GHA_MACHINE_TYPE: "n2-standard-32"
     steps:
     - uses: actions/checkout@v2
-    - name: Get artifacts
-      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-0-tensorflow_lite_micro/artifacts artifacts/
     - name: Prepare environment
       run: ./scripts/environment_simulate.sh
+    - name: Get artifacts
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-0-tensorflow_lite_micro/artifacts artifacts/
     - name: Prepare Renode
       run: ./scripts/download_renode.sh
     - name: Simulate
@@ -440,10 +440,10 @@ jobs:
       GHA_MACHINE_TYPE: "n2-standard-32"
     steps:
     - uses: actions/checkout@v2
-    - name: Get artifacts
-      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-1-hello_world/artifacts artifacts/
     - name: Prepare environment
       run: ./scripts/environment_simulate.sh
+    - name: Get artifacts
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-1-hello_world/artifacts artifacts/
     - name: Prepare Renode
       run: ./scripts/download_renode.sh
     - name: Simulate
@@ -510,10 +510,10 @@ jobs:
       GHA_MACHINE_TYPE: "n2-standard-32"
     steps:
     - uses: actions/checkout@v2
-    - name: Get artifacts
-      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-1-shell_module/artifacts artifacts/
     - name: Prepare environment
       run: ./scripts/environment_simulate.sh
+    - name: Get artifacts
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-1-shell_module/artifacts artifacts/
     - name: Prepare Renode
       run: ./scripts/download_renode.sh
     - name: Simulate
@@ -580,10 +580,10 @@ jobs:
       GHA_MACHINE_TYPE: "n2-standard-32"
     steps:
     - uses: actions/checkout@v2
-    - name: Get artifacts
-      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-1-philosophers/artifacts artifacts/
     - name: Prepare environment
       run: ./scripts/environment_simulate.sh
+    - name: Get artifacts
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-1-philosophers/artifacts artifacts/
     - name: Prepare Renode
       run: ./scripts/download_renode.sh
     - name: Simulate
@@ -650,10 +650,10 @@ jobs:
       GHA_MACHINE_TYPE: "n2-standard-32"
     steps:
     - uses: actions/checkout@v2
-    - name: Get artifacts
-      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-1-micropython/artifacts artifacts/
     - name: Prepare environment
       run: ./scripts/environment_simulate.sh
+    - name: Get artifacts
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-1-micropython/artifacts artifacts/
     - name: Prepare Renode
       run: ./scripts/download_renode.sh
     - name: Simulate
@@ -720,10 +720,10 @@ jobs:
       GHA_MACHINE_TYPE: "n2-standard-32"
     steps:
     - uses: actions/checkout@v2
-    - name: Get artifacts
-      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-1-tensorflow_lite_micro/artifacts artifacts/
     - name: Prepare environment
       run: ./scripts/environment_simulate.sh
+    - name: Get artifacts
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-1-tensorflow_lite_micro/artifacts artifacts/
     - name: Prepare Renode
       run: ./scripts/download_renode.sh
     - name: Simulate
@@ -751,21 +751,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Delete artifacts
-      uses: geekyeggo/delete-artifact@v1
-      with:
-        name: |
-          zephyr-0
-          zephyr-1
-          build-0-hello_world
-          build-0-shell_module
-          build-0-philosophers
-          build-0-micropython
-          build-0-tensorflow_lite_micro
-          build-1-hello_world
-          build-1-shell_module
-          build-1-philosophers
-          build-1-micropython
-          build-1-tensorflow_lite_micro
+      run: gsutil -m rm -r gs://gcp-distributed-job-test-bucket/job-artifacts/
     - name: Update latest Zephyr commit
       run: echo ${{ needs.simulate-0-hello_world.outputs.ZEPHYR_COMMIT }} > last_zephyr_commit
     - name: Commit latest Zephyr commit

@@ -15,7 +15,6 @@ LAST_ZEPHYR_COMMIT_FILE = 'last_zephyr_commit'
 def generate():
     commit_sample_product = list(itertools.product(range(MAX_NUMBER_OF_COMMITS), SAMPLES))
     tasks = []
-    newline = '\n          '
     for zephyr_commit in range(MAX_NUMBER_OF_COMMITS):
         tasks.append(f'''
   prepare-zephyr-{zephyr_commit}:
@@ -86,10 +85,10 @@ def generate():
       GHA_MACHINE_TYPE: "n2-standard-32"
     steps:
     - uses: actions/checkout@v2
-    - name: Get artifacts
-      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-{zephyr_commit}-{sample}/artifacts artifacts/
     - name: Prepare environment
       run: ./scripts/environment_simulate.sh
+    - name: Get artifacts
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-{zephyr_commit}-{sample}/artifacts artifacts/
     - name: Prepare Renode
       run: ./scripts/download_renode.sh
     - name: Simulate
@@ -118,11 +117,7 @@ def generate():
     steps:
     - uses: actions/checkout@v2
     - name: Delete artifacts
-      uses: geekyeggo/delete-artifact@v1
-      with:
-        name: |
-          {newline.join([f"zephyr-{i}" for i in range(MAX_NUMBER_OF_COMMITS)])}
-          {newline.join([f"build-{commit}-{sample}" for commit, sample in commit_sample_product])}
+      run: gsutil -m rm -r gs://gcp-distributed-job-test-bucket/job-artifacts/
     - name: Update latest Zephyr commit
       run: echo ${{{{ needs.simulate-0-hello_world.outputs.ZEPHYR_COMMIT }}}} > {LAST_ZEPHYR_COMMIT_FILE}
     - name: Commit latest Zephyr commit

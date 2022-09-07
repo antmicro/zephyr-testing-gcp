@@ -20,7 +20,10 @@ jobs:
     - name: Download Zephyr
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
-      run: gsutil cp zephyr.tar.gz gs://gcp-distributed-job-test-bucket/job-artifacts/prepare-zephyr-0/zephyr.tar.gz
+      run: |
+        mkdir -p job-artifacts/prepare-zephyr-0
+        mv zephyr.tar.gz job-artifacts/prepare-zephyr-0/
+        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
   prepare-zephyr-1:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
@@ -34,7 +37,10 @@ jobs:
     - name: Download Zephyr
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
-      run: gsutil cp zephyr.tar.gz gs://gcp-distributed-job-test-bucket/job-artifacts/prepare-zephyr-1/zephyr.tar.gz
+      run: |
+        mkdir -p job-artifacts/prepare-zephyr-1
+        mv zephyr.tar.gz job-artifacts/prepare-zephyr-1/
+        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
   build-0-hello_world:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
@@ -63,7 +69,10 @@ jobs:
         path: |
           **/plot_*.svg
     - name: Upload artifacts
-      run: gsutil -m cp -r artifacts/ gs://gcp-distributed-job-test-bucket/job-artifacts/build-0-hello_world/
+      run: |
+        mkdir -p job-artifacts/build-0-hello_world
+        mv artifacts/ job-artifacts/build-0-hello_world
+        gsutil -m cp -r job-artifacts/build-0-hello_world gs://gcp-distributed-job-test-bucket
   simulate-0-hello_world:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
@@ -79,7 +88,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Get artifacts
-      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-0-hello_world/ artifacts/
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-0-hello_world/artifacts artifacts/
     - name: Prepare environment
       run: ./scripts/environment_simulate.sh
     - name: Prepare Renode
@@ -129,7 +138,10 @@ jobs:
         path: |
           **/plot_*.svg
     - name: Upload artifacts
-      run: gsutil -m cp -r artifacts/ gs://gcp-distributed-job-test-bucket/job-artifacts/build-0-shell_module/
+      run: |
+        mkdir -p job-artifacts/build-0-shell_module
+        mv artifacts/ job-artifacts/build-0-shell_module
+        gsutil -m cp -r job-artifacts/build-0-shell_module gs://gcp-distributed-job-test-bucket
   simulate-0-shell_module:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
@@ -145,7 +157,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Get artifacts
-      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-0-shell_module/ artifacts/
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-0-shell_module/artifacts artifacts/
     - name: Prepare environment
       run: ./scripts/environment_simulate.sh
     - name: Prepare Renode
@@ -195,7 +207,10 @@ jobs:
         path: |
           **/plot_*.svg
     - name: Upload artifacts
-      run: gsutil -m cp -r artifacts/ gs://gcp-distributed-job-test-bucket/job-artifacts/build-0-philosophers/
+      run: |
+        mkdir -p job-artifacts/build-0-philosophers
+        mv artifacts/ job-artifacts/build-0-philosophers
+        gsutil -m cp -r job-artifacts/build-0-philosophers gs://gcp-distributed-job-test-bucket
   simulate-0-philosophers:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
@@ -211,7 +226,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Get artifacts
-      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-0-philosophers/ artifacts/
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-0-philosophers/artifacts artifacts/
     - name: Prepare environment
       run: ./scripts/environment_simulate.sh
     - name: Prepare Renode
@@ -261,7 +276,10 @@ jobs:
         path: |
           **/plot_*.svg
     - name: Upload artifacts
-      run: gsutil -m cp -r artifacts/ gs://gcp-distributed-job-test-bucket/job-artifacts/build-0-micropython/
+      run: |
+        mkdir -p job-artifacts/build-0-micropython
+        mv artifacts/ job-artifacts/build-0-micropython
+        gsutil -m cp -r job-artifacts/build-0-micropython gs://gcp-distributed-job-test-bucket
   simulate-0-micropython:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
@@ -277,7 +295,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Get artifacts
-      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-0-micropython/ artifacts/
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-0-micropython/artifacts artifacts/
     - name: Prepare environment
       run: ./scripts/environment_simulate.sh
     - name: Prepare Renode
@@ -327,7 +345,10 @@ jobs:
         path: |
           **/plot_*.svg
     - name: Upload artifacts
-      run: gsutil -m cp -r artifacts/ gs://gcp-distributed-job-test-bucket/job-artifacts/build-0-tensorflow_lite_micro/
+      run: |
+        mkdir -p job-artifacts/build-0-tensorflow_lite_micro
+        mv artifacts/ job-artifacts/build-0-tensorflow_lite_micro
+        gsutil -m cp -r job-artifacts/build-0-tensorflow_lite_micro gs://gcp-distributed-job-test-bucket
   simulate-0-tensorflow_lite_micro:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
@@ -343,7 +364,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Get artifacts
-      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-0-tensorflow_lite_micro/ artifacts/
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-0-tensorflow_lite_micro/artifacts artifacts/
     - name: Prepare environment
       run: ./scripts/environment_simulate.sh
     - name: Prepare Renode
@@ -393,7 +414,10 @@ jobs:
         path: |
           **/plot_*.svg
     - name: Upload artifacts
-      run: gsutil -m cp -r artifacts/ gs://gcp-distributed-job-test-bucket/job-artifacts/build-1-hello_world/
+      run: |
+        mkdir -p job-artifacts/build-1-hello_world
+        mv artifacts/ job-artifacts/build-1-hello_world
+        gsutil -m cp -r job-artifacts/build-1-hello_world gs://gcp-distributed-job-test-bucket
   simulate-1-hello_world:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
@@ -409,7 +433,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Get artifacts
-      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-1-hello_world/ artifacts/
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-1-hello_world/artifacts artifacts/
     - name: Prepare environment
       run: ./scripts/environment_simulate.sh
     - name: Prepare Renode
@@ -459,7 +483,10 @@ jobs:
         path: |
           **/plot_*.svg
     - name: Upload artifacts
-      run: gsutil -m cp -r artifacts/ gs://gcp-distributed-job-test-bucket/job-artifacts/build-1-shell_module/
+      run: |
+        mkdir -p job-artifacts/build-1-shell_module
+        mv artifacts/ job-artifacts/build-1-shell_module
+        gsutil -m cp -r job-artifacts/build-1-shell_module gs://gcp-distributed-job-test-bucket
   simulate-1-shell_module:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
@@ -475,7 +502,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Get artifacts
-      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-1-shell_module/ artifacts/
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-1-shell_module/artifacts artifacts/
     - name: Prepare environment
       run: ./scripts/environment_simulate.sh
     - name: Prepare Renode
@@ -525,7 +552,10 @@ jobs:
         path: |
           **/plot_*.svg
     - name: Upload artifacts
-      run: gsutil -m cp -r artifacts/ gs://gcp-distributed-job-test-bucket/job-artifacts/build-1-philosophers/
+      run: |
+        mkdir -p job-artifacts/build-1-philosophers
+        mv artifacts/ job-artifacts/build-1-philosophers
+        gsutil -m cp -r job-artifacts/build-1-philosophers gs://gcp-distributed-job-test-bucket
   simulate-1-philosophers:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
@@ -541,7 +571,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Get artifacts
-      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-1-philosophers/ artifacts/
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-1-philosophers/artifacts artifacts/
     - name: Prepare environment
       run: ./scripts/environment_simulate.sh
     - name: Prepare Renode
@@ -591,7 +621,10 @@ jobs:
         path: |
           **/plot_*.svg
     - name: Upload artifacts
-      run: gsutil -m cp -r artifacts/ gs://gcp-distributed-job-test-bucket/job-artifacts/build-1-micropython/
+      run: |
+        mkdir -p job-artifacts/build-1-micropython
+        mv artifacts/ job-artifacts/build-1-micropython
+        gsutil -m cp -r job-artifacts/build-1-micropython gs://gcp-distributed-job-test-bucket
   simulate-1-micropython:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
@@ -607,7 +640,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Get artifacts
-      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-1-micropython/ artifacts/
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-1-micropython/artifacts artifacts/
     - name: Prepare environment
       run: ./scripts/environment_simulate.sh
     - name: Prepare Renode
@@ -657,7 +690,10 @@ jobs:
         path: |
           **/plot_*.svg
     - name: Upload artifacts
-      run: gsutil -m cp -r artifacts/ gs://gcp-distributed-job-test-bucket/job-artifacts/build-1-tensorflow_lite_micro/
+      run: |
+        mkdir -p job-artifacts/build-1-tensorflow_lite_micro
+        mv artifacts/ job-artifacts/build-1-tensorflow_lite_micro
+        gsutil -m cp -r job-artifacts/build-1-tensorflow_lite_micro gs://gcp-distributed-job-test-bucket
   simulate-1-tensorflow_lite_micro:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
@@ -673,7 +709,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Get artifacts
-      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-1-tensorflow_lite_micro/ artifacts/
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-1-tensorflow_lite_micro/artifacts artifacts/
     - name: Prepare environment
       run: ./scripts/environment_simulate.sh
     - name: Prepare Renode

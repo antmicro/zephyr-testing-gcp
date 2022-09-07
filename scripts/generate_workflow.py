@@ -31,7 +31,10 @@ def generate():
     - name: Download Zephyr
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
-      run: gsutil cp zephyr.tar.gz gs://gcp-distributed-job-test-bucket/job-artifacts/prepare-zephyr-{zephyr_commit}/zephyr.tar.gz''')
+      run: |
+        mkdir -p job-artifacts/prepare-zephyr-{zephyr_commit}
+        mv zephyr.tar.gz job-artifacts/prepare-zephyr-{zephyr_commit}/
+        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket''')
     for zephyr_commit, sample in commit_sample_product:
         tasks.append(f'''
   build-{zephyr_commit}-{sample}:
@@ -62,7 +65,10 @@ def generate():
         path: |
           **/plot_*.svg
     - name: Upload artifacts
-      run: gsutil -m cp -r artifacts/ gs://gcp-distributed-job-test-bucket/job-artifacts/build-{zephyr_commit}-{sample}/''')
+      run: |
+        mkdir -p job-artifacts/build-{zephyr_commit}-{sample}
+        mv artifacts/ job-artifacts/build-{zephyr_commit}-{sample}
+        gsutil -m cp -r job-artifacts/build-{zephyr_commit}-{sample} gs://gcp-distributed-job-test-bucket''')
         tasks.append(f'''
   simulate-{zephyr_commit}-{sample}:
     container: ubuntu:{UBUNTU_VERSION}
@@ -79,7 +85,7 @@ def generate():
     steps:
     - uses: actions/checkout@v2
     - name: Get artifacts
-      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-{zephyr_commit}-{sample}/ artifacts/
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-{zephyr_commit}-{sample}/artifacts artifacts/
     - name: Prepare environment
       run: ./scripts/environment_simulate.sh
     - name: Prepare Renode

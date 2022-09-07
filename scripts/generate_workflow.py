@@ -88,7 +88,7 @@ def generate():
     - name: Prepare environment
       run: ./scripts/environment_simulate.sh
     - name: Get artifacts
-      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-{zephyr_commit}-{sample}/artifacts artifacts/
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-{zephyr_commit}-{sample}/artifacts .
     - name: Prepare Renode
       run: ./scripts/download_renode.sh
     - name: Simulate
@@ -116,6 +116,8 @@ def generate():
     if: always()
     steps:
     - uses: actions/checkout@v2
+    - name: Install gcp
+      run: ./script/prepare_gcp.sh
     - name: Delete artifacts
       run: gsutil -m rm -r gs://gcp-distributed-job-test-bucket/job-artifacts/
     - name: Update latest Zephyr commit

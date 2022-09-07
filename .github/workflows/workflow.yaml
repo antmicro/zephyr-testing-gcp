@@ -93,7 +93,7 @@ jobs:
     - name: Prepare environment
       run: ./scripts/environment_simulate.sh
     - name: Get artifacts
-      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-0-hello_world/artifacts artifacts/
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-0-hello_world/artifacts .
     - name: Prepare Renode
       run: ./scripts/download_renode.sh
     - name: Simulate
@@ -163,7 +163,7 @@ jobs:
     - name: Prepare environment
       run: ./scripts/environment_simulate.sh
     - name: Get artifacts
-      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-0-shell_module/artifacts artifacts/
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-0-shell_module/artifacts .
     - name: Prepare Renode
       run: ./scripts/download_renode.sh
     - name: Simulate
@@ -233,7 +233,7 @@ jobs:
     - name: Prepare environment
       run: ./scripts/environment_simulate.sh
     - name: Get artifacts
-      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-0-philosophers/artifacts artifacts/
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-0-philosophers/artifacts .
     - name: Prepare Renode
       run: ./scripts/download_renode.sh
     - name: Simulate
@@ -303,7 +303,7 @@ jobs:
     - name: Prepare environment
       run: ./scripts/environment_simulate.sh
     - name: Get artifacts
-      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-0-micropython/artifacts artifacts/
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-0-micropython/artifacts .
     - name: Prepare Renode
       run: ./scripts/download_renode.sh
     - name: Simulate
@@ -373,7 +373,7 @@ jobs:
     - name: Prepare environment
       run: ./scripts/environment_simulate.sh
     - name: Get artifacts
-      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-0-tensorflow_lite_micro/artifacts artifacts/
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-0-tensorflow_lite_micro/artifacts .
     - name: Prepare Renode
       run: ./scripts/download_renode.sh
     - name: Simulate
@@ -443,7 +443,7 @@ jobs:
     - name: Prepare environment
       run: ./scripts/environment_simulate.sh
     - name: Get artifacts
-      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-1-hello_world/artifacts artifacts/
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-1-hello_world/artifacts .
     - name: Prepare Renode
       run: ./scripts/download_renode.sh
     - name: Simulate
@@ -513,7 +513,7 @@ jobs:
     - name: Prepare environment
       run: ./scripts/environment_simulate.sh
     - name: Get artifacts
-      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-1-shell_module/artifacts artifacts/
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-1-shell_module/artifacts .
     - name: Prepare Renode
       run: ./scripts/download_renode.sh
     - name: Simulate
@@ -583,7 +583,7 @@ jobs:
     - name: Prepare environment
       run: ./scripts/environment_simulate.sh
     - name: Get artifacts
-      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-1-philosophers/artifacts artifacts/
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-1-philosophers/artifacts .
     - name: Prepare Renode
       run: ./scripts/download_renode.sh
     - name: Simulate
@@ -653,7 +653,7 @@ jobs:
     - name: Prepare environment
       run: ./scripts/environment_simulate.sh
     - name: Get artifacts
-      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-1-micropython/artifacts artifacts/
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-1-micropython/artifacts .
     - name: Prepare Renode
       run: ./scripts/download_renode.sh
     - name: Simulate
@@ -723,7 +723,7 @@ jobs:
     - name: Prepare environment
       run: ./scripts/environment_simulate.sh
     - name: Get artifacts
-      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-1-tensorflow_lite_micro/artifacts artifacts/
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-1-tensorflow_lite_micro/artifacts .
     - name: Prepare Renode
       run: ./scripts/download_renode.sh
     - name: Simulate
@@ -750,6 +750,8 @@ jobs:
     if: always()
     steps:
     - uses: actions/checkout@v2
+    - name: Install gcp
+      run: ./script/prepare_gcp.sh
     - name: Delete artifacts
       run: gsutil -m rm -r gs://gcp-distributed-job-test-bucket/job-artifacts/
     - name: Update latest Zephyr commit

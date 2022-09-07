@@ -31,10 +31,7 @@ def generate():
     - name: Download Zephyr
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: zephyr-{zephyr_commit}
-        path: zephyr.tar.gz''')
+      run: gsutil cp zephyr.tar.gz gs://gcp-distributed-job-test-bucket/job-artifacts/prepare-zephyr-{zephyr_commit}/zephyr.tar.gz''')
     for zephyr_commit, sample in commit_sample_product:
         tasks.append(f'''
   build-{zephyr_commit}-{sample}:
@@ -51,10 +48,7 @@ def generate():
     - name: Prepare environment
       run: ./scripts/environment_build.sh
     - name: Get Zephyr
-      uses: actions/download-artifact@v2
-      with:
-        name: zephyr-{zephyr_commit}
-        path: zephyr-artifact
+      run: gsutil cp gs://gcp-distributed-job-test-bucket/job-artifacts/prepare-zephyr-{zephyr_commit}/zephyr.tar.gz .
     - name: Prepare Zephyr
       run: ./scripts/prepare_zephyr.sh
     - name: Prepare Micropython
@@ -68,10 +62,7 @@ def generate():
         path: |
           **/plot_*.svg
     - name: Upload artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: build-{zephyr_commit}-{sample}
-        path: artifacts/''')
+      run: gsutil -m cp -r artifacts/ gs://gcp-distributed-job-test-bucket/job-artifacts/build-{zephyr_commit}-{sample}/''')
         tasks.append(f'''
   simulate-{zephyr_commit}-{sample}:
     container: ubuntu:{UBUNTU_VERSION}
@@ -88,15 +79,7 @@ def generate():
     steps:
     - uses: actions/checkout@v2
     - name: Get artifacts
-      uses: actions/download-artifact@v2
-      with:
-        name: build-{zephyr_commit}-{sample}
-        path: artifacts/
-    - name: Get plots
-      uses: actions/download-artifact@v2
-      with:
-        name: plots
-        path: artifacts/plots
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-{zephyr_commit}-{sample}/ artifacts/
     - name: Prepare environment
       run: ./scripts/environment_simulate.sh
     - name: Prepare Renode
@@ -114,8 +97,6 @@ def generate():
         name: plots
         path: |
           **/plot_*.svg
-    - name: Move plots to artifacts
-      run: mv plot_*.svg artifacts/plots
     - name: Upload artifacts
       run: |
         mv artifacts/ ${{{{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}}}

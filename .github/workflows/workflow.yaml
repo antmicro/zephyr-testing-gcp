@@ -20,10 +20,7 @@ jobs:
     - name: Download Zephyr
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: zephyr-0
-        path: zephyr.tar.gz
+      run: gsutil cp zephyr.tar.gz gs://gcp-distributed-job-test-bucket/job-artifacts/prepare-zephyr-0/zephyr.tar.gz
   prepare-zephyr-1:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
@@ -37,10 +34,7 @@ jobs:
     - name: Download Zephyr
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: zephyr-1
-        path: zephyr.tar.gz
+      run: gsutil cp zephyr.tar.gz gs://gcp-distributed-job-test-bucket/job-artifacts/prepare-zephyr-1/zephyr.tar.gz
   build-0-hello_world:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
@@ -55,10 +49,7 @@ jobs:
     - name: Prepare environment
       run: ./scripts/environment_build.sh
     - name: Get Zephyr
-      uses: actions/download-artifact@v2
-      with:
-        name: zephyr-0
-        path: zephyr-artifact
+      run: gsutil cp gs://gcp-distributed-job-test-bucket/job-artifacts/prepare-zephyr-0/zephyr.tar.gz .
     - name: Prepare Zephyr
       run: ./scripts/prepare_zephyr.sh
     - name: Prepare Micropython
@@ -72,10 +63,7 @@ jobs:
         path: |
           **/plot_*.svg
     - name: Upload artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: build-0-hello_world
-        path: artifacts/
+      run: gsutil -m cp -r artifacts/ gs://gcp-distributed-job-test-bucket/job-artifacts/build-0-hello_world/
   simulate-0-hello_world:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
@@ -91,15 +79,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Get artifacts
-      uses: actions/download-artifact@v2
-      with:
-        name: build-0-hello_world
-        path: artifacts/
-    - name: Get plots
-      uses: actions/download-artifact@v2
-      with:
-        name: plots
-        path: artifacts/plots
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-0-hello_world/ artifacts/
     - name: Prepare environment
       run: ./scripts/environment_simulate.sh
     - name: Prepare Renode
@@ -117,8 +97,6 @@ jobs:
         name: plots
         path: |
           **/plot_*.svg
-    - name: Move plots to artifacts
-      run: mv plot_*.svg artifacts/plots
     - name: Upload artifacts
       run: |
         mv artifacts/ ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
@@ -137,10 +115,7 @@ jobs:
     - name: Prepare environment
       run: ./scripts/environment_build.sh
     - name: Get Zephyr
-      uses: actions/download-artifact@v2
-      with:
-        name: zephyr-0
-        path: zephyr-artifact
+      run: gsutil cp gs://gcp-distributed-job-test-bucket/job-artifacts/prepare-zephyr-0/zephyr.tar.gz .
     - name: Prepare Zephyr
       run: ./scripts/prepare_zephyr.sh
     - name: Prepare Micropython
@@ -154,10 +129,7 @@ jobs:
         path: |
           **/plot_*.svg
     - name: Upload artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: build-0-shell_module
-        path: artifacts/
+      run: gsutil -m cp -r artifacts/ gs://gcp-distributed-job-test-bucket/job-artifacts/build-0-shell_module/
   simulate-0-shell_module:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
@@ -173,15 +145,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Get artifacts
-      uses: actions/download-artifact@v2
-      with:
-        name: build-0-shell_module
-        path: artifacts/
-    - name: Get plots
-      uses: actions/download-artifact@v2
-      with:
-        name: plots
-        path: artifacts/plots
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-0-shell_module/ artifacts/
     - name: Prepare environment
       run: ./scripts/environment_simulate.sh
     - name: Prepare Renode
@@ -199,8 +163,6 @@ jobs:
         name: plots
         path: |
           **/plot_*.svg
-    - name: Move plots to artifacts
-      run: mv plot_*.svg artifacts/plots
     - name: Upload artifacts
       run: |
         mv artifacts/ ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
@@ -219,10 +181,7 @@ jobs:
     - name: Prepare environment
       run: ./scripts/environment_build.sh
     - name: Get Zephyr
-      uses: actions/download-artifact@v2
-      with:
-        name: zephyr-0
-        path: zephyr-artifact
+      run: gsutil cp gs://gcp-distributed-job-test-bucket/job-artifacts/prepare-zephyr-0/zephyr.tar.gz .
     - name: Prepare Zephyr
       run: ./scripts/prepare_zephyr.sh
     - name: Prepare Micropython
@@ -236,10 +195,7 @@ jobs:
         path: |
           **/plot_*.svg
     - name: Upload artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: build-0-philosophers
-        path: artifacts/
+      run: gsutil -m cp -r artifacts/ gs://gcp-distributed-job-test-bucket/job-artifacts/build-0-philosophers/
   simulate-0-philosophers:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
@@ -255,15 +211,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Get artifacts
-      uses: actions/download-artifact@v2
-      with:
-        name: build-0-philosophers
-        path: artifacts/
-    - name: Get plots
-      uses: actions/download-artifact@v2
-      with:
-        name: plots
-        path: artifacts/plots
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-0-philosophers/ artifacts/
     - name: Prepare environment
       run: ./scripts/environment_simulate.sh
     - name: Prepare Renode
@@ -281,8 +229,6 @@ jobs:
         name: plots
         path: |
           **/plot_*.svg
-    - name: Move plots to artifacts
-      run: mv plot_*.svg artifacts/plots
     - name: Upload artifacts
       run: |
         mv artifacts/ ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
@@ -301,10 +247,7 @@ jobs:
     - name: Prepare environment
       run: ./scripts/environment_build.sh
     - name: Get Zephyr
-      uses: actions/download-artifact@v2
-      with:
-        name: zephyr-0
-        path: zephyr-artifact
+      run: gsutil cp gs://gcp-distributed-job-test-bucket/job-artifacts/prepare-zephyr-0/zephyr.tar.gz .
     - name: Prepare Zephyr
       run: ./scripts/prepare_zephyr.sh
     - name: Prepare Micropython
@@ -318,10 +261,7 @@ jobs:
         path: |
           **/plot_*.svg
     - name: Upload artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: build-0-micropython
-        path: artifacts/
+      run: gsutil -m cp -r artifacts/ gs://gcp-distributed-job-test-bucket/job-artifacts/build-0-micropython/
   simulate-0-micropython:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
@@ -337,15 +277,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Get artifacts
-      uses: actions/download-artifact@v2
-      with:
-        name: build-0-micropython
-        path: artifacts/
-    - name: Get plots
-      uses: actions/download-artifact@v2
-      with:
-        name: plots
-        path: artifacts/plots
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-0-micropython/ artifacts/
     - name: Prepare environment
       run: ./scripts/environment_simulate.sh
     - name: Prepare Renode
@@ -363,8 +295,6 @@ jobs:
         name: plots
         path: |
           **/plot_*.svg
-    - name: Move plots to artifacts
-      run: mv plot_*.svg artifacts/plots
     - name: Upload artifacts
       run: |
         mv artifacts/ ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
@@ -383,10 +313,7 @@ jobs:
     - name: Prepare environment
       run: ./scripts/environment_build.sh
     - name: Get Zephyr
-      uses: actions/download-artifact@v2
-      with:
-        name: zephyr-0
-        path: zephyr-artifact
+      run: gsutil cp gs://gcp-distributed-job-test-bucket/job-artifacts/prepare-zephyr-0/zephyr.tar.gz .
     - name: Prepare Zephyr
       run: ./scripts/prepare_zephyr.sh
     - name: Prepare Micropython
@@ -400,10 +327,7 @@ jobs:
         path: |
           **/plot_*.svg
     - name: Upload artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: build-0-tensorflow_lite_micro
-        path: artifacts/
+      run: gsutil -m cp -r artifacts/ gs://gcp-distributed-job-test-bucket/job-artifacts/build-0-tensorflow_lite_micro/
   simulate-0-tensorflow_lite_micro:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
@@ -419,15 +343,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Get artifacts
-      uses: actions/download-artifact@v2
-      with:
-        name: build-0-tensorflow_lite_micro
-        path: artifacts/
-    - name: Get plots
-      uses: actions/download-artifact@v2
-      with:
-        name: plots
-        path: artifacts/plots
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-0-tensorflow_lite_micro/ artifacts/
     - name: Prepare environment
       run: ./scripts/environment_simulate.sh
     - name: Prepare Renode
@@ -445,8 +361,6 @@ jobs:
         name: plots
         path: |
           **/plot_*.svg
-    - name: Move plots to artifacts
-      run: mv plot_*.svg artifacts/plots
     - name: Upload artifacts
       run: |
         mv artifacts/ ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
@@ -465,10 +379,7 @@ jobs:
     - name: Prepare environment
       run: ./scripts/environment_build.sh
     - name: Get Zephyr
-      uses: actions/download-artifact@v2
-      with:
-        name: zephyr-1
-        path: zephyr-artifact
+      run: gsutil cp gs://gcp-distributed-job-test-bucket/job-artifacts/prepare-zephyr-1/zephyr.tar.gz .
     - name: Prepare Zephyr
       run: ./scripts/prepare_zephyr.sh
     - name: Prepare Micropython
@@ -482,10 +393,7 @@ jobs:
         path: |
           **/plot_*.svg
     - name: Upload artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: build-1-hello_world
-        path: artifacts/
+      run: gsutil -m cp -r artifacts/ gs://gcp-distributed-job-test-bucket/job-artifacts/build-1-hello_world/
   simulate-1-hello_world:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
@@ -501,15 +409,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Get artifacts
-      uses: actions/download-artifact@v2
-      with:
-        name: build-1-hello_world
-        path: artifacts/
-    - name: Get plots
-      uses: actions/download-artifact@v2
-      with:
-        name: plots
-        path: artifacts/plots
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-1-hello_world/ artifacts/
     - name: Prepare environment
       run: ./scripts/environment_simulate.sh
     - name: Prepare Renode
@@ -527,8 +427,6 @@ jobs:
         name: plots
         path: |
           **/plot_*.svg
-    - name: Move plots to artifacts
-      run: mv plot_*.svg artifacts/plots
     - name: Upload artifacts
       run: |
         mv artifacts/ ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
@@ -547,10 +445,7 @@ jobs:
     - name: Prepare environment
       run: ./scripts/environment_build.sh
     - name: Get Zephyr
-      uses: actions/download-artifact@v2
-      with:
-        name: zephyr-1
-        path: zephyr-artifact
+      run: gsutil cp gs://gcp-distributed-job-test-bucket/job-artifacts/prepare-zephyr-1/zephyr.tar.gz .
     - name: Prepare Zephyr
       run: ./scripts/prepare_zephyr.sh
     - name: Prepare Micropython
@@ -564,10 +459,7 @@ jobs:
         path: |
           **/plot_*.svg
     - name: Upload artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: build-1-shell_module
-        path: artifacts/
+      run: gsutil -m cp -r artifacts/ gs://gcp-distributed-job-test-bucket/job-artifacts/build-1-shell_module/
   simulate-1-shell_module:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
@@ -583,15 +475,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Get artifacts
-      uses: actions/download-artifact@v2
-      with:
-        name: build-1-shell_module
-        path: artifacts/
-    - name: Get plots
-      uses: actions/download-artifact@v2
-      with:
-        name: plots
-        path: artifacts/plots
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-1-shell_module/ artifacts/
     - name: Prepare environment
       run: ./scripts/environment_simulate.sh
     - name: Prepare Renode
@@ -609,8 +493,6 @@ jobs:
         name: plots
         path: |
           **/plot_*.svg
-    - name: Move plots to artifacts
-      run: mv plot_*.svg artifacts/plots
     - name: Upload artifacts
       run: |
         mv artifacts/ ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
@@ -629,10 +511,7 @@ jobs:
     - name: Prepare environment
       run: ./scripts/environment_build.sh
     - name: Get Zephyr
-      uses: actions/download-artifact@v2
-      with:
-        name: zephyr-1
-        path: zephyr-artifact
+      run: gsutil cp gs://gcp-distributed-job-test-bucket/job-artifacts/prepare-zephyr-1/zephyr.tar.gz .
     - name: Prepare Zephyr
       run: ./scripts/prepare_zephyr.sh
     - name: Prepare Micropython
@@ -646,10 +525,7 @@ jobs:
         path: |
           **/plot_*.svg
     - name: Upload artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: build-1-philosophers
-        path: artifacts/
+      run: gsutil -m cp -r artifacts/ gs://gcp-distributed-job-test-bucket/job-artifacts/build-1-philosophers/
   simulate-1-philosophers:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
@@ -665,15 +541,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Get artifacts
-      uses: actions/download-artifact@v2
-      with:
-        name: build-1-philosophers
-        path: artifacts/
-    - name: Get plots
-      uses: actions/download-artifact@v2
-      with:
-        name: plots
-        path: artifacts/plots
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-1-philosophers/ artifacts/
     - name: Prepare environment
       run: ./scripts/environment_simulate.sh
     - name: Prepare Renode
@@ -691,8 +559,6 @@ jobs:
         name: plots
         path: |
           **/plot_*.svg
-    - name: Move plots to artifacts
-      run: mv plot_*.svg artifacts/plots
     - name: Upload artifacts
       run: |
         mv artifacts/ ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
@@ -711,10 +577,7 @@ jobs:
     - name: Prepare environment
       run: ./scripts/environment_build.sh
     - name: Get Zephyr
-      uses: actions/download-artifact@v2
-      with:
-        name: zephyr-1
-        path: zephyr-artifact
+      run: gsutil cp gs://gcp-distributed-job-test-bucket/job-artifacts/prepare-zephyr-1/zephyr.tar.gz .
     - name: Prepare Zephyr
       run: ./scripts/prepare_zephyr.sh
     - name: Prepare Micropython
@@ -728,10 +591,7 @@ jobs:
         path: |
           **/plot_*.svg
     - name: Upload artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: build-1-micropython
-        path: artifacts/
+      run: gsutil -m cp -r artifacts/ gs://gcp-distributed-job-test-bucket/job-artifacts/build-1-micropython/
   simulate-1-micropython:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
@@ -747,15 +607,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Get artifacts
-      uses: actions/download-artifact@v2
-      with:
-        name: build-1-micropython
-        path: artifacts/
-    - name: Get plots
-      uses: actions/download-artifact@v2
-      with:
-        name: plots
-        path: artifacts/plots
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-1-micropython/ artifacts/
     - name: Prepare environment
       run: ./scripts/environment_simulate.sh
     - name: Prepare Renode
@@ -773,8 +625,6 @@ jobs:
         name: plots
         path: |
           **/plot_*.svg
-    - name: Move plots to artifacts
-      run: mv plot_*.svg artifacts/plots
     - name: Upload artifacts
       run: |
         mv artifacts/ ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
@@ -793,10 +643,7 @@ jobs:
     - name: Prepare environment
       run: ./scripts/environment_build.sh
     - name: Get Zephyr
-      uses: actions/download-artifact@v2
-      with:
-        name: zephyr-1
-        path: zephyr-artifact
+      run: gsutil cp gs://gcp-distributed-job-test-bucket/job-artifacts/prepare-zephyr-1/zephyr.tar.gz .
     - name: Prepare Zephyr
       run: ./scripts/prepare_zephyr.sh
     - name: Prepare Micropython
@@ -810,10 +657,7 @@ jobs:
         path: |
           **/plot_*.svg
     - name: Upload artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: build-1-tensorflow_lite_micro
-        path: artifacts/
+      run: gsutil -m cp -r artifacts/ gs://gcp-distributed-job-test-bucket/job-artifacts/build-1-tensorflow_lite_micro/
   simulate-1-tensorflow_lite_micro:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
@@ -829,15 +673,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Get artifacts
-      uses: actions/download-artifact@v2
-      with:
-        name: build-1-tensorflow_lite_micro
-        path: artifacts/
-    - name: Get plots
-      uses: actions/download-artifact@v2
-      with:
-        name: plots
-        path: artifacts/plots
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-1-tensorflow_lite_micro/ artifacts/
     - name: Prepare environment
       run: ./scripts/environment_simulate.sh
     - name: Prepare Renode
@@ -855,8 +691,6 @@ jobs:
         name: plots
         path: |
           **/plot_*.svg
-    - name: Move plots to artifacts
-      run: mv plot_*.svg artifacts/plots
     - name: Upload artifacts
       run: |
         mv artifacts/ ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}

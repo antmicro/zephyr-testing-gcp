@@ -69,7 +69,7 @@ def generate():
       run: |
         mkdir -p job-artifacts/build-{zephyr_commit}-{sample}
         mv artifacts/ job-artifacts/build-{zephyr_commit}-{sample}
-        gsutil -m cp -r job-artifacts/build-{zephyr_commit}-{sample} gs://gcp-distributed-job-test-bucket''')
+        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket''')
         tasks.append(f'''
   simulate-{zephyr_commit}-{sample}:
     container: ubuntu:{UBUNTU_VERSION}

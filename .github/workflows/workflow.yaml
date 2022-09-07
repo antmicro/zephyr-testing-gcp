@@ -75,7 +75,7 @@ jobs:
       run: |
         mkdir -p job-artifacts/build-0-hello_world
         mv artifacts/ job-artifacts/build-0-hello_world
-        gsutil -m cp -r job-artifacts/build-0-hello_world gs://gcp-distributed-job-test-bucket
+        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
   simulate-0-hello_world:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
@@ -145,7 +145,7 @@ jobs:
       run: |
         mkdir -p job-artifacts/build-0-shell_module
         mv artifacts/ job-artifacts/build-0-shell_module
-        gsutil -m cp -r job-artifacts/build-0-shell_module gs://gcp-distributed-job-test-bucket
+        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
   simulate-0-shell_module:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
@@ -215,7 +215,7 @@ jobs:
       run: |
         mkdir -p job-artifacts/build-0-philosophers
         mv artifacts/ job-artifacts/build-0-philosophers
-        gsutil -m cp -r job-artifacts/build-0-philosophers gs://gcp-distributed-job-test-bucket
+        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
   simulate-0-philosophers:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
@@ -285,7 +285,7 @@ jobs:
       run: |
         mkdir -p job-artifacts/build-0-micropython
         mv artifacts/ job-artifacts/build-0-micropython
-        gsutil -m cp -r job-artifacts/build-0-micropython gs://gcp-distributed-job-test-bucket
+        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
   simulate-0-micropython:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
@@ -355,7 +355,7 @@ jobs:
       run: |
         mkdir -p job-artifacts/build-0-tensorflow_lite_micro
         mv artifacts/ job-artifacts/build-0-tensorflow_lite_micro
-        gsutil -m cp -r job-artifacts/build-0-tensorflow_lite_micro gs://gcp-distributed-job-test-bucket
+        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
   simulate-0-tensorflow_lite_micro:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
@@ -425,7 +425,7 @@ jobs:
       run: |
         mkdir -p job-artifacts/build-1-hello_world
         mv artifacts/ job-artifacts/build-1-hello_world
-        gsutil -m cp -r job-artifacts/build-1-hello_world gs://gcp-distributed-job-test-bucket
+        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
   simulate-1-hello_world:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
@@ -495,7 +495,7 @@ jobs:
       run: |
         mkdir -p job-artifacts/build-1-shell_module
         mv artifacts/ job-artifacts/build-1-shell_module
-        gsutil -m cp -r job-artifacts/build-1-shell_module gs://gcp-distributed-job-test-bucket
+        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
   simulate-1-shell_module:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
@@ -565,7 +565,7 @@ jobs:
       run: |
         mkdir -p job-artifacts/build-1-philosophers
         mv artifacts/ job-artifacts/build-1-philosophers
-        gsutil -m cp -r job-artifacts/build-1-philosophers gs://gcp-distributed-job-test-bucket
+        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
   simulate-1-philosophers:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
@@ -635,7 +635,7 @@ jobs:
       run: |
         mkdir -p job-artifacts/build-1-micropython
         mv artifacts/ job-artifacts/build-1-micropython
-        gsutil -m cp -r job-artifacts/build-1-micropython gs://gcp-distributed-job-test-bucket
+        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
   simulate-1-micropython:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
@@ -705,7 +705,7 @@ jobs:
       run: |
         mkdir -p job-artifacts/build-1-tensorflow_lite_micro
         mv artifacts/ job-artifacts/build-1-tensorflow_lite_micro
-        gsutil -m cp -r job-artifacts/build-1-tensorflow_lite_micro gs://gcp-distributed-job-test-bucket
+        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
   simulate-1-tensorflow_lite_micro:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]

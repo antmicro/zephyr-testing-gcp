@@ -26,3 +26,4 @@ cd ..
 for i in $(seq 1 5); do west update 1>>../artifacts/build.log 2>&1 && break || sleep 5; done
 west espressif install 1>>../artifacts/build.log 2>&1
 cd ..
+tar czf zephyr.tar.gz zephyrproject zephyr-sdk

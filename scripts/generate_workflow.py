@@ -35,7 +35,7 @@ def generate():
     - name: Pass Zephyr as artifact
       run: |
         mkdir -p job-artifacts/prepare-zephyr-{zephyr_commit}
-        mv zephyrproject zephyr-sdk job-artifacts/prepare-zephyr-{zephyr_commit}/
+        mv zephyr.tar.gz job-artifacts/prepare-zephyr-{zephyr_commit}/
         gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket''')
     for zephyr_commit, sample in commit_sample_product:
         tasks.append(f'''
@@ -56,7 +56,7 @@ def generate():
     - name: Prepare environment
       run: ./scripts/environment_build.sh
     - name: Get Zephyr
-      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/prepare-zephyr-{zephyr_commit}/* .
+      run: gsutil cp gs://gcp-distributed-job-test-bucket/job-artifacts/prepare-zephyr-{zephyr_commit}/zephyr.tar.gz .
     - name: Prepare Zephyr
       run: ./scripts/prepare_zephyr.sh
     - name: Prepare Micropython

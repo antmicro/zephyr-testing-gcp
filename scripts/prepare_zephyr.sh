@@ -3,7 +3,6 @@ set -e
 set -u
 set -x
 
-tar xzf zephyr.tar.gz
 cd zephyr-sdk
 ./setup.sh -t all -h -c
 cd -

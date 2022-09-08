@@ -798,7 +798,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Install gcp
-      run: ./script/prepare_gcp.sh
+      run: ./scripts/prepare_gcp.sh
     - name: Delete artifacts
       run: gsutil -m rm -r gs://gcp-distributed-job-test-bucket/job-artifacts/
     - name: Update latest Zephyr commit

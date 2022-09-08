@@ -24,6 +24,8 @@ def generate():
       ZEPHYR_COMMIT: {zephyr_commit}
       ZEPHYR_SDK_VERSION: {ZEPHYR_SDK_VERSION}
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
+      DEBIAN_FRONTEND=noninteractive
+      TZ=Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -47,6 +49,8 @@ def generate():
       NUMBER_OF_THREADS: {NUMBER_OF_THREADS_BUILD}
       GHA_MACHINE_TYPE: "n2-standard-32"
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
+      DEBIAN_FRONTEND=noninteractive
+      TZ=Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -83,6 +87,8 @@ def generate():
       NUMBER_OF_THREADS: {NUMBER_OF_THREADS_SIMULATE}
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
       GHA_MACHINE_TYPE: "n2-standard-32"
+      DEBIAN_FRONTEND=noninteractive
+      TZ=Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -113,6 +119,9 @@ def generate():
     container: ubuntu:{UBUNTU_VERSION}
     runs-on: [self-hosted, Linux, X64]
     needs: [{", ".join([f'simulate-{zephyr_commit}-{sample}' for zephyr_commit, sample in commit_sample_product])}]
+    env:
+      DEBIAN_FRONTEND=noninteractive
+      TZ=Europe/Warsaw
     if: always()
     steps:
     - uses: actions/checkout@v2

@@ -128,7 +128,7 @@ def generate():
     - name: Install gcp
       run: ./scripts/prepare_gcp.sh
     - name: Delete artifacts
-      run: gsutil -m rm -r gs://gcp-distributed-job-test-bucket/job-artifacts/
+      run: gsutil -m rm -r gs://gcp-distributed-job-test-bucket/job-artifacts
     - name: Update latest Zephyr commit
       run: echo ${{{{ needs.simulate-0-hello_world.outputs.ZEPHYR_COMMIT }}}} > {LAST_ZEPHYR_COMMIT_FILE}
     - name: Commit latest Zephyr commit

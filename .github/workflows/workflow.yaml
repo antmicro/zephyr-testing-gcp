@@ -792,6 +792,7 @@ jobs:
     runs-on: [self-hosted, Linux, X64]
     needs: [simulate-0-hello_world, simulate-0-shell_module, simulate-0-philosophers, simulate-0-micropython, simulate-0-tensorflow_lite_micro, simulate-1-hello_world, simulate-1-shell_module, simulate-1-philosophers, simulate-1-micropython, simulate-1-tensorflow_lite_micro]
     env:
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     if: always()
@@ -800,7 +801,7 @@ jobs:
     - name: Install gcp
       run: ./scripts/prepare_gcp.sh
     - name: Delete artifacts
-      run: gsutil rm -r gs://gcp-distributed-job-test-bucket/job-artifacts
+      run: gsutil -m rm -r gs://gcp-distributed-job-test-bucket/job-artifacts
     - name: Update latest Zephyr commit
       run: echo ${{ needs.simulate-0-hello_world.outputs.ZEPHYR_COMMIT }} > last_zephyr_commit
     - name: Commit latest Zephyr commit

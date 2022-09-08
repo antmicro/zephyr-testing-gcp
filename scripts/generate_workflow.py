@@ -120,6 +120,7 @@ def generate():
     runs-on: [self-hosted, Linux, X64]
     needs: [{", ".join([f'simulate-{zephyr_commit}-{sample}' for zephyr_commit, sample in commit_sample_product])}]
     env:
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     if: always()
@@ -128,7 +129,7 @@ def generate():
     - name: Install gcp
       run: ./scripts/prepare_gcp.sh
     - name: Delete artifacts
-      run: gsutil rm -r gs://gcp-distributed-job-test-bucket/job-artifacts
+      run: gsutil -m rm -r gs://gcp-distributed-job-test-bucket/job-artifacts
     - name: Update latest Zephyr commit
       run: echo ${{{{ needs.simulate-0-hello_world.outputs.ZEPHYR_COMMIT }}}} > {LAST_ZEPHYR_COMMIT_FILE}
     - name: Commit latest Zephyr commit

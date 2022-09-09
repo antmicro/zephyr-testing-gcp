@@ -5,7 +5,7 @@ WORKFLOW_FILE = 'workflow.yaml'
 WORKFLOW_NAME = 'workflow'
 SAMPLES = ['hello_world', 'shell_module', 'philosophers', 'micropython', 'tensorflow_lite_micro']
 NUMBER_OF_THREADS_BUILD = 32
-NUMBER_OF_THREADS_SIMULATE = 2
+NUMBER_OF_THREADS_SIMULATE = 28
 MAX_NUMBER_OF_COMMITS = 2
 UBUNTU_VERSION = 'jammy'
 ZEPHYR_SDK_VERSION = '0.14.2'
@@ -131,7 +131,7 @@ def generate():
     - name: Delete artifacts
       run: gsutil -m rm -r gs://gcp-distributed-job-test-bucket/job-artifacts
     - name: Update latest Zephyr commit
-      run: echo ${{{{ needs.simulate-0-hello_world.outputs.ZEPHYR_COMMIT }}}} > {LAST_ZEPHYR_COMMIT_FILE}
+      run: ./scripts/save_commit.sh {' '.join([f'${{{{ needs.simulate-{commit}-{sample}.outputs.ZEPHYR_COMMIT }}}}' for commit, sample in commit_sample_product])}
     - name: Commit latest Zephyr commit
       uses: stefanzweifel/git-auto-commit-action@v4
       with:

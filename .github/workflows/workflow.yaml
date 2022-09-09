@@ -91,7 +91,7 @@ jobs:
     env:
       SAMPLE_NAME: hello_world
       RENODE_VERSION: 1.13.1+20220731git8eca7310
-      NUMBER_OF_THREADS: 2
+      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
       GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
@@ -165,7 +165,7 @@ jobs:
     env:
       SAMPLE_NAME: shell_module
       RENODE_VERSION: 1.13.1+20220731git8eca7310
-      NUMBER_OF_THREADS: 2
+      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
       GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
@@ -239,7 +239,7 @@ jobs:
     env:
       SAMPLE_NAME: philosophers
       RENODE_VERSION: 1.13.1+20220731git8eca7310
-      NUMBER_OF_THREADS: 2
+      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
       GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
@@ -313,7 +313,7 @@ jobs:
     env:
       SAMPLE_NAME: micropython
       RENODE_VERSION: 1.13.1+20220731git8eca7310
-      NUMBER_OF_THREADS: 2
+      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
       GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
@@ -387,7 +387,7 @@ jobs:
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       RENODE_VERSION: 1.13.1+20220731git8eca7310
-      NUMBER_OF_THREADS: 2
+      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
       GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
@@ -461,7 +461,7 @@ jobs:
     env:
       SAMPLE_NAME: hello_world
       RENODE_VERSION: 1.13.1+20220731git8eca7310
-      NUMBER_OF_THREADS: 2
+      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
       GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
@@ -535,7 +535,7 @@ jobs:
     env:
       SAMPLE_NAME: shell_module
       RENODE_VERSION: 1.13.1+20220731git8eca7310
-      NUMBER_OF_THREADS: 2
+      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
       GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
@@ -609,7 +609,7 @@ jobs:
     env:
       SAMPLE_NAME: philosophers
       RENODE_VERSION: 1.13.1+20220731git8eca7310
-      NUMBER_OF_THREADS: 2
+      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
       GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
@@ -683,7 +683,7 @@ jobs:
     env:
       SAMPLE_NAME: micropython
       RENODE_VERSION: 1.13.1+20220731git8eca7310
-      NUMBER_OF_THREADS: 2
+      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
       GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
@@ -757,7 +757,7 @@ jobs:
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       RENODE_VERSION: 1.13.1+20220731git8eca7310
-      NUMBER_OF_THREADS: 2
+      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
       GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
@@ -803,7 +803,7 @@ jobs:
     - name: Delete artifacts
       run: gsutil -m rm -r gs://gcp-distributed-job-test-bucket/job-artifacts
     - name: Update latest Zephyr commit
-      run: echo ${{ needs.simulate-0-hello_world.outputs.ZEPHYR_COMMIT }} > last_zephyr_commit
+      run: ./scripts/save_commit.sh ${{ needs.simulate-0-hello_world.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-0-shell_module.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-0-philosophers.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-0-micropython.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-0-tensorflow_lite_micro.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-1-hello_world.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-1-shell_module.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-1-philosophers.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-1-micropython.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-1-tensorflow_lite_micro.outputs.ZEPHYR_COMMIT }}
     - name: Commit latest Zephyr commit
       uses: stefanzweifel/git-auto-commit-action@v4
       with:

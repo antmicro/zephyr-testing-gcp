@@ -11,7 +11,7 @@ Test timeout	30 s
     Create Terminal Tester      sysbus.{{uart_name}}        timeout=15
     Write Char Delay            0.01
     Start Emulation
-    Wait For Prompt On Uart     >>>
+    Wait For Prompt On Uart     >>>	timeout=0.1
     Write Line To Uart          2+2
     Wait For Line On Uart       4
     Write Line To Uart          def compare(a, b): return True if a > b else False

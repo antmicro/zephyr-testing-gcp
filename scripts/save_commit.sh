@@ -1,6 +1,9 @@
 #!/bin/bash
 
-if [ $# > 0 -a ! -z "${1// }" ]; then
-        echo $1 > last_zephyr_commit
-fi
-
+for commit in "$@"; do
+	if [ ! -z "${commit// }" ]; then
+        	echo $commit
+		#echo $commit > last_zephyr_commit
+		break
+	fi
+done

@@ -131,11 +131,14 @@ def generate():
     - name: Delete artifacts
       run: gsutil -m rm -r gs://gcp-distributed-job-test-bucket/job-artifacts
     - name: Update latest Zephyr commit
-      run: ./scripts/save_commit.sh {' '.join([f'${{{{ needs.simulate-{commit}-{sample}.outputs.ZEPHYR_COMMIT }}}}' for commit, sample in commit_sample_product])}
+      id: update-last-zephyr-commit
+      run: |
+        ./scripts/save_commit.sh {' '.join([f'${{{{ needs.simulate-{commit}-{sample}.outputs.ZEPHYR_COMMIT }}}}' for commit, sample in commit_sample_product])}
+        echo "::set-output name=LAST_ZEPHYR_COMMIT::$(cat last_zephyr_commit)"
     - name: Commit latest Zephyr commit
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
-        commit_message: Update latest Zephyr commit ${{{{ needs.simulate-0-hello_world.outputs.ZEPHYR_COMMIT }}}}
+        commit_message: Update latest Zephyr commit ${{{{ steps.update-last-zephyr-commit.outputs.LAST_ZEPHYR_COMMIT }}}}
         file_pattern: {LAST_ZEPHYR_COMMIT_FILE}''')
     with open(WORKFLOW_FILE, 'w') as file:
         file.write(f'''name: {WORKFLOW_NAME}

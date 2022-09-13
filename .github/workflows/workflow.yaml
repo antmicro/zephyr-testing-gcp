@@ -803,9 +803,12 @@ jobs:
     - name: Delete artifacts
       run: gsutil -m rm -r gs://gcp-distributed-job-test-bucket/job-artifacts
     - name: Update latest Zephyr commit
-      run: ./scripts/save_commit.sh ${{ needs.simulate-0-hello_world.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-0-shell_module.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-0-philosophers.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-0-micropython.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-0-tensorflow_lite_micro.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-1-hello_world.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-1-shell_module.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-1-philosophers.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-1-micropython.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-1-tensorflow_lite_micro.outputs.ZEPHYR_COMMIT }}
+      id: update-last-zephyr-commit
+      run: |
+        ./scripts/save_commit.sh ${{ needs.simulate-0-hello_world.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-0-shell_module.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-0-philosophers.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-0-micropython.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-0-tensorflow_lite_micro.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-1-hello_world.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-1-shell_module.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-1-philosophers.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-1-micropython.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-1-tensorflow_lite_micro.outputs.ZEPHYR_COMMIT }}
+        echo "::set-output name=LAST_ZEPHYR_COMMIT::$(cat last_zephyr_commit)"
     - name: Commit latest Zephyr commit
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
-        commit_message: Update latest Zephyr commit ${{ needs.simulate-0-hello_world.outputs.ZEPHYR_COMMIT }}
+        commit_message: Update latest Zephyr commit ${{ steps.update-last-zephyr-commit.outputs.LAST_ZEPHYR_COMMIT }}
         file_pattern: last_zephyr_commit

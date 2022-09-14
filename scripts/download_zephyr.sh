@@ -7,9 +7,9 @@ pip3 install west
 west init zephyrproject
 
 mkdir -p zephyr-sdk && cd zephyr-sdk
-curl --no-progress-meter -kL https://github.com/zephyrproject-rtos/sdk-ng/releases/download/v${ZEPHYR_SDK_VERSION}/zephyr-sdk-${ZEPHYR_SDK_VERSION}_linux-x86_64.tar.gz | tar xz --strip 1
+curl --no-progress-meter -kL https://dl.antmicro.com/projects/renode/zephyr-sdk-${ZEPHYR_SDK_VERSION}_linux-x86_64.tar.gz | tar xz --strip 1
 cd -
-HEAD=8423f23b9c
+HEAD=8c1efa8b96
 LAST_COMMIT=$(cat last_zephyr_commit)
 COMMITS=$(git -C zephyrproject/zephyr log --pretty=format:'%h' $LAST_COMMIT..$HEAD)
 
@@ -26,4 +26,4 @@ cd ..
 for i in $(seq 1 5); do west update 1>>../artifacts/build.log 2>&1 && break || sleep 5; done
 west espressif install 1>>../artifacts/build.log 2>&1
 cd ..
-tar czf zephyr.tar.gz zephyrproject zephyr-sdk
+#tar czf zephyr.tar.gz zephyrproject zephyr-sdk

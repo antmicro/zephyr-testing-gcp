@@ -143,19 +143,6 @@ index 0000000000..f37da7b144
 +CONFIG_BOOT_BANNER=n
 +
 +CONFIG_XIP=y
-diff --git a/drivers/interrupt_controller/Kconfig b/drivers/interrupt_controller/Kconfig
-index be836a1ad9..297aed609e 100644
---- a/drivers/interrupt_controller/Kconfig
-+++ b/drivers/interrupt_controller/Kconfig
-@@ -33,7 +33,7 @@ config SWERV_PIC
- 
- config VEXRISCV_LITEX_IRQ
- 	bool "VexRiscv LiteX Interrupt controller"
--	depends on SOC_RISCV32_LITEX_VEXRISCV
-+	depends on SOC_RISCV32_LITEX_VEXRISCV || SOC_RISCV32_FOMU
- 	help
- 	  IRQ implementation for LiteX VexRiscv
- 
 diff --git a/drivers/timer/Kconfig.litex b/drivers/timer/Kconfig.litex
 index 80e2574928..b03d3e1ea6 100644
 --- a/drivers/timer/Kconfig.litex
@@ -223,7 +210,7 @@ new file mode 100644
 index 0000000000..2c09523050
 --- /dev/null
 +++ b/soc/riscv/fomu/Kconfig.soc
-@@ -0,0 +1,8 @@
+@@ -0,0 +1,11 @@
 +# Copyright (c) 2022 Antmicro <www.antmicro.com>
 +# SPDX-License-Identifier: Apache-2.0
 +
@@ -232,6 +219,9 @@ index 0000000000..2c09523050
 +	select RISCV
 +	select ATOMIC_OPERATIONS_C
 +	select INCLUDE_RESET_VECTOR
++	select RISCV_ISA_RV32I
++	select RISCV_ISA_EXT_A
++	select RISCV_ISA_EXT_ZICSR
 diff --git a/soc/riscv/fomu/linker.ld b/soc/riscv/fomu/linker.ld
 new file mode 100644
 index 0000000000..d0195a49a9

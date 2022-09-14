@@ -104,7 +104,6 @@ def build_sample(zephyr_platform, sample_name, sample_path, sample_args, toolcha
         )
     else:
         print(f"Toolchain {bold(toolchain)} not found!")
-        return
     print(f"Building for {bold(zephyr_platform)}, sample: {bold(sample_name)} with args: {bold(sample_args)} using {bold(toolchain)} toolchain.")
     args = f'-- {sample_args}' if sample_args != '' else ''
     return_code, west_output = build_and_copy_bin(zephyr_platform, sample_path, args, sample_name, env)

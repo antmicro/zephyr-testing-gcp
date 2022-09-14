@@ -1,0 +1,27 @@
+From 814777cebe908836c67eb0fe2eae4e90a5c12a94 Mon Sep 17 00:00:00 2001
+From: Jan Malek <jmalek@internships.antmicro.com>
+Date: Thu, 25 Aug 2022 15:49:05 +0200
+Subject: [PATCH] Change include directives
+
+We have to change the include directive to reflect the changes in 
+the directory structure that happened between Zephyr2 and Zephyr3
+---
+ ports/zephyr/mpconfigport_minimal.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/ports/zephyr/mpconfigport_minimal.h b/ports/zephyr/mpconfigport_minimal.h
+index f0e57d756..041db42a2 100644
+--- a/ports/zephyr/mpconfigport_minimal.h
++++ b/ports/zephyr/mpconfigport_minimal.h
+@@ -28,7 +28,7 @@
+ // Include Zephyr's autoconf.h, which should be made first by Zephyr makefiles
+ #include "autoconf.h"
+ // Included here to get basic Zephyr environment (macros, etc.)
+-#include <zephyr.h>
++#include <zephyr/kernel.h>
+ 
+ // Usually passed from Makefile
+ #ifndef MICROPY_HEAP_SIZE
+-- 
+2.30.2
+

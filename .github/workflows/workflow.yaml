@@ -150,7 +150,7 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: hello_world
-      RENODE_VERSION: 1.13.1+20220731git8eca7310
+      RENODE_VERSION: 1.13.1+20220909git3e7a1aa7
       NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
       GHA_MACHINE_TYPE: "n2-standard-32"
@@ -224,7 +224,7 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: shell_module
-      RENODE_VERSION: 1.13.1+20220731git8eca7310
+      RENODE_VERSION: 1.13.1+20220909git3e7a1aa7
       NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
       GHA_MACHINE_TYPE: "n2-standard-32"
@@ -298,7 +298,7 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: philosophers
-      RENODE_VERSION: 1.13.1+20220731git8eca7310
+      RENODE_VERSION: 1.13.1+20220909git3e7a1aa7
       NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
       GHA_MACHINE_TYPE: "n2-standard-32"
@@ -372,7 +372,7 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: micropython
-      RENODE_VERSION: 1.13.1+20220731git8eca7310
+      RENODE_VERSION: 1.13.1+20220909git3e7a1aa7
       NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
       GHA_MACHINE_TYPE: "n2-standard-32"
@@ -446,7 +446,7 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      RENODE_VERSION: 1.13.1+20220731git8eca7310
+      RENODE_VERSION: 1.13.1+20220909git3e7a1aa7
       NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
       GHA_MACHINE_TYPE: "n2-standard-32"
@@ -520,7 +520,7 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: hello_world
-      RENODE_VERSION: 1.13.1+20220731git8eca7310
+      RENODE_VERSION: 1.13.1+20220909git3e7a1aa7
       NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
       GHA_MACHINE_TYPE: "n2-standard-32"
@@ -594,7 +594,7 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: shell_module
-      RENODE_VERSION: 1.13.1+20220731git8eca7310
+      RENODE_VERSION: 1.13.1+20220909git3e7a1aa7
       NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
       GHA_MACHINE_TYPE: "n2-standard-32"
@@ -668,7 +668,7 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: philosophers
-      RENODE_VERSION: 1.13.1+20220731git8eca7310
+      RENODE_VERSION: 1.13.1+20220909git3e7a1aa7
       NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
       GHA_MACHINE_TYPE: "n2-standard-32"
@@ -742,7 +742,7 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: micropython
-      RENODE_VERSION: 1.13.1+20220731git8eca7310
+      RENODE_VERSION: 1.13.1+20220909git3e7a1aa7
       NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
       GHA_MACHINE_TYPE: "n2-standard-32"
@@ -816,7 +816,7 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      RENODE_VERSION: 1.13.1+20220731git8eca7310
+      RENODE_VERSION: 1.13.1+20220909git3e7a1aa7
       NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
       GHA_MACHINE_TYPE: "n2-standard-32"
@@ -890,7 +890,7 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: hello_world
-      RENODE_VERSION: 1.13.1+20220731git8eca7310
+      RENODE_VERSION: 1.13.1+20220909git3e7a1aa7
       NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
       GHA_MACHINE_TYPE: "n2-standard-32"
@@ -964,7 +964,7 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: shell_module
-      RENODE_VERSION: 1.13.1+20220731git8eca7310
+      RENODE_VERSION: 1.13.1+20220909git3e7a1aa7
       NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
       GHA_MACHINE_TYPE: "n2-standard-32"
@@ -1038,7 +1038,7 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: philosophers
-      RENODE_VERSION: 1.13.1+20220731git8eca7310
+      RENODE_VERSION: 1.13.1+20220909git3e7a1aa7
       NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
       GHA_MACHINE_TYPE: "n2-standard-32"
@@ -1112,7 +1112,7 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: micropython
-      RENODE_VERSION: 1.13.1+20220731git8eca7310
+      RENODE_VERSION: 1.13.1+20220909git3e7a1aa7
       NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
       GHA_MACHINE_TYPE: "n2-standard-32"
@@ -1186,7 +1186,7 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      RENODE_VERSION: 1.13.1+20220731git8eca7310
+      RENODE_VERSION: 1.13.1+20220909git3e7a1aa7
       NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
       GHA_MACHINE_TYPE: "n2-standard-32"
@@ -1260,7 +1260,7 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: hello_world
-      RENODE_VERSION: 1.13.1+20220731git8eca7310
+      RENODE_VERSION: 1.13.1+20220909git3e7a1aa7
       NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
       GHA_MACHINE_TYPE: "n2-standard-32"
@@ -1334,7 +1334,7 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: shell_module
-      RENODE_VERSION: 1.13.1+20220731git8eca7310
+      RENODE_VERSION: 1.13.1+20220909git3e7a1aa7
       NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
       GHA_MACHINE_TYPE: "n2-standard-32"
@@ -1408,7 +1408,7 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: philosophers
-      RENODE_VERSION: 1.13.1+20220731git8eca7310
+      RENODE_VERSION: 1.13.1+20220909git3e7a1aa7
       NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
       GHA_MACHINE_TYPE: "n2-standard-32"
@@ -1482,7 +1482,7 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: micropython
-      RENODE_VERSION: 1.13.1+20220731git8eca7310
+      RENODE_VERSION: 1.13.1+20220909git3e7a1aa7
       NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
       GHA_MACHINE_TYPE: "n2-standard-32"
@@ -1556,7 +1556,7 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      RENODE_VERSION: 1.13.1+20220731git8eca7310
+      RENODE_VERSION: 1.13.1+20220909git3e7a1aa7
       NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
       GHA_MACHINE_TYPE: "n2-standard-32"
@@ -1630,7 +1630,7 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: hello_world
-      RENODE_VERSION: 1.13.1+20220731git8eca7310
+      RENODE_VERSION: 1.13.1+20220909git3e7a1aa7
       NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
       GHA_MACHINE_TYPE: "n2-standard-32"
@@ -1704,7 +1704,7 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: shell_module
-      RENODE_VERSION: 1.13.1+20220731git8eca7310
+      RENODE_VERSION: 1.13.1+20220909git3e7a1aa7
       NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
       GHA_MACHINE_TYPE: "n2-standard-32"
@@ -1778,7 +1778,7 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: philosophers
-      RENODE_VERSION: 1.13.1+20220731git8eca7310
+      RENODE_VERSION: 1.13.1+20220909git3e7a1aa7
       NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
       GHA_MACHINE_TYPE: "n2-standard-32"
@@ -1852,7 +1852,7 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: micropython
-      RENODE_VERSION: 1.13.1+20220731git8eca7310
+      RENODE_VERSION: 1.13.1+20220909git3e7a1aa7
       NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
       GHA_MACHINE_TYPE: "n2-standard-32"
@@ -1926,7 +1926,7 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      RENODE_VERSION: 1.13.1+20220731git8eca7310
+      RENODE_VERSION: 1.13.1+20220909git3e7a1aa7
       NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
       GHA_MACHINE_TYPE: "n2-standard-32"

@@ -151,7 +151,7 @@ index 80e2574928..b03d3e1ea6 100644
  config LITEX_TIMER
  	bool "LiteX Timer"
  	default y
--	depends on SOC_RISCV32_LITEX_VEXRISCV
+-	depends on DT_HAS_LITEX_TIMER0_ENABLED
 +	depends on SOC_RISCV32_LITEX_VEXRISCV || SOC_RISCV32_FOMU
  	select TIMER_HAS_64BIT_CYCLE_COUNTER
  	help

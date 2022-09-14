@@ -244,9 +244,9 @@ index ff2350a38e..d5044d9ca0 100644
 +			status = "disabled";
 +		};
 +
- 		gpio: gpio {
+ 		gpio: gpio@40005000 {
  			compatible = "quicklogic,eos-s3-gpio";
- 			status = "disabled";
+ 			reg = <0x40005000 DT_SIZE_K(4)>;
 diff --git a/dts/bindings/serial/quicklogic,eos-s3-usbserial.yaml b/dts/bindings/serial/quicklogic,eos-s3-usbserial.yaml
 new file mode 100644
 index 0000000000..81d9288870

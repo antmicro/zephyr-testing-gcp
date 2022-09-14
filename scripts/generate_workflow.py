@@ -6,9 +6,9 @@ WORKFLOW_NAME = 'workflow'
 SAMPLES = ['hello_world', 'shell_module', 'philosophers', 'micropython', 'tensorflow_lite_micro']
 NUMBER_OF_THREADS_BUILD = 32
 NUMBER_OF_THREADS_SIMULATE = 28
-MAX_NUMBER_OF_COMMITS = 2
+MAX_NUMBER_OF_COMMITS = 5
 UBUNTU_VERSION = 'jammy'
-ZEPHYR_SDK_VERSION = '0.14.2'
+ZEPHYR_SDK_VERSION = '0.15.0'
 RENODE_VERSION = '1.13.1+20220731git8eca7310'
 LAST_ZEPHYR_COMMIT_FILE = 'last_zephyr_commit'
 

@@ -163,11 +163,11 @@ def get_boards():
     import argparse
     from pathlib import Path
     parser = argparse.ArgumentParser()
-    parser.add_argument("--arch-root", dest='arch_roots', default=[],
+    parser.add_argument("--arch-root", dest='arch_roots', default=[Path(zephyr_path)],
                         type=Path, action='append',
                         help='''add an architecture root (ZEPHYR_BASE is
                         always present), may be given more than once''')
-    parser.add_argument("--board-root", dest='board_roots', default=[],
+    parser.add_argument("--board-root", dest='board_roots', default=[Path(zephyr_path)],
                         type=Path, action='append',
                         help='''add a board root (ZEPHYR_BASE is always
                         present), may be given more than once''')

@@ -12,7 +12,7 @@ jobs:
     runs-on: [self-hosted, Linux, X64]
     env:
       ZEPHYR_COMMIT: 0
-      ZEPHYR_SDK_VERSION: 0.14.2
+      ZEPHYR_SDK_VERSION: 0.15.0
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
@@ -32,7 +32,7 @@ jobs:
     runs-on: [self-hosted, Linux, X64]
     env:
       ZEPHYR_COMMIT: 1
-      ZEPHYR_SDK_VERSION: 0.14.2
+      ZEPHYR_SDK_VERSION: 0.15.0
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
@@ -46,6 +46,66 @@ jobs:
       run: |
         mkdir -p job-artifacts/prepare-zephyr-1
         mv zephyr.tar.gz job-artifacts/prepare-zephyr-1/
+        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
+  prepare-zephyr-2:
+    container: ubuntu:jammy
+    runs-on: [self-hosted, Linux, X64]
+    env:
+      ZEPHYR_COMMIT: 2
+      ZEPHYR_SDK_VERSION: 0.15.0
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
+      DEBIAN_FRONTEND: noninteractive
+      TZ: Europe/Warsaw
+    steps:
+    - uses: actions/checkout@v2
+    - name: Prepare environment
+      run: ./scripts/environment_prepare.sh
+    - name: Download Zephyr
+      run: ./scripts/download_zephyr.sh
+    - name: Pass Zephyr as artifact
+      run: |
+        mkdir -p job-artifacts/prepare-zephyr-2
+        mv zephyr.tar.gz job-artifacts/prepare-zephyr-2/
+        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
+  prepare-zephyr-3:
+    container: ubuntu:jammy
+    runs-on: [self-hosted, Linux, X64]
+    env:
+      ZEPHYR_COMMIT: 3
+      ZEPHYR_SDK_VERSION: 0.15.0
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
+      DEBIAN_FRONTEND: noninteractive
+      TZ: Europe/Warsaw
+    steps:
+    - uses: actions/checkout@v2
+    - name: Prepare environment
+      run: ./scripts/environment_prepare.sh
+    - name: Download Zephyr
+      run: ./scripts/download_zephyr.sh
+    - name: Pass Zephyr as artifact
+      run: |
+        mkdir -p job-artifacts/prepare-zephyr-3
+        mv zephyr.tar.gz job-artifacts/prepare-zephyr-3/
+        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
+  prepare-zephyr-4:
+    container: ubuntu:jammy
+    runs-on: [self-hosted, Linux, X64]
+    env:
+      ZEPHYR_COMMIT: 4
+      ZEPHYR_SDK_VERSION: 0.15.0
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
+      DEBIAN_FRONTEND: noninteractive
+      TZ: Europe/Warsaw
+    steps:
+    - uses: actions/checkout@v2
+    - name: Prepare environment
+      run: ./scripts/environment_prepare.sh
+    - name: Download Zephyr
+      run: ./scripts/download_zephyr.sh
+    - name: Pass Zephyr as artifact
+      run: |
+        mkdir -p job-artifacts/prepare-zephyr-4
+        mv zephyr.tar.gz job-artifacts/prepare-zephyr-4/
         gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
   build-0-hello_world:
     container: ubuntu:jammy
@@ -787,10 +847,1120 @@ jobs:
       run: |
         mv artifacts/ ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
         gsutil -m cp -r ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }} gs://gcp-distributed-job-test-bucket
+  build-2-hello_world:
+    container: ubuntu:jammy
+    runs-on: [self-hosted, Linux, X64]
+    needs: [prepare-zephyr-2]
+    env:
+      SAMPLE_NAME: hello_world
+      MICROPYTHON_VERSION: 97a7cc243b
+      NUMBER_OF_THREADS: 32
+      GHA_MACHINE_TYPE: "n2-standard-32"
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
+      DEBIAN_FRONTEND: noninteractive
+      TZ: Europe/Warsaw
+    steps:
+    - uses: actions/checkout@v2
+    - name: Prepare environment
+      run: ./scripts/environment_build.sh
+    - name: Get Zephyr
+      run: gsutil cp gs://gcp-distributed-job-test-bucket/job-artifacts/prepare-zephyr-2/zephyr.tar.gz .
+    - name: Prepare Zephyr
+      run: ./scripts/prepare_zephyr.sh
+    - name: Prepare Micropython
+      run: ./scripts/prepare_micropython.sh
+    - name: Build boards
+      run: ./scripts/build.py
+    - name: Upload load graphs
+      uses: actions/upload-artifact@v2
+      with:
+        name: plots
+        path: |
+          **/plot_*.svg
+    - name: Upload artifacts
+      run: |
+        mkdir -p job-artifacts/build-2-hello_world
+        mv artifacts/ job-artifacts/build-2-hello_world
+        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
+  simulate-2-hello_world:
+    container: ubuntu:jammy
+    runs-on: [self-hosted, Linux, X64]
+    needs: [build-2-hello_world]
+    outputs:
+      ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
+    env:
+      SAMPLE_NAME: hello_world
+      RENODE_VERSION: 1.13.1+20220731git8eca7310
+      NUMBER_OF_THREADS: 28
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
+      GHA_MACHINE_TYPE: "n2-standard-32"
+      DEBIAN_FRONTEND: noninteractive
+      TZ: Europe/Warsaw
+    steps:
+    - uses: actions/checkout@v2
+    - name: Prepare environment
+      run: ./scripts/environment_simulate.sh
+    - name: Get artifacts
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-2-hello_world/artifacts .
+    - name: Prepare Renode
+      run: ./scripts/download_renode.sh
+    - name: Simulate
+      run: ./scripts/simulate.py
+    - name: Get Zephyr commit
+      id: get-zephyr-commit
+      run: |
+        ZEPHYR_COMMIT=$(cat artifacts/zephyr.version)
+        echo "::set-output name=ZEPHYR_COMMIT::$ZEPHYR_COMMIT"
+    - name: Upload load graphs
+      uses: actions/upload-artifact@v2
+      with:
+        name: plots
+        path: |
+          **/plot_*.svg
+    - name: Upload artifacts
+      run: |
+        mv artifacts/ ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
+        gsutil -m cp -r ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }} gs://gcp-distributed-job-test-bucket
+  build-2-shell_module:
+    container: ubuntu:jammy
+    runs-on: [self-hosted, Linux, X64]
+    needs: [prepare-zephyr-2]
+    env:
+      SAMPLE_NAME: shell_module
+      MICROPYTHON_VERSION: 97a7cc243b
+      NUMBER_OF_THREADS: 32
+      GHA_MACHINE_TYPE: "n2-standard-32"
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
+      DEBIAN_FRONTEND: noninteractive
+      TZ: Europe/Warsaw
+    steps:
+    - uses: actions/checkout@v2
+    - name: Prepare environment
+      run: ./scripts/environment_build.sh
+    - name: Get Zephyr
+      run: gsutil cp gs://gcp-distributed-job-test-bucket/job-artifacts/prepare-zephyr-2/zephyr.tar.gz .
+    - name: Prepare Zephyr
+      run: ./scripts/prepare_zephyr.sh
+    - name: Prepare Micropython
+      run: ./scripts/prepare_micropython.sh
+    - name: Build boards
+      run: ./scripts/build.py
+    - name: Upload load graphs
+      uses: actions/upload-artifact@v2
+      with:
+        name: plots
+        path: |
+          **/plot_*.svg
+    - name: Upload artifacts
+      run: |
+        mkdir -p job-artifacts/build-2-shell_module
+        mv artifacts/ job-artifacts/build-2-shell_module
+        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
+  simulate-2-shell_module:
+    container: ubuntu:jammy
+    runs-on: [self-hosted, Linux, X64]
+    needs: [build-2-shell_module]
+    outputs:
+      ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
+    env:
+      SAMPLE_NAME: shell_module
+      RENODE_VERSION: 1.13.1+20220731git8eca7310
+      NUMBER_OF_THREADS: 28
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
+      GHA_MACHINE_TYPE: "n2-standard-32"
+      DEBIAN_FRONTEND: noninteractive
+      TZ: Europe/Warsaw
+    steps:
+    - uses: actions/checkout@v2
+    - name: Prepare environment
+      run: ./scripts/environment_simulate.sh
+    - name: Get artifacts
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-2-shell_module/artifacts .
+    - name: Prepare Renode
+      run: ./scripts/download_renode.sh
+    - name: Simulate
+      run: ./scripts/simulate.py
+    - name: Get Zephyr commit
+      id: get-zephyr-commit
+      run: |
+        ZEPHYR_COMMIT=$(cat artifacts/zephyr.version)
+        echo "::set-output name=ZEPHYR_COMMIT::$ZEPHYR_COMMIT"
+    - name: Upload load graphs
+      uses: actions/upload-artifact@v2
+      with:
+        name: plots
+        path: |
+          **/plot_*.svg
+    - name: Upload artifacts
+      run: |
+        mv artifacts/ ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
+        gsutil -m cp -r ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }} gs://gcp-distributed-job-test-bucket
+  build-2-philosophers:
+    container: ubuntu:jammy
+    runs-on: [self-hosted, Linux, X64]
+    needs: [prepare-zephyr-2]
+    env:
+      SAMPLE_NAME: philosophers
+      MICROPYTHON_VERSION: 97a7cc243b
+      NUMBER_OF_THREADS: 32
+      GHA_MACHINE_TYPE: "n2-standard-32"
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
+      DEBIAN_FRONTEND: noninteractive
+      TZ: Europe/Warsaw
+    steps:
+    - uses: actions/checkout@v2
+    - name: Prepare environment
+      run: ./scripts/environment_build.sh
+    - name: Get Zephyr
+      run: gsutil cp gs://gcp-distributed-job-test-bucket/job-artifacts/prepare-zephyr-2/zephyr.tar.gz .
+    - name: Prepare Zephyr
+      run: ./scripts/prepare_zephyr.sh
+    - name: Prepare Micropython
+      run: ./scripts/prepare_micropython.sh
+    - name: Build boards
+      run: ./scripts/build.py
+    - name: Upload load graphs
+      uses: actions/upload-artifact@v2
+      with:
+        name: plots
+        path: |
+          **/plot_*.svg
+    - name: Upload artifacts
+      run: |
+        mkdir -p job-artifacts/build-2-philosophers
+        mv artifacts/ job-artifacts/build-2-philosophers
+        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
+  simulate-2-philosophers:
+    container: ubuntu:jammy
+    runs-on: [self-hosted, Linux, X64]
+    needs: [build-2-philosophers]
+    outputs:
+      ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
+    env:
+      SAMPLE_NAME: philosophers
+      RENODE_VERSION: 1.13.1+20220731git8eca7310
+      NUMBER_OF_THREADS: 28
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
+      GHA_MACHINE_TYPE: "n2-standard-32"
+      DEBIAN_FRONTEND: noninteractive
+      TZ: Europe/Warsaw
+    steps:
+    - uses: actions/checkout@v2
+    - name: Prepare environment
+      run: ./scripts/environment_simulate.sh
+    - name: Get artifacts
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-2-philosophers/artifacts .
+    - name: Prepare Renode
+      run: ./scripts/download_renode.sh
+    - name: Simulate
+      run: ./scripts/simulate.py
+    - name: Get Zephyr commit
+      id: get-zephyr-commit
+      run: |
+        ZEPHYR_COMMIT=$(cat artifacts/zephyr.version)
+        echo "::set-output name=ZEPHYR_COMMIT::$ZEPHYR_COMMIT"
+    - name: Upload load graphs
+      uses: actions/upload-artifact@v2
+      with:
+        name: plots
+        path: |
+          **/plot_*.svg
+    - name: Upload artifacts
+      run: |
+        mv artifacts/ ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
+        gsutil -m cp -r ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }} gs://gcp-distributed-job-test-bucket
+  build-2-micropython:
+    container: ubuntu:jammy
+    runs-on: [self-hosted, Linux, X64]
+    needs: [prepare-zephyr-2]
+    env:
+      SAMPLE_NAME: micropython
+      MICROPYTHON_VERSION: 97a7cc243b
+      NUMBER_OF_THREADS: 32
+      GHA_MACHINE_TYPE: "n2-standard-32"
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
+      DEBIAN_FRONTEND: noninteractive
+      TZ: Europe/Warsaw
+    steps:
+    - uses: actions/checkout@v2
+    - name: Prepare environment
+      run: ./scripts/environment_build.sh
+    - name: Get Zephyr
+      run: gsutil cp gs://gcp-distributed-job-test-bucket/job-artifacts/prepare-zephyr-2/zephyr.tar.gz .
+    - name: Prepare Zephyr
+      run: ./scripts/prepare_zephyr.sh
+    - name: Prepare Micropython
+      run: ./scripts/prepare_micropython.sh
+    - name: Build boards
+      run: ./scripts/build.py
+    - name: Upload load graphs
+      uses: actions/upload-artifact@v2
+      with:
+        name: plots
+        path: |
+          **/plot_*.svg
+    - name: Upload artifacts
+      run: |
+        mkdir -p job-artifacts/build-2-micropython
+        mv artifacts/ job-artifacts/build-2-micropython
+        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
+  simulate-2-micropython:
+    container: ubuntu:jammy
+    runs-on: [self-hosted, Linux, X64]
+    needs: [build-2-micropython]
+    outputs:
+      ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
+    env:
+      SAMPLE_NAME: micropython
+      RENODE_VERSION: 1.13.1+20220731git8eca7310
+      NUMBER_OF_THREADS: 28
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
+      GHA_MACHINE_TYPE: "n2-standard-32"
+      DEBIAN_FRONTEND: noninteractive
+      TZ: Europe/Warsaw
+    steps:
+    - uses: actions/checkout@v2
+    - name: Prepare environment
+      run: ./scripts/environment_simulate.sh
+    - name: Get artifacts
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-2-micropython/artifacts .
+    - name: Prepare Renode
+      run: ./scripts/download_renode.sh
+    - name: Simulate
+      run: ./scripts/simulate.py
+    - name: Get Zephyr commit
+      id: get-zephyr-commit
+      run: |
+        ZEPHYR_COMMIT=$(cat artifacts/zephyr.version)
+        echo "::set-output name=ZEPHYR_COMMIT::$ZEPHYR_COMMIT"
+    - name: Upload load graphs
+      uses: actions/upload-artifact@v2
+      with:
+        name: plots
+        path: |
+          **/plot_*.svg
+    - name: Upload artifacts
+      run: |
+        mv artifacts/ ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
+        gsutil -m cp -r ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }} gs://gcp-distributed-job-test-bucket
+  build-2-tensorflow_lite_micro:
+    container: ubuntu:jammy
+    runs-on: [self-hosted, Linux, X64]
+    needs: [prepare-zephyr-2]
+    env:
+      SAMPLE_NAME: tensorflow_lite_micro
+      MICROPYTHON_VERSION: 97a7cc243b
+      NUMBER_OF_THREADS: 32
+      GHA_MACHINE_TYPE: "n2-standard-32"
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
+      DEBIAN_FRONTEND: noninteractive
+      TZ: Europe/Warsaw
+    steps:
+    - uses: actions/checkout@v2
+    - name: Prepare environment
+      run: ./scripts/environment_build.sh
+    - name: Get Zephyr
+      run: gsutil cp gs://gcp-distributed-job-test-bucket/job-artifacts/prepare-zephyr-2/zephyr.tar.gz .
+    - name: Prepare Zephyr
+      run: ./scripts/prepare_zephyr.sh
+    - name: Prepare Micropython
+      run: ./scripts/prepare_micropython.sh
+    - name: Build boards
+      run: ./scripts/build.py
+    - name: Upload load graphs
+      uses: actions/upload-artifact@v2
+      with:
+        name: plots
+        path: |
+          **/plot_*.svg
+    - name: Upload artifacts
+      run: |
+        mkdir -p job-artifacts/build-2-tensorflow_lite_micro
+        mv artifacts/ job-artifacts/build-2-tensorflow_lite_micro
+        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
+  simulate-2-tensorflow_lite_micro:
+    container: ubuntu:jammy
+    runs-on: [self-hosted, Linux, X64]
+    needs: [build-2-tensorflow_lite_micro]
+    outputs:
+      ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
+    env:
+      SAMPLE_NAME: tensorflow_lite_micro
+      RENODE_VERSION: 1.13.1+20220731git8eca7310
+      NUMBER_OF_THREADS: 28
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
+      GHA_MACHINE_TYPE: "n2-standard-32"
+      DEBIAN_FRONTEND: noninteractive
+      TZ: Europe/Warsaw
+    steps:
+    - uses: actions/checkout@v2
+    - name: Prepare environment
+      run: ./scripts/environment_simulate.sh
+    - name: Get artifacts
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-2-tensorflow_lite_micro/artifacts .
+    - name: Prepare Renode
+      run: ./scripts/download_renode.sh
+    - name: Simulate
+      run: ./scripts/simulate.py
+    - name: Get Zephyr commit
+      id: get-zephyr-commit
+      run: |
+        ZEPHYR_COMMIT=$(cat artifacts/zephyr.version)
+        echo "::set-output name=ZEPHYR_COMMIT::$ZEPHYR_COMMIT"
+    - name: Upload load graphs
+      uses: actions/upload-artifact@v2
+      with:
+        name: plots
+        path: |
+          **/plot_*.svg
+    - name: Upload artifacts
+      run: |
+        mv artifacts/ ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
+        gsutil -m cp -r ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }} gs://gcp-distributed-job-test-bucket
+  build-3-hello_world:
+    container: ubuntu:jammy
+    runs-on: [self-hosted, Linux, X64]
+    needs: [prepare-zephyr-3]
+    env:
+      SAMPLE_NAME: hello_world
+      MICROPYTHON_VERSION: 97a7cc243b
+      NUMBER_OF_THREADS: 32
+      GHA_MACHINE_TYPE: "n2-standard-32"
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
+      DEBIAN_FRONTEND: noninteractive
+      TZ: Europe/Warsaw
+    steps:
+    - uses: actions/checkout@v2
+    - name: Prepare environment
+      run: ./scripts/environment_build.sh
+    - name: Get Zephyr
+      run: gsutil cp gs://gcp-distributed-job-test-bucket/job-artifacts/prepare-zephyr-3/zephyr.tar.gz .
+    - name: Prepare Zephyr
+      run: ./scripts/prepare_zephyr.sh
+    - name: Prepare Micropython
+      run: ./scripts/prepare_micropython.sh
+    - name: Build boards
+      run: ./scripts/build.py
+    - name: Upload load graphs
+      uses: actions/upload-artifact@v2
+      with:
+        name: plots
+        path: |
+          **/plot_*.svg
+    - name: Upload artifacts
+      run: |
+        mkdir -p job-artifacts/build-3-hello_world
+        mv artifacts/ job-artifacts/build-3-hello_world
+        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
+  simulate-3-hello_world:
+    container: ubuntu:jammy
+    runs-on: [self-hosted, Linux, X64]
+    needs: [build-3-hello_world]
+    outputs:
+      ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
+    env:
+      SAMPLE_NAME: hello_world
+      RENODE_VERSION: 1.13.1+20220731git8eca7310
+      NUMBER_OF_THREADS: 28
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
+      GHA_MACHINE_TYPE: "n2-standard-32"
+      DEBIAN_FRONTEND: noninteractive
+      TZ: Europe/Warsaw
+    steps:
+    - uses: actions/checkout@v2
+    - name: Prepare environment
+      run: ./scripts/environment_simulate.sh
+    - name: Get artifacts
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-3-hello_world/artifacts .
+    - name: Prepare Renode
+      run: ./scripts/download_renode.sh
+    - name: Simulate
+      run: ./scripts/simulate.py
+    - name: Get Zephyr commit
+      id: get-zephyr-commit
+      run: |
+        ZEPHYR_COMMIT=$(cat artifacts/zephyr.version)
+        echo "::set-output name=ZEPHYR_COMMIT::$ZEPHYR_COMMIT"
+    - name: Upload load graphs
+      uses: actions/upload-artifact@v2
+      with:
+        name: plots
+        path: |
+          **/plot_*.svg
+    - name: Upload artifacts
+      run: |
+        mv artifacts/ ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
+        gsutil -m cp -r ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }} gs://gcp-distributed-job-test-bucket
+  build-3-shell_module:
+    container: ubuntu:jammy
+    runs-on: [self-hosted, Linux, X64]
+    needs: [prepare-zephyr-3]
+    env:
+      SAMPLE_NAME: shell_module
+      MICROPYTHON_VERSION: 97a7cc243b
+      NUMBER_OF_THREADS: 32
+      GHA_MACHINE_TYPE: "n2-standard-32"
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
+      DEBIAN_FRONTEND: noninteractive
+      TZ: Europe/Warsaw
+    steps:
+    - uses: actions/checkout@v2
+    - name: Prepare environment
+      run: ./scripts/environment_build.sh
+    - name: Get Zephyr
+      run: gsutil cp gs://gcp-distributed-job-test-bucket/job-artifacts/prepare-zephyr-3/zephyr.tar.gz .
+    - name: Prepare Zephyr
+      run: ./scripts/prepare_zephyr.sh
+    - name: Prepare Micropython
+      run: ./scripts/prepare_micropython.sh
+    - name: Build boards
+      run: ./scripts/build.py
+    - name: Upload load graphs
+      uses: actions/upload-artifact@v2
+      with:
+        name: plots
+        path: |
+          **/plot_*.svg
+    - name: Upload artifacts
+      run: |
+        mkdir -p job-artifacts/build-3-shell_module
+        mv artifacts/ job-artifacts/build-3-shell_module
+        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
+  simulate-3-shell_module:
+    container: ubuntu:jammy
+    runs-on: [self-hosted, Linux, X64]
+    needs: [build-3-shell_module]
+    outputs:
+      ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
+    env:
+      SAMPLE_NAME: shell_module
+      RENODE_VERSION: 1.13.1+20220731git8eca7310
+      NUMBER_OF_THREADS: 28
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
+      GHA_MACHINE_TYPE: "n2-standard-32"
+      DEBIAN_FRONTEND: noninteractive
+      TZ: Europe/Warsaw
+    steps:
+    - uses: actions/checkout@v2
+    - name: Prepare environment
+      run: ./scripts/environment_simulate.sh
+    - name: Get artifacts
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-3-shell_module/artifacts .
+    - name: Prepare Renode
+      run: ./scripts/download_renode.sh
+    - name: Simulate
+      run: ./scripts/simulate.py
+    - name: Get Zephyr commit
+      id: get-zephyr-commit
+      run: |
+        ZEPHYR_COMMIT=$(cat artifacts/zephyr.version)
+        echo "::set-output name=ZEPHYR_COMMIT::$ZEPHYR_COMMIT"
+    - name: Upload load graphs
+      uses: actions/upload-artifact@v2
+      with:
+        name: plots
+        path: |
+          **/plot_*.svg
+    - name: Upload artifacts
+      run: |
+        mv artifacts/ ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
+        gsutil -m cp -r ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }} gs://gcp-distributed-job-test-bucket
+  build-3-philosophers:
+    container: ubuntu:jammy
+    runs-on: [self-hosted, Linux, X64]
+    needs: [prepare-zephyr-3]
+    env:
+      SAMPLE_NAME: philosophers
+      MICROPYTHON_VERSION: 97a7cc243b
+      NUMBER_OF_THREADS: 32
+      GHA_MACHINE_TYPE: "n2-standard-32"
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
+      DEBIAN_FRONTEND: noninteractive
+      TZ: Europe/Warsaw
+    steps:
+    - uses: actions/checkout@v2
+    - name: Prepare environment
+      run: ./scripts/environment_build.sh
+    - name: Get Zephyr
+      run: gsutil cp gs://gcp-distributed-job-test-bucket/job-artifacts/prepare-zephyr-3/zephyr.tar.gz .
+    - name: Prepare Zephyr
+      run: ./scripts/prepare_zephyr.sh
+    - name: Prepare Micropython
+      run: ./scripts/prepare_micropython.sh
+    - name: Build boards
+      run: ./scripts/build.py
+    - name: Upload load graphs
+      uses: actions/upload-artifact@v2
+      with:
+        name: plots
+        path: |
+          **/plot_*.svg
+    - name: Upload artifacts
+      run: |
+        mkdir -p job-artifacts/build-3-philosophers
+        mv artifacts/ job-artifacts/build-3-philosophers
+        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
+  simulate-3-philosophers:
+    container: ubuntu:jammy
+    runs-on: [self-hosted, Linux, X64]
+    needs: [build-3-philosophers]
+    outputs:
+      ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
+    env:
+      SAMPLE_NAME: philosophers
+      RENODE_VERSION: 1.13.1+20220731git8eca7310
+      NUMBER_OF_THREADS: 28
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
+      GHA_MACHINE_TYPE: "n2-standard-32"
+      DEBIAN_FRONTEND: noninteractive
+      TZ: Europe/Warsaw
+    steps:
+    - uses: actions/checkout@v2
+    - name: Prepare environment
+      run: ./scripts/environment_simulate.sh
+    - name: Get artifacts
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-3-philosophers/artifacts .
+    - name: Prepare Renode
+      run: ./scripts/download_renode.sh
+    - name: Simulate
+      run: ./scripts/simulate.py
+    - name: Get Zephyr commit
+      id: get-zephyr-commit
+      run: |
+        ZEPHYR_COMMIT=$(cat artifacts/zephyr.version)
+        echo "::set-output name=ZEPHYR_COMMIT::$ZEPHYR_COMMIT"
+    - name: Upload load graphs
+      uses: actions/upload-artifact@v2
+      with:
+        name: plots
+        path: |
+          **/plot_*.svg
+    - name: Upload artifacts
+      run: |
+        mv artifacts/ ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
+        gsutil -m cp -r ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }} gs://gcp-distributed-job-test-bucket
+  build-3-micropython:
+    container: ubuntu:jammy
+    runs-on: [self-hosted, Linux, X64]
+    needs: [prepare-zephyr-3]
+    env:
+      SAMPLE_NAME: micropython
+      MICROPYTHON_VERSION: 97a7cc243b
+      NUMBER_OF_THREADS: 32
+      GHA_MACHINE_TYPE: "n2-standard-32"
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
+      DEBIAN_FRONTEND: noninteractive
+      TZ: Europe/Warsaw
+    steps:
+    - uses: actions/checkout@v2
+    - name: Prepare environment
+      run: ./scripts/environment_build.sh
+    - name: Get Zephyr
+      run: gsutil cp gs://gcp-distributed-job-test-bucket/job-artifacts/prepare-zephyr-3/zephyr.tar.gz .
+    - name: Prepare Zephyr
+      run: ./scripts/prepare_zephyr.sh
+    - name: Prepare Micropython
+      run: ./scripts/prepare_micropython.sh
+    - name: Build boards
+      run: ./scripts/build.py
+    - name: Upload load graphs
+      uses: actions/upload-artifact@v2
+      with:
+        name: plots
+        path: |
+          **/plot_*.svg
+    - name: Upload artifacts
+      run: |
+        mkdir -p job-artifacts/build-3-micropython
+        mv artifacts/ job-artifacts/build-3-micropython
+        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
+  simulate-3-micropython:
+    container: ubuntu:jammy
+    runs-on: [self-hosted, Linux, X64]
+    needs: [build-3-micropython]
+    outputs:
+      ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
+    env:
+      SAMPLE_NAME: micropython
+      RENODE_VERSION: 1.13.1+20220731git8eca7310
+      NUMBER_OF_THREADS: 28
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
+      GHA_MACHINE_TYPE: "n2-standard-32"
+      DEBIAN_FRONTEND: noninteractive
+      TZ: Europe/Warsaw
+    steps:
+    - uses: actions/checkout@v2
+    - name: Prepare environment
+      run: ./scripts/environment_simulate.sh
+    - name: Get artifacts
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-3-micropython/artifacts .
+    - name: Prepare Renode
+      run: ./scripts/download_renode.sh
+    - name: Simulate
+      run: ./scripts/simulate.py
+    - name: Get Zephyr commit
+      id: get-zephyr-commit
+      run: |
+        ZEPHYR_COMMIT=$(cat artifacts/zephyr.version)
+        echo "::set-output name=ZEPHYR_COMMIT::$ZEPHYR_COMMIT"
+    - name: Upload load graphs
+      uses: actions/upload-artifact@v2
+      with:
+        name: plots
+        path: |
+          **/plot_*.svg
+    - name: Upload artifacts
+      run: |
+        mv artifacts/ ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
+        gsutil -m cp -r ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }} gs://gcp-distributed-job-test-bucket
+  build-3-tensorflow_lite_micro:
+    container: ubuntu:jammy
+    runs-on: [self-hosted, Linux, X64]
+    needs: [prepare-zephyr-3]
+    env:
+      SAMPLE_NAME: tensorflow_lite_micro
+      MICROPYTHON_VERSION: 97a7cc243b
+      NUMBER_OF_THREADS: 32
+      GHA_MACHINE_TYPE: "n2-standard-32"
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
+      DEBIAN_FRONTEND: noninteractive
+      TZ: Europe/Warsaw
+    steps:
+    - uses: actions/checkout@v2
+    - name: Prepare environment
+      run: ./scripts/environment_build.sh
+    - name: Get Zephyr
+      run: gsutil cp gs://gcp-distributed-job-test-bucket/job-artifacts/prepare-zephyr-3/zephyr.tar.gz .
+    - name: Prepare Zephyr
+      run: ./scripts/prepare_zephyr.sh
+    - name: Prepare Micropython
+      run: ./scripts/prepare_micropython.sh
+    - name: Build boards
+      run: ./scripts/build.py
+    - name: Upload load graphs
+      uses: actions/upload-artifact@v2
+      with:
+        name: plots
+        path: |
+          **/plot_*.svg
+    - name: Upload artifacts
+      run: |
+        mkdir -p job-artifacts/build-3-tensorflow_lite_micro
+        mv artifacts/ job-artifacts/build-3-tensorflow_lite_micro
+        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
+  simulate-3-tensorflow_lite_micro:
+    container: ubuntu:jammy
+    runs-on: [self-hosted, Linux, X64]
+    needs: [build-3-tensorflow_lite_micro]
+    outputs:
+      ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
+    env:
+      SAMPLE_NAME: tensorflow_lite_micro
+      RENODE_VERSION: 1.13.1+20220731git8eca7310
+      NUMBER_OF_THREADS: 28
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
+      GHA_MACHINE_TYPE: "n2-standard-32"
+      DEBIAN_FRONTEND: noninteractive
+      TZ: Europe/Warsaw
+    steps:
+    - uses: actions/checkout@v2
+    - name: Prepare environment
+      run: ./scripts/environment_simulate.sh
+    - name: Get artifacts
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-3-tensorflow_lite_micro/artifacts .
+    - name: Prepare Renode
+      run: ./scripts/download_renode.sh
+    - name: Simulate
+      run: ./scripts/simulate.py
+    - name: Get Zephyr commit
+      id: get-zephyr-commit
+      run: |
+        ZEPHYR_COMMIT=$(cat artifacts/zephyr.version)
+        echo "::set-output name=ZEPHYR_COMMIT::$ZEPHYR_COMMIT"
+    - name: Upload load graphs
+      uses: actions/upload-artifact@v2
+      with:
+        name: plots
+        path: |
+          **/plot_*.svg
+    - name: Upload artifacts
+      run: |
+        mv artifacts/ ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
+        gsutil -m cp -r ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }} gs://gcp-distributed-job-test-bucket
+  build-4-hello_world:
+    container: ubuntu:jammy
+    runs-on: [self-hosted, Linux, X64]
+    needs: [prepare-zephyr-4]
+    env:
+      SAMPLE_NAME: hello_world
+      MICROPYTHON_VERSION: 97a7cc243b
+      NUMBER_OF_THREADS: 32
+      GHA_MACHINE_TYPE: "n2-standard-32"
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
+      DEBIAN_FRONTEND: noninteractive
+      TZ: Europe/Warsaw
+    steps:
+    - uses: actions/checkout@v2
+    - name: Prepare environment
+      run: ./scripts/environment_build.sh
+    - name: Get Zephyr
+      run: gsutil cp gs://gcp-distributed-job-test-bucket/job-artifacts/prepare-zephyr-4/zephyr.tar.gz .
+    - name: Prepare Zephyr
+      run: ./scripts/prepare_zephyr.sh
+    - name: Prepare Micropython
+      run: ./scripts/prepare_micropython.sh
+    - name: Build boards
+      run: ./scripts/build.py
+    - name: Upload load graphs
+      uses: actions/upload-artifact@v2
+      with:
+        name: plots
+        path: |
+          **/plot_*.svg
+    - name: Upload artifacts
+      run: |
+        mkdir -p job-artifacts/build-4-hello_world
+        mv artifacts/ job-artifacts/build-4-hello_world
+        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
+  simulate-4-hello_world:
+    container: ubuntu:jammy
+    runs-on: [self-hosted, Linux, X64]
+    needs: [build-4-hello_world]
+    outputs:
+      ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
+    env:
+      SAMPLE_NAME: hello_world
+      RENODE_VERSION: 1.13.1+20220731git8eca7310
+      NUMBER_OF_THREADS: 28
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
+      GHA_MACHINE_TYPE: "n2-standard-32"
+      DEBIAN_FRONTEND: noninteractive
+      TZ: Europe/Warsaw
+    steps:
+    - uses: actions/checkout@v2
+    - name: Prepare environment
+      run: ./scripts/environment_simulate.sh
+    - name: Get artifacts
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-4-hello_world/artifacts .
+    - name: Prepare Renode
+      run: ./scripts/download_renode.sh
+    - name: Simulate
+      run: ./scripts/simulate.py
+    - name: Get Zephyr commit
+      id: get-zephyr-commit
+      run: |
+        ZEPHYR_COMMIT=$(cat artifacts/zephyr.version)
+        echo "::set-output name=ZEPHYR_COMMIT::$ZEPHYR_COMMIT"
+    - name: Upload load graphs
+      uses: actions/upload-artifact@v2
+      with:
+        name: plots
+        path: |
+          **/plot_*.svg
+    - name: Upload artifacts
+      run: |
+        mv artifacts/ ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
+        gsutil -m cp -r ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }} gs://gcp-distributed-job-test-bucket
+  build-4-shell_module:
+    container: ubuntu:jammy
+    runs-on: [self-hosted, Linux, X64]
+    needs: [prepare-zephyr-4]
+    env:
+      SAMPLE_NAME: shell_module
+      MICROPYTHON_VERSION: 97a7cc243b
+      NUMBER_OF_THREADS: 32
+      GHA_MACHINE_TYPE: "n2-standard-32"
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
+      DEBIAN_FRONTEND: noninteractive
+      TZ: Europe/Warsaw
+    steps:
+    - uses: actions/checkout@v2
+    - name: Prepare environment
+      run: ./scripts/environment_build.sh
+    - name: Get Zephyr
+      run: gsutil cp gs://gcp-distributed-job-test-bucket/job-artifacts/prepare-zephyr-4/zephyr.tar.gz .
+    - name: Prepare Zephyr
+      run: ./scripts/prepare_zephyr.sh
+    - name: Prepare Micropython
+      run: ./scripts/prepare_micropython.sh
+    - name: Build boards
+      run: ./scripts/build.py
+    - name: Upload load graphs
+      uses: actions/upload-artifact@v2
+      with:
+        name: plots
+        path: |
+          **/plot_*.svg
+    - name: Upload artifacts
+      run: |
+        mkdir -p job-artifacts/build-4-shell_module
+        mv artifacts/ job-artifacts/build-4-shell_module
+        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
+  simulate-4-shell_module:
+    container: ubuntu:jammy
+    runs-on: [self-hosted, Linux, X64]
+    needs: [build-4-shell_module]
+    outputs:
+      ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
+    env:
+      SAMPLE_NAME: shell_module
+      RENODE_VERSION: 1.13.1+20220731git8eca7310
+      NUMBER_OF_THREADS: 28
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
+      GHA_MACHINE_TYPE: "n2-standard-32"
+      DEBIAN_FRONTEND: noninteractive
+      TZ: Europe/Warsaw
+    steps:
+    - uses: actions/checkout@v2
+    - name: Prepare environment
+      run: ./scripts/environment_simulate.sh
+    - name: Get artifacts
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-4-shell_module/artifacts .
+    - name: Prepare Renode
+      run: ./scripts/download_renode.sh
+    - name: Simulate
+      run: ./scripts/simulate.py
+    - name: Get Zephyr commit
+      id: get-zephyr-commit
+      run: |
+        ZEPHYR_COMMIT=$(cat artifacts/zephyr.version)
+        echo "::set-output name=ZEPHYR_COMMIT::$ZEPHYR_COMMIT"
+    - name: Upload load graphs
+      uses: actions/upload-artifact@v2
+      with:
+        name: plots
+        path: |
+          **/plot_*.svg
+    - name: Upload artifacts
+      run: |
+        mv artifacts/ ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
+        gsutil -m cp -r ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }} gs://gcp-distributed-job-test-bucket
+  build-4-philosophers:
+    container: ubuntu:jammy
+    runs-on: [self-hosted, Linux, X64]
+    needs: [prepare-zephyr-4]
+    env:
+      SAMPLE_NAME: philosophers
+      MICROPYTHON_VERSION: 97a7cc243b
+      NUMBER_OF_THREADS: 32
+      GHA_MACHINE_TYPE: "n2-standard-32"
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
+      DEBIAN_FRONTEND: noninteractive
+      TZ: Europe/Warsaw
+    steps:
+    - uses: actions/checkout@v2
+    - name: Prepare environment
+      run: ./scripts/environment_build.sh
+    - name: Get Zephyr
+      run: gsutil cp gs://gcp-distributed-job-test-bucket/job-artifacts/prepare-zephyr-4/zephyr.tar.gz .
+    - name: Prepare Zephyr
+      run: ./scripts/prepare_zephyr.sh
+    - name: Prepare Micropython
+      run: ./scripts/prepare_micropython.sh
+    - name: Build boards
+      run: ./scripts/build.py
+    - name: Upload load graphs
+      uses: actions/upload-artifact@v2
+      with:
+        name: plots
+        path: |
+          **/plot_*.svg
+    - name: Upload artifacts
+      run: |
+        mkdir -p job-artifacts/build-4-philosophers
+        mv artifacts/ job-artifacts/build-4-philosophers
+        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
+  simulate-4-philosophers:
+    container: ubuntu:jammy
+    runs-on: [self-hosted, Linux, X64]
+    needs: [build-4-philosophers]
+    outputs:
+      ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
+    env:
+      SAMPLE_NAME: philosophers
+      RENODE_VERSION: 1.13.1+20220731git8eca7310
+      NUMBER_OF_THREADS: 28
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
+      GHA_MACHINE_TYPE: "n2-standard-32"
+      DEBIAN_FRONTEND: noninteractive
+      TZ: Europe/Warsaw
+    steps:
+    - uses: actions/checkout@v2
+    - name: Prepare environment
+      run: ./scripts/environment_simulate.sh
+    - name: Get artifacts
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-4-philosophers/artifacts .
+    - name: Prepare Renode
+      run: ./scripts/download_renode.sh
+    - name: Simulate
+      run: ./scripts/simulate.py
+    - name: Get Zephyr commit
+      id: get-zephyr-commit
+      run: |
+        ZEPHYR_COMMIT=$(cat artifacts/zephyr.version)
+        echo "::set-output name=ZEPHYR_COMMIT::$ZEPHYR_COMMIT"
+    - name: Upload load graphs
+      uses: actions/upload-artifact@v2
+      with:
+        name: plots
+        path: |
+          **/plot_*.svg
+    - name: Upload artifacts
+      run: |
+        mv artifacts/ ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
+        gsutil -m cp -r ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }} gs://gcp-distributed-job-test-bucket
+  build-4-micropython:
+    container: ubuntu:jammy
+    runs-on: [self-hosted, Linux, X64]
+    needs: [prepare-zephyr-4]
+    env:
+      SAMPLE_NAME: micropython
+      MICROPYTHON_VERSION: 97a7cc243b
+      NUMBER_OF_THREADS: 32
+      GHA_MACHINE_TYPE: "n2-standard-32"
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
+      DEBIAN_FRONTEND: noninteractive
+      TZ: Europe/Warsaw
+    steps:
+    - uses: actions/checkout@v2
+    - name: Prepare environment
+      run: ./scripts/environment_build.sh
+    - name: Get Zephyr
+      run: gsutil cp gs://gcp-distributed-job-test-bucket/job-artifacts/prepare-zephyr-4/zephyr.tar.gz .
+    - name: Prepare Zephyr
+      run: ./scripts/prepare_zephyr.sh
+    - name: Prepare Micropython
+      run: ./scripts/prepare_micropython.sh
+    - name: Build boards
+      run: ./scripts/build.py
+    - name: Upload load graphs
+      uses: actions/upload-artifact@v2
+      with:
+        name: plots
+        path: |
+          **/plot_*.svg
+    - name: Upload artifacts
+      run: |
+        mkdir -p job-artifacts/build-4-micropython
+        mv artifacts/ job-artifacts/build-4-micropython
+        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
+  simulate-4-micropython:
+    container: ubuntu:jammy
+    runs-on: [self-hosted, Linux, X64]
+    needs: [build-4-micropython]
+    outputs:
+      ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
+    env:
+      SAMPLE_NAME: micropython
+      RENODE_VERSION: 1.13.1+20220731git8eca7310
+      NUMBER_OF_THREADS: 28
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
+      GHA_MACHINE_TYPE: "n2-standard-32"
+      DEBIAN_FRONTEND: noninteractive
+      TZ: Europe/Warsaw
+    steps:
+    - uses: actions/checkout@v2
+    - name: Prepare environment
+      run: ./scripts/environment_simulate.sh
+    - name: Get artifacts
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-4-micropython/artifacts .
+    - name: Prepare Renode
+      run: ./scripts/download_renode.sh
+    - name: Simulate
+      run: ./scripts/simulate.py
+    - name: Get Zephyr commit
+      id: get-zephyr-commit
+      run: |
+        ZEPHYR_COMMIT=$(cat artifacts/zephyr.version)
+        echo "::set-output name=ZEPHYR_COMMIT::$ZEPHYR_COMMIT"
+    - name: Upload load graphs
+      uses: actions/upload-artifact@v2
+      with:
+        name: plots
+        path: |
+          **/plot_*.svg
+    - name: Upload artifacts
+      run: |
+        mv artifacts/ ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
+        gsutil -m cp -r ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }} gs://gcp-distributed-job-test-bucket
+  build-4-tensorflow_lite_micro:
+    container: ubuntu:jammy
+    runs-on: [self-hosted, Linux, X64]
+    needs: [prepare-zephyr-4]
+    env:
+      SAMPLE_NAME: tensorflow_lite_micro
+      MICROPYTHON_VERSION: 97a7cc243b
+      NUMBER_OF_THREADS: 32
+      GHA_MACHINE_TYPE: "n2-standard-32"
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
+      DEBIAN_FRONTEND: noninteractive
+      TZ: Europe/Warsaw
+    steps:
+    - uses: actions/checkout@v2
+    - name: Prepare environment
+      run: ./scripts/environment_build.sh
+    - name: Get Zephyr
+      run: gsutil cp gs://gcp-distributed-job-test-bucket/job-artifacts/prepare-zephyr-4/zephyr.tar.gz .
+    - name: Prepare Zephyr
+      run: ./scripts/prepare_zephyr.sh
+    - name: Prepare Micropython
+      run: ./scripts/prepare_micropython.sh
+    - name: Build boards
+      run: ./scripts/build.py
+    - name: Upload load graphs
+      uses: actions/upload-artifact@v2
+      with:
+        name: plots
+        path: |
+          **/plot_*.svg
+    - name: Upload artifacts
+      run: |
+        mkdir -p job-artifacts/build-4-tensorflow_lite_micro
+        mv artifacts/ job-artifacts/build-4-tensorflow_lite_micro
+        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
+  simulate-4-tensorflow_lite_micro:
+    container: ubuntu:jammy
+    runs-on: [self-hosted, Linux, X64]
+    needs: [build-4-tensorflow_lite_micro]
+    outputs:
+      ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
+    env:
+      SAMPLE_NAME: tensorflow_lite_micro
+      RENODE_VERSION: 1.13.1+20220731git8eca7310
+      NUMBER_OF_THREADS: 28
+      GHA_SA: "gh-sa-gcp-distributed-job-buck"
+      GHA_MACHINE_TYPE: "n2-standard-32"
+      DEBIAN_FRONTEND: noninteractive
+      TZ: Europe/Warsaw
+    steps:
+    - uses: actions/checkout@v2
+    - name: Prepare environment
+      run: ./scripts/environment_simulate.sh
+    - name: Get artifacts
+      run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-4-tensorflow_lite_micro/artifacts .
+    - name: Prepare Renode
+      run: ./scripts/download_renode.sh
+    - name: Simulate
+      run: ./scripts/simulate.py
+    - name: Get Zephyr commit
+      id: get-zephyr-commit
+      run: |
+        ZEPHYR_COMMIT=$(cat artifacts/zephyr.version)
+        echo "::set-output name=ZEPHYR_COMMIT::$ZEPHYR_COMMIT"
+    - name: Upload load graphs
+      uses: actions/upload-artifact@v2
+      with:
+        name: plots
+        path: |
+          **/plot_*.svg
+    - name: Upload artifacts
+      run: |
+        mv artifacts/ ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
+        gsutil -m cp -r ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }} gs://gcp-distributed-job-test-bucket
   results:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
-    needs: [simulate-0-hello_world, simulate-0-shell_module, simulate-0-philosophers, simulate-0-micropython, simulate-0-tensorflow_lite_micro, simulate-1-hello_world, simulate-1-shell_module, simulate-1-philosophers, simulate-1-micropython, simulate-1-tensorflow_lite_micro]
+    needs: [simulate-0-hello_world, simulate-0-shell_module, simulate-0-philosophers, simulate-0-micropython, simulate-0-tensorflow_lite_micro, simulate-1-hello_world, simulate-1-shell_module, simulate-1-philosophers, simulate-1-micropython, simulate-1-tensorflow_lite_micro, simulate-2-hello_world, simulate-2-shell_module, simulate-2-philosophers, simulate-2-micropython, simulate-2-tensorflow_lite_micro, simulate-3-hello_world, simulate-3-shell_module, simulate-3-philosophers, simulate-3-micropython, simulate-3-tensorflow_lite_micro, simulate-4-hello_world, simulate-4-shell_module, simulate-4-philosophers, simulate-4-micropython, simulate-4-tensorflow_lite_micro]
     env:
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
       DEBIAN_FRONTEND: noninteractive
@@ -805,7 +1975,7 @@ jobs:
     - name: Update latest Zephyr commit
       id: update-last-zephyr-commit
       run: |
-        ./scripts/save_commit.sh ${{ needs.simulate-0-hello_world.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-0-shell_module.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-0-philosophers.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-0-micropython.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-0-tensorflow_lite_micro.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-1-hello_world.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-1-shell_module.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-1-philosophers.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-1-micropython.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-1-tensorflow_lite_micro.outputs.ZEPHYR_COMMIT }}
+        ./scripts/save_commit.sh ${{ needs.simulate-0-hello_world.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-0-shell_module.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-0-philosophers.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-0-micropython.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-0-tensorflow_lite_micro.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-1-hello_world.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-1-shell_module.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-1-philosophers.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-1-micropython.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-1-tensorflow_lite_micro.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-2-hello_world.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-2-shell_module.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-2-philosophers.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-2-micropython.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-2-tensorflow_lite_micro.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-3-hello_world.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-3-shell_module.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-3-philosophers.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-3-micropython.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-3-tensorflow_lite_micro.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-4-hello_world.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-4-shell_module.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-4-philosophers.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-4-micropython.outputs.ZEPHYR_COMMIT }} ${{ needs.simulate-4-tensorflow_lite_micro.outputs.ZEPHYR_COMMIT }}
         echo "::set-output name=LAST_ZEPHYR_COMMIT::$(cat last_zephyr_commit)"
     - name: Commit latest Zephyr commit
       uses: stefanzweifel/git-auto-commit-action@v4

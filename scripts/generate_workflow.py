@@ -51,6 +51,7 @@ def generate():
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
+      ZEPHYR_BASE: zephyrproject/zephyr
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -140,8 +141,7 @@ def generate():
       with:
         commit_message: Update latest Zephyr commit ${{{{ steps.update-last-zephyr-commit.outputs.LAST_ZEPHYR_COMMIT }}}}
         file_pattern: {LAST_ZEPHYR_COMMIT_FILE}''')
-    with open(WORKFLOW_FILE, 'w') as file:
-        file.write(f'''name: {WORKFLOW_NAME}
+    print(f'''name: {WORKFLOW_NAME}
 on:
   push:
     paths-ignore:
@@ -150,7 +150,7 @@ on:
     - cron: '0 3 * * *'
   workflow_dispatch:
 jobs:''')
-        file.write("".join(tasks))
+    print("".join(tasks))
 
 if __name__ == '__main__':
     generate()

@@ -51,7 +51,6 @@ def generate():
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
-      ZEPHYR_BASE: zephyrproject/zephyr
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment

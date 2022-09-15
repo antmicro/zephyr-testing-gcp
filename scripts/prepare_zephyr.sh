@@ -9,6 +9,8 @@ cd zephyr-sdk
 cd -
 cd zephyrproject/zephyr
 pip3 install -r scripts/requirements.txt 1>>../../artifacts/build.log 2>&1
-cd -
+cd ..
+west zephyr-export
+cd ..
 rm -rf zephyr-artifact
 

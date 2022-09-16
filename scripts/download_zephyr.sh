@@ -15,8 +15,9 @@ COMMITS=$(git -C zephyrproject/zephyr log --pretty=format:'%h' $LAST_COMMIT..HEA
 cd zephyrproject/zephyr
 CURRENT_COMMIT=$(git rev-parse --short HEAD~${ZEPHYR_COMMIT})
 if [[ ! " ${COMMITS[*]} " =~ $CURRENT_COMMIT ]]; then
-	echo "Commit has already been built"
-	exit 1
+	echo "::warning title=${CURRENT_COMMIT}::Commit has already been built"
+	echo "::set-output name=COMMIT_ALREADY_BUILT::true"
+	exit 0
 fi
 git checkout $CURRENT_COMMIT
 git apply ../../patches/zephyr/*.patch
@@ -25,3 +26,4 @@ cd ..
 for i in $(seq 1 5); do west update 1>>../artifacts/build.log 2>&1 && break || sleep 5; done
 cd ..
 tar czf zephyr.tar.gz zephyrproject zephyr-sdk
+echo "::set-output name=COMMIT_ALREADY_BUILT::false"

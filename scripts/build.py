@@ -42,11 +42,12 @@ dts_flash_template = templateEnv.get_template('templates/flash_override.dts')
 def find_flash_size(dts_filename):
     with open(dts_filename) as f:
         dts = f.read()
-
-    flash_name = re.search(r"zephyr,flash = &(\w+);", dts).group(1)
-    flash_size = re.search(r"{}:(.*\n)*?.*reg = <(.*)>;".format(flash_name), dts).group(2)
-    flash_size = flash_size.split()
-
+    try:
+        flash_name = re.search(r"zephyr,flash = &(\w+);", dts).group(1)
+        flash_size = re.search(r"{}:(.*\n)*?.*reg = <(.*)>;".format(flash_name), dts).group(2)
+        flash_size = flash_size.split()
+    except AttributeError:
+        return None
     return flash_name, flash_size
 
 def build_and_copy_bin(zephyr_platform, sample_path, args, sample_name, env):
@@ -110,29 +111,27 @@ def build_sample(zephyr_platform, sample_name, sample_path, sample_args, toolcha
     # try increasing flash size if the sample doesn't fit in it
     dts_filename = 'artifacts/{board_name}-{sample_name}/{board_name}-{sample_name}.dts'.format(board_name=zephyr_platform, sample_name=sample_name)
     m = re.search(r"region `FLASH' overflowed by (\d+) bytes", west_output)
-    if return_code:
-        if m is not None and os.path.exists(dts_filename):
-            shutil.copy2(dts_filename, dts_filename + '.orig')
-            flash_increase = math.ceil(int(m.group(1)) / 1024) * 1024
-            flash_name, flash_size = find_flash_size(dts_filename)
-            if len(flash_size) >= 2:
-                flash_base, flash_size = flash_size[-2:]
-                flash_size = int(flash_size, 16)
-                flash_size += flash_increase
+    if return_code and m is not None and os.path.exists(dts_filename) and (flash := find_flash_size(dts_filename)) is not None:
+        flash_name, flash_size = flash
+        shutil.copy2(dts_filename, dts_filename + '.orig')
+        flash_increase = math.ceil(int(m.group(1)) / 1024) * 1024
+        if len(flash_size) >= 2:
+            flash_base, flash_size = flash_size[-2:]
+            flash_size = int(flash_size, 16)
+            flash_size += flash_increase
+            with tempfile.NamedTemporaryFile(mode='w', encoding='utf-8') as f:
+                f.write(dts_flash_template.render(
+                    flash_name=flash_name,
+                    reg_base=flash_base,
+                    reg_size=flash_size
+                ))
+                f.flush()
+                overlay_path = f.name
 
-                with tempfile.NamedTemporaryFile(mode='w', encoding='utf-8') as f:
-                    f.write(dts_flash_template.render(
-                        flash_name=flash_name,
-                        reg_base=flash_base,
-                        reg_size=flash_size
-                    ))
-                    f.flush()
-                    overlay_path = f.name
-
-                    # build again, this time with bigger flash size
-                    overlay_args = f'-DDTC_OVERLAY_FILE={overlay_path}'
-                    args = f'-- {sample_args} {overlay_args}'
-                    build_and_copy_bin(zephyr_platform, sample_path, args, sample_name, env)
+                # build again, this time with bigger flash size
+                overlay_args = f'-DDTC_OVERLAY_FILE={overlay_path}'
+                args = f'-- {sample_args} {overlay_args}'
+                build_and_copy_bin(zephyr_platform, sample_path, args, sample_name, env)
 
 def get_board_yaml_path(board_name, board_path):
     board_yaml = f'{zephyr_path}/{board_path}/{board_name}.yaml'

@@ -3,5 +3,29 @@ on: [push]
 jobs:
   test:
     runs-on: ubuntu-20.04
+    outputs:
+      VARIABLE: true
     steps:
-    - run: echo "::warning title={cust_warning}::{This is a warning!!}"
+    - name: Warning
+      id: warning
+      run: echo "::set-output name=VAR::false"
+    - name: Test
+      if: steps.warning.outputs.VAR == true
+      run: echo "::warning title=Warning::Warning message"
+  test2:
+    runs-on: ubuntu-20.04
+    needs: [test]
+    if: needs.test.outputs.VARIABLE == false
+    steps:
+    - run: echo "::debug::Debug message"
+  test3:
+    runs-on: ubuntu-20.04
+    needs: [test2]
+    steps:
+    - run: echo "YES"
+  test4:
+    runs-on: ubuntu-20.04
+    needs: [test3]
+    if: always()
+    steps:
+    - run: echo "YES2"

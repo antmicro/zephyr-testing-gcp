@@ -27,7 +27,7 @@ jobs:
       id: download-zephyr
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
-      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == false
+      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
       run: |
         mkdir -p job-artifacts/prepare-zephyr-0
         mv zephyr.tar.gz job-artifacts/prepare-zephyr-0/
@@ -51,7 +51,7 @@ jobs:
       id: download-zephyr
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
-      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == false
+      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
       run: |
         mkdir -p job-artifacts/prepare-zephyr-1
         mv zephyr.tar.gz job-artifacts/prepare-zephyr-1/
@@ -75,7 +75,7 @@ jobs:
       id: download-zephyr
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
-      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == false
+      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
       run: |
         mkdir -p job-artifacts/prepare-zephyr-2
         mv zephyr.tar.gz job-artifacts/prepare-zephyr-2/
@@ -99,7 +99,7 @@ jobs:
       id: download-zephyr
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
-      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == false
+      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
       run: |
         mkdir -p job-artifacts/prepare-zephyr-3
         mv zephyr.tar.gz job-artifacts/prepare-zephyr-3/
@@ -123,7 +123,7 @@ jobs:
       id: download-zephyr
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
-      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == false
+      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
       run: |
         mkdir -p job-artifacts/prepare-zephyr-4
         mv zephyr.tar.gz job-artifacts/prepare-zephyr-4/
@@ -147,7 +147,7 @@ jobs:
       id: download-zephyr
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
-      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == false
+      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
       run: |
         mkdir -p job-artifacts/prepare-zephyr-5
         mv zephyr.tar.gz job-artifacts/prepare-zephyr-5/
@@ -171,7 +171,7 @@ jobs:
       id: download-zephyr
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
-      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == false
+      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
       run: |
         mkdir -p job-artifacts/prepare-zephyr-6
         mv zephyr.tar.gz job-artifacts/prepare-zephyr-6/
@@ -195,7 +195,7 @@ jobs:
       id: download-zephyr
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
-      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == false
+      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
       run: |
         mkdir -p job-artifacts/prepare-zephyr-7
         mv zephyr.tar.gz job-artifacts/prepare-zephyr-7/
@@ -219,7 +219,7 @@ jobs:
       id: download-zephyr
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
-      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == false
+      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
       run: |
         mkdir -p job-artifacts/prepare-zephyr-8
         mv zephyr.tar.gz job-artifacts/prepare-zephyr-8/
@@ -243,7 +243,7 @@ jobs:
       id: download-zephyr
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
-      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == false
+      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
       run: |
         mkdir -p job-artifacts/prepare-zephyr-9
         mv zephyr.tar.gz job-artifacts/prepare-zephyr-9/
@@ -267,7 +267,7 @@ jobs:
       id: download-zephyr
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
-      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == false
+      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
       run: |
         mkdir -p job-artifacts/prepare-zephyr-10
         mv zephyr.tar.gz job-artifacts/prepare-zephyr-10/
@@ -291,7 +291,7 @@ jobs:
       id: download-zephyr
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
-      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == false
+      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
       run: |
         mkdir -p job-artifacts/prepare-zephyr-11
         mv zephyr.tar.gz job-artifacts/prepare-zephyr-11/
@@ -315,7 +315,7 @@ jobs:
       id: download-zephyr
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
-      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == false
+      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
       run: |
         mkdir -p job-artifacts/prepare-zephyr-12
         mv zephyr.tar.gz job-artifacts/prepare-zephyr-12/
@@ -339,7 +339,7 @@ jobs:
       id: download-zephyr
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
-      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == false
+      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
       run: |
         mkdir -p job-artifacts/prepare-zephyr-13
         mv zephyr.tar.gz job-artifacts/prepare-zephyr-13/
@@ -363,7 +363,7 @@ jobs:
       id: download-zephyr
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
-      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == false
+      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
       run: |
         mkdir -p job-artifacts/prepare-zephyr-14
         mv zephyr.tar.gz job-artifacts/prepare-zephyr-14/
@@ -387,7 +387,7 @@ jobs:
       id: download-zephyr
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
-      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == false
+      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
       run: |
         mkdir -p job-artifacts/prepare-zephyr-15
         mv zephyr.tar.gz job-artifacts/prepare-zephyr-15/
@@ -411,7 +411,7 @@ jobs:
       id: download-zephyr
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
-      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == false
+      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
       run: |
         mkdir -p job-artifacts/prepare-zephyr-16
         mv zephyr.tar.gz job-artifacts/prepare-zephyr-16/
@@ -435,7 +435,7 @@ jobs:
       id: download-zephyr
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
-      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == false
+      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
       run: |
         mkdir -p job-artifacts/prepare-zephyr-17
         mv zephyr.tar.gz job-artifacts/prepare-zephyr-17/
@@ -459,7 +459,7 @@ jobs:
       id: download-zephyr
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
-      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == false
+      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
       run: |
         mkdir -p job-artifacts/prepare-zephyr-18
         mv zephyr.tar.gz job-artifacts/prepare-zephyr-18/
@@ -483,7 +483,7 @@ jobs:
       id: download-zephyr
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
-      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == false
+      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
       run: |
         mkdir -p job-artifacts/prepare-zephyr-19
         mv zephyr.tar.gz job-artifacts/prepare-zephyr-19/
@@ -507,7 +507,7 @@ jobs:
       id: download-zephyr
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
-      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == false
+      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
       run: |
         mkdir -p job-artifacts/prepare-zephyr-20
         mv zephyr.tar.gz job-artifacts/prepare-zephyr-20/
@@ -531,7 +531,7 @@ jobs:
       id: download-zephyr
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
-      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == false
+      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
       run: |
         mkdir -p job-artifacts/prepare-zephyr-21
         mv zephyr.tar.gz job-artifacts/prepare-zephyr-21/
@@ -555,7 +555,7 @@ jobs:
       id: download-zephyr
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
-      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == false
+      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
       run: |
         mkdir -p job-artifacts/prepare-zephyr-22
         mv zephyr.tar.gz job-artifacts/prepare-zephyr-22/
@@ -579,7 +579,7 @@ jobs:
       id: download-zephyr
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
-      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == false
+      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
       run: |
         mkdir -p job-artifacts/prepare-zephyr-23
         mv zephyr.tar.gz job-artifacts/prepare-zephyr-23/
@@ -603,7 +603,7 @@ jobs:
       id: download-zephyr
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
-      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == false
+      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
       run: |
         mkdir -p job-artifacts/prepare-zephyr-24
         mv zephyr.tar.gz job-artifacts/prepare-zephyr-24/
@@ -627,7 +627,7 @@ jobs:
       id: download-zephyr
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
-      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == false
+      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
       run: |
         mkdir -p job-artifacts/prepare-zephyr-25
         mv zephyr.tar.gz job-artifacts/prepare-zephyr-25/
@@ -651,7 +651,7 @@ jobs:
       id: download-zephyr
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
-      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == false
+      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
       run: |
         mkdir -p job-artifacts/prepare-zephyr-26
         mv zephyr.tar.gz job-artifacts/prepare-zephyr-26/
@@ -675,7 +675,7 @@ jobs:
       id: download-zephyr
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
-      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == false
+      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
       run: |
         mkdir -p job-artifacts/prepare-zephyr-27
         mv zephyr.tar.gz job-artifacts/prepare-zephyr-27/
@@ -699,7 +699,7 @@ jobs:
       id: download-zephyr
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
-      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == false
+      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
       run: |
         mkdir -p job-artifacts/prepare-zephyr-28
         mv zephyr.tar.gz job-artifacts/prepare-zephyr-28/
@@ -723,7 +723,7 @@ jobs:
       id: download-zephyr
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
-      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == false
+      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
       run: |
         mkdir -p job-artifacts/prepare-zephyr-29
         mv zephyr.tar.gz job-artifacts/prepare-zephyr-29/
@@ -732,7 +732,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-0]
-    if: needs.prepare-zephyr-0.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-0.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
       MICROPYTHON_VERSION: 97a7cc243b
@@ -807,7 +807,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-0]
-    if: needs.prepare-zephyr-0.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-0.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
       MICROPYTHON_VERSION: 97a7cc243b
@@ -882,7 +882,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-0]
-    if: needs.prepare-zephyr-0.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-0.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
       MICROPYTHON_VERSION: 97a7cc243b
@@ -957,7 +957,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-0]
-    if: needs.prepare-zephyr-0.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-0.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
       MICROPYTHON_VERSION: 97a7cc243b
@@ -1032,7 +1032,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-0]
-    if: needs.prepare-zephyr-0.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-0.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       MICROPYTHON_VERSION: 97a7cc243b
@@ -1107,7 +1107,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-1]
-    if: needs.prepare-zephyr-1.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-1.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
       MICROPYTHON_VERSION: 97a7cc243b
@@ -1182,7 +1182,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-1]
-    if: needs.prepare-zephyr-1.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-1.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
       MICROPYTHON_VERSION: 97a7cc243b
@@ -1257,7 +1257,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-1]
-    if: needs.prepare-zephyr-1.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-1.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
       MICROPYTHON_VERSION: 97a7cc243b
@@ -1332,7 +1332,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-1]
-    if: needs.prepare-zephyr-1.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-1.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
       MICROPYTHON_VERSION: 97a7cc243b
@@ -1407,7 +1407,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-1]
-    if: needs.prepare-zephyr-1.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-1.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       MICROPYTHON_VERSION: 97a7cc243b
@@ -1482,7 +1482,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-2]
-    if: needs.prepare-zephyr-2.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-2.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
       MICROPYTHON_VERSION: 97a7cc243b
@@ -1557,7 +1557,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-2]
-    if: needs.prepare-zephyr-2.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-2.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
       MICROPYTHON_VERSION: 97a7cc243b
@@ -1632,7 +1632,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-2]
-    if: needs.prepare-zephyr-2.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-2.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
       MICROPYTHON_VERSION: 97a7cc243b
@@ -1707,7 +1707,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-2]
-    if: needs.prepare-zephyr-2.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-2.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
       MICROPYTHON_VERSION: 97a7cc243b
@@ -1782,7 +1782,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-2]
-    if: needs.prepare-zephyr-2.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-2.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       MICROPYTHON_VERSION: 97a7cc243b
@@ -1857,7 +1857,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-3]
-    if: needs.prepare-zephyr-3.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-3.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
       MICROPYTHON_VERSION: 97a7cc243b
@@ -1932,7 +1932,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-3]
-    if: needs.prepare-zephyr-3.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-3.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
       MICROPYTHON_VERSION: 97a7cc243b
@@ -2007,7 +2007,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-3]
-    if: needs.prepare-zephyr-3.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-3.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
       MICROPYTHON_VERSION: 97a7cc243b
@@ -2082,7 +2082,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-3]
-    if: needs.prepare-zephyr-3.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-3.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
       MICROPYTHON_VERSION: 97a7cc243b
@@ -2157,7 +2157,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-3]
-    if: needs.prepare-zephyr-3.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-3.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       MICROPYTHON_VERSION: 97a7cc243b
@@ -2232,7 +2232,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-4]
-    if: needs.prepare-zephyr-4.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-4.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
       MICROPYTHON_VERSION: 97a7cc243b
@@ -2307,7 +2307,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-4]
-    if: needs.prepare-zephyr-4.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-4.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
       MICROPYTHON_VERSION: 97a7cc243b
@@ -2382,7 +2382,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-4]
-    if: needs.prepare-zephyr-4.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-4.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
       MICROPYTHON_VERSION: 97a7cc243b
@@ -2457,7 +2457,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-4]
-    if: needs.prepare-zephyr-4.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-4.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
       MICROPYTHON_VERSION: 97a7cc243b
@@ -2532,7 +2532,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-4]
-    if: needs.prepare-zephyr-4.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-4.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       MICROPYTHON_VERSION: 97a7cc243b
@@ -2607,7 +2607,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-5]
-    if: needs.prepare-zephyr-5.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-5.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
       MICROPYTHON_VERSION: 97a7cc243b
@@ -2682,7 +2682,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-5]
-    if: needs.prepare-zephyr-5.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-5.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
       MICROPYTHON_VERSION: 97a7cc243b
@@ -2757,7 +2757,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-5]
-    if: needs.prepare-zephyr-5.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-5.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
       MICROPYTHON_VERSION: 97a7cc243b
@@ -2832,7 +2832,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-5]
-    if: needs.prepare-zephyr-5.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-5.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
       MICROPYTHON_VERSION: 97a7cc243b
@@ -2907,7 +2907,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-5]
-    if: needs.prepare-zephyr-5.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-5.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       MICROPYTHON_VERSION: 97a7cc243b
@@ -2982,7 +2982,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-6]
-    if: needs.prepare-zephyr-6.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-6.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
       MICROPYTHON_VERSION: 97a7cc243b
@@ -3057,7 +3057,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-6]
-    if: needs.prepare-zephyr-6.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-6.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
       MICROPYTHON_VERSION: 97a7cc243b
@@ -3132,7 +3132,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-6]
-    if: needs.prepare-zephyr-6.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-6.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
       MICROPYTHON_VERSION: 97a7cc243b
@@ -3207,7 +3207,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-6]
-    if: needs.prepare-zephyr-6.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-6.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
       MICROPYTHON_VERSION: 97a7cc243b
@@ -3282,7 +3282,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-6]
-    if: needs.prepare-zephyr-6.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-6.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       MICROPYTHON_VERSION: 97a7cc243b
@@ -3357,7 +3357,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-7]
-    if: needs.prepare-zephyr-7.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-7.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
       MICROPYTHON_VERSION: 97a7cc243b
@@ -3432,7 +3432,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-7]
-    if: needs.prepare-zephyr-7.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-7.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
       MICROPYTHON_VERSION: 97a7cc243b
@@ -3507,7 +3507,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-7]
-    if: needs.prepare-zephyr-7.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-7.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
       MICROPYTHON_VERSION: 97a7cc243b
@@ -3582,7 +3582,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-7]
-    if: needs.prepare-zephyr-7.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-7.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
       MICROPYTHON_VERSION: 97a7cc243b
@@ -3657,7 +3657,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-7]
-    if: needs.prepare-zephyr-7.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-7.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       MICROPYTHON_VERSION: 97a7cc243b
@@ -3732,7 +3732,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-8]
-    if: needs.prepare-zephyr-8.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-8.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
       MICROPYTHON_VERSION: 97a7cc243b
@@ -3807,7 +3807,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-8]
-    if: needs.prepare-zephyr-8.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-8.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
       MICROPYTHON_VERSION: 97a7cc243b
@@ -3882,7 +3882,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-8]
-    if: needs.prepare-zephyr-8.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-8.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
       MICROPYTHON_VERSION: 97a7cc243b
@@ -3957,7 +3957,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-8]
-    if: needs.prepare-zephyr-8.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-8.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
       MICROPYTHON_VERSION: 97a7cc243b
@@ -4032,7 +4032,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-8]
-    if: needs.prepare-zephyr-8.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-8.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       MICROPYTHON_VERSION: 97a7cc243b
@@ -4107,7 +4107,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-9]
-    if: needs.prepare-zephyr-9.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-9.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
       MICROPYTHON_VERSION: 97a7cc243b
@@ -4182,7 +4182,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-9]
-    if: needs.prepare-zephyr-9.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-9.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
       MICROPYTHON_VERSION: 97a7cc243b
@@ -4257,7 +4257,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-9]
-    if: needs.prepare-zephyr-9.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-9.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
       MICROPYTHON_VERSION: 97a7cc243b
@@ -4332,7 +4332,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-9]
-    if: needs.prepare-zephyr-9.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-9.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
       MICROPYTHON_VERSION: 97a7cc243b
@@ -4407,7 +4407,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-9]
-    if: needs.prepare-zephyr-9.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-9.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       MICROPYTHON_VERSION: 97a7cc243b
@@ -4482,7 +4482,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-10]
-    if: needs.prepare-zephyr-10.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-10.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
       MICROPYTHON_VERSION: 97a7cc243b
@@ -4557,7 +4557,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-10]
-    if: needs.prepare-zephyr-10.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-10.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
       MICROPYTHON_VERSION: 97a7cc243b
@@ -4632,7 +4632,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-10]
-    if: needs.prepare-zephyr-10.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-10.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
       MICROPYTHON_VERSION: 97a7cc243b
@@ -4707,7 +4707,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-10]
-    if: needs.prepare-zephyr-10.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-10.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
       MICROPYTHON_VERSION: 97a7cc243b
@@ -4782,7 +4782,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-10]
-    if: needs.prepare-zephyr-10.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-10.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       MICROPYTHON_VERSION: 97a7cc243b
@@ -4857,7 +4857,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-11]
-    if: needs.prepare-zephyr-11.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-11.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
       MICROPYTHON_VERSION: 97a7cc243b
@@ -4932,7 +4932,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-11]
-    if: needs.prepare-zephyr-11.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-11.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
       MICROPYTHON_VERSION: 97a7cc243b
@@ -5007,7 +5007,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-11]
-    if: needs.prepare-zephyr-11.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-11.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
       MICROPYTHON_VERSION: 97a7cc243b
@@ -5082,7 +5082,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-11]
-    if: needs.prepare-zephyr-11.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-11.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
       MICROPYTHON_VERSION: 97a7cc243b
@@ -5157,7 +5157,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-11]
-    if: needs.prepare-zephyr-11.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-11.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       MICROPYTHON_VERSION: 97a7cc243b
@@ -5232,7 +5232,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-12]
-    if: needs.prepare-zephyr-12.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-12.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
       MICROPYTHON_VERSION: 97a7cc243b
@@ -5307,7 +5307,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-12]
-    if: needs.prepare-zephyr-12.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-12.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
       MICROPYTHON_VERSION: 97a7cc243b
@@ -5382,7 +5382,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-12]
-    if: needs.prepare-zephyr-12.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-12.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
       MICROPYTHON_VERSION: 97a7cc243b
@@ -5457,7 +5457,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-12]
-    if: needs.prepare-zephyr-12.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-12.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
       MICROPYTHON_VERSION: 97a7cc243b
@@ -5532,7 +5532,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-12]
-    if: needs.prepare-zephyr-12.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-12.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       MICROPYTHON_VERSION: 97a7cc243b
@@ -5607,7 +5607,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-13]
-    if: needs.prepare-zephyr-13.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-13.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
       MICROPYTHON_VERSION: 97a7cc243b
@@ -5682,7 +5682,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-13]
-    if: needs.prepare-zephyr-13.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-13.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
       MICROPYTHON_VERSION: 97a7cc243b
@@ -5757,7 +5757,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-13]
-    if: needs.prepare-zephyr-13.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-13.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
       MICROPYTHON_VERSION: 97a7cc243b
@@ -5832,7 +5832,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-13]
-    if: needs.prepare-zephyr-13.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-13.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
       MICROPYTHON_VERSION: 97a7cc243b
@@ -5907,7 +5907,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-13]
-    if: needs.prepare-zephyr-13.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-13.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       MICROPYTHON_VERSION: 97a7cc243b
@@ -5982,7 +5982,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-14]
-    if: needs.prepare-zephyr-14.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-14.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
       MICROPYTHON_VERSION: 97a7cc243b
@@ -6057,7 +6057,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-14]
-    if: needs.prepare-zephyr-14.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-14.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
       MICROPYTHON_VERSION: 97a7cc243b
@@ -6132,7 +6132,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-14]
-    if: needs.prepare-zephyr-14.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-14.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
       MICROPYTHON_VERSION: 97a7cc243b
@@ -6207,7 +6207,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-14]
-    if: needs.prepare-zephyr-14.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-14.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
       MICROPYTHON_VERSION: 97a7cc243b
@@ -6282,7 +6282,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-14]
-    if: needs.prepare-zephyr-14.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-14.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       MICROPYTHON_VERSION: 97a7cc243b
@@ -6357,7 +6357,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-15]
-    if: needs.prepare-zephyr-15.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-15.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
       MICROPYTHON_VERSION: 97a7cc243b
@@ -6432,7 +6432,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-15]
-    if: needs.prepare-zephyr-15.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-15.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
       MICROPYTHON_VERSION: 97a7cc243b
@@ -6507,7 +6507,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-15]
-    if: needs.prepare-zephyr-15.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-15.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
       MICROPYTHON_VERSION: 97a7cc243b
@@ -6582,7 +6582,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-15]
-    if: needs.prepare-zephyr-15.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-15.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
       MICROPYTHON_VERSION: 97a7cc243b
@@ -6657,7 +6657,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-15]
-    if: needs.prepare-zephyr-15.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-15.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       MICROPYTHON_VERSION: 97a7cc243b
@@ -6732,7 +6732,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-16]
-    if: needs.prepare-zephyr-16.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-16.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
       MICROPYTHON_VERSION: 97a7cc243b
@@ -6807,7 +6807,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-16]
-    if: needs.prepare-zephyr-16.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-16.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
       MICROPYTHON_VERSION: 97a7cc243b
@@ -6882,7 +6882,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-16]
-    if: needs.prepare-zephyr-16.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-16.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
       MICROPYTHON_VERSION: 97a7cc243b
@@ -6957,7 +6957,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-16]
-    if: needs.prepare-zephyr-16.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-16.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
       MICROPYTHON_VERSION: 97a7cc243b
@@ -7032,7 +7032,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-16]
-    if: needs.prepare-zephyr-16.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-16.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       MICROPYTHON_VERSION: 97a7cc243b
@@ -7107,7 +7107,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-17]
-    if: needs.prepare-zephyr-17.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-17.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
       MICROPYTHON_VERSION: 97a7cc243b
@@ -7182,7 +7182,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-17]
-    if: needs.prepare-zephyr-17.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-17.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
       MICROPYTHON_VERSION: 97a7cc243b
@@ -7257,7 +7257,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-17]
-    if: needs.prepare-zephyr-17.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-17.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
       MICROPYTHON_VERSION: 97a7cc243b
@@ -7332,7 +7332,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-17]
-    if: needs.prepare-zephyr-17.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-17.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
       MICROPYTHON_VERSION: 97a7cc243b
@@ -7407,7 +7407,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-17]
-    if: needs.prepare-zephyr-17.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-17.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       MICROPYTHON_VERSION: 97a7cc243b
@@ -7482,7 +7482,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-18]
-    if: needs.prepare-zephyr-18.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-18.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
       MICROPYTHON_VERSION: 97a7cc243b
@@ -7557,7 +7557,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-18]
-    if: needs.prepare-zephyr-18.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-18.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
       MICROPYTHON_VERSION: 97a7cc243b
@@ -7632,7 +7632,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-18]
-    if: needs.prepare-zephyr-18.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-18.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
       MICROPYTHON_VERSION: 97a7cc243b
@@ -7707,7 +7707,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-18]
-    if: needs.prepare-zephyr-18.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-18.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
       MICROPYTHON_VERSION: 97a7cc243b
@@ -7782,7 +7782,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-18]
-    if: needs.prepare-zephyr-18.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-18.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       MICROPYTHON_VERSION: 97a7cc243b
@@ -7857,7 +7857,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-19]
-    if: needs.prepare-zephyr-19.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-19.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
       MICROPYTHON_VERSION: 97a7cc243b
@@ -7932,7 +7932,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-19]
-    if: needs.prepare-zephyr-19.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-19.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
       MICROPYTHON_VERSION: 97a7cc243b
@@ -8007,7 +8007,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-19]
-    if: needs.prepare-zephyr-19.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-19.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
       MICROPYTHON_VERSION: 97a7cc243b
@@ -8082,7 +8082,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-19]
-    if: needs.prepare-zephyr-19.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-19.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
       MICROPYTHON_VERSION: 97a7cc243b
@@ -8157,7 +8157,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-19]
-    if: needs.prepare-zephyr-19.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-19.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       MICROPYTHON_VERSION: 97a7cc243b
@@ -8232,7 +8232,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-20]
-    if: needs.prepare-zephyr-20.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-20.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
       MICROPYTHON_VERSION: 97a7cc243b
@@ -8307,7 +8307,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-20]
-    if: needs.prepare-zephyr-20.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-20.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
       MICROPYTHON_VERSION: 97a7cc243b
@@ -8382,7 +8382,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-20]
-    if: needs.prepare-zephyr-20.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-20.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
       MICROPYTHON_VERSION: 97a7cc243b
@@ -8457,7 +8457,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-20]
-    if: needs.prepare-zephyr-20.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-20.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
       MICROPYTHON_VERSION: 97a7cc243b
@@ -8532,7 +8532,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-20]
-    if: needs.prepare-zephyr-20.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-20.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       MICROPYTHON_VERSION: 97a7cc243b
@@ -8607,7 +8607,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-21]
-    if: needs.prepare-zephyr-21.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-21.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
       MICROPYTHON_VERSION: 97a7cc243b
@@ -8682,7 +8682,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-21]
-    if: needs.prepare-zephyr-21.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-21.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
       MICROPYTHON_VERSION: 97a7cc243b
@@ -8757,7 +8757,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-21]
-    if: needs.prepare-zephyr-21.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-21.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
       MICROPYTHON_VERSION: 97a7cc243b
@@ -8832,7 +8832,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-21]
-    if: needs.prepare-zephyr-21.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-21.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
       MICROPYTHON_VERSION: 97a7cc243b
@@ -8907,7 +8907,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-21]
-    if: needs.prepare-zephyr-21.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-21.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       MICROPYTHON_VERSION: 97a7cc243b
@@ -8982,7 +8982,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-22]
-    if: needs.prepare-zephyr-22.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-22.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
       MICROPYTHON_VERSION: 97a7cc243b
@@ -9057,7 +9057,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-22]
-    if: needs.prepare-zephyr-22.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-22.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
       MICROPYTHON_VERSION: 97a7cc243b
@@ -9132,7 +9132,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-22]
-    if: needs.prepare-zephyr-22.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-22.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
       MICROPYTHON_VERSION: 97a7cc243b
@@ -9207,7 +9207,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-22]
-    if: needs.prepare-zephyr-22.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-22.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
       MICROPYTHON_VERSION: 97a7cc243b
@@ -9282,7 +9282,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-22]
-    if: needs.prepare-zephyr-22.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-22.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       MICROPYTHON_VERSION: 97a7cc243b
@@ -9357,7 +9357,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-23]
-    if: needs.prepare-zephyr-23.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-23.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
       MICROPYTHON_VERSION: 97a7cc243b
@@ -9432,7 +9432,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-23]
-    if: needs.prepare-zephyr-23.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-23.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
       MICROPYTHON_VERSION: 97a7cc243b
@@ -9507,7 +9507,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-23]
-    if: needs.prepare-zephyr-23.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-23.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
       MICROPYTHON_VERSION: 97a7cc243b
@@ -9582,7 +9582,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-23]
-    if: needs.prepare-zephyr-23.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-23.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
       MICROPYTHON_VERSION: 97a7cc243b
@@ -9657,7 +9657,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-23]
-    if: needs.prepare-zephyr-23.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-23.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       MICROPYTHON_VERSION: 97a7cc243b
@@ -9732,7 +9732,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-24]
-    if: needs.prepare-zephyr-24.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-24.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
       MICROPYTHON_VERSION: 97a7cc243b
@@ -9807,7 +9807,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-24]
-    if: needs.prepare-zephyr-24.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-24.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
       MICROPYTHON_VERSION: 97a7cc243b
@@ -9882,7 +9882,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-24]
-    if: needs.prepare-zephyr-24.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-24.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
       MICROPYTHON_VERSION: 97a7cc243b
@@ -9957,7 +9957,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-24]
-    if: needs.prepare-zephyr-24.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-24.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
       MICROPYTHON_VERSION: 97a7cc243b
@@ -10032,7 +10032,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-24]
-    if: needs.prepare-zephyr-24.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-24.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       MICROPYTHON_VERSION: 97a7cc243b
@@ -10107,7 +10107,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-25]
-    if: needs.prepare-zephyr-25.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-25.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
       MICROPYTHON_VERSION: 97a7cc243b
@@ -10182,7 +10182,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-25]
-    if: needs.prepare-zephyr-25.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-25.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
       MICROPYTHON_VERSION: 97a7cc243b
@@ -10257,7 +10257,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-25]
-    if: needs.prepare-zephyr-25.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-25.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
       MICROPYTHON_VERSION: 97a7cc243b
@@ -10332,7 +10332,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-25]
-    if: needs.prepare-zephyr-25.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-25.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
       MICROPYTHON_VERSION: 97a7cc243b
@@ -10407,7 +10407,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-25]
-    if: needs.prepare-zephyr-25.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-25.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       MICROPYTHON_VERSION: 97a7cc243b
@@ -10482,7 +10482,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-26]
-    if: needs.prepare-zephyr-26.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-26.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
       MICROPYTHON_VERSION: 97a7cc243b
@@ -10557,7 +10557,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-26]
-    if: needs.prepare-zephyr-26.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-26.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
       MICROPYTHON_VERSION: 97a7cc243b
@@ -10632,7 +10632,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-26]
-    if: needs.prepare-zephyr-26.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-26.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
       MICROPYTHON_VERSION: 97a7cc243b
@@ -10707,7 +10707,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-26]
-    if: needs.prepare-zephyr-26.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-26.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
       MICROPYTHON_VERSION: 97a7cc243b
@@ -10782,7 +10782,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-26]
-    if: needs.prepare-zephyr-26.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-26.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       MICROPYTHON_VERSION: 97a7cc243b
@@ -10857,7 +10857,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-27]
-    if: needs.prepare-zephyr-27.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-27.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
       MICROPYTHON_VERSION: 97a7cc243b
@@ -10932,7 +10932,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-27]
-    if: needs.prepare-zephyr-27.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-27.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
       MICROPYTHON_VERSION: 97a7cc243b
@@ -11007,7 +11007,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-27]
-    if: needs.prepare-zephyr-27.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-27.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
       MICROPYTHON_VERSION: 97a7cc243b
@@ -11082,7 +11082,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-27]
-    if: needs.prepare-zephyr-27.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-27.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
       MICROPYTHON_VERSION: 97a7cc243b
@@ -11157,7 +11157,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-27]
-    if: needs.prepare-zephyr-27.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-27.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       MICROPYTHON_VERSION: 97a7cc243b
@@ -11232,7 +11232,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-28]
-    if: needs.prepare-zephyr-28.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-28.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
       MICROPYTHON_VERSION: 97a7cc243b
@@ -11307,7 +11307,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-28]
-    if: needs.prepare-zephyr-28.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-28.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
       MICROPYTHON_VERSION: 97a7cc243b
@@ -11382,7 +11382,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-28]
-    if: needs.prepare-zephyr-28.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-28.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
       MICROPYTHON_VERSION: 97a7cc243b
@@ -11457,7 +11457,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-28]
-    if: needs.prepare-zephyr-28.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-28.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
       MICROPYTHON_VERSION: 97a7cc243b
@@ -11532,7 +11532,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-28]
-    if: needs.prepare-zephyr-28.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-28.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       MICROPYTHON_VERSION: 97a7cc243b
@@ -11607,7 +11607,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-29]
-    if: needs.prepare-zephyr-29.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-29.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
       MICROPYTHON_VERSION: 97a7cc243b
@@ -11682,7 +11682,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-29]
-    if: needs.prepare-zephyr-29.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-29.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
       MICROPYTHON_VERSION: 97a7cc243b
@@ -11757,7 +11757,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-29]
-    if: needs.prepare-zephyr-29.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-29.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
       MICROPYTHON_VERSION: 97a7cc243b
@@ -11832,7 +11832,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-29]
-    if: needs.prepare-zephyr-29.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-29.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
       MICROPYTHON_VERSION: 97a7cc243b
@@ -11907,7 +11907,7 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-29]
-    if: needs.prepare-zephyr-29.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-29.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       MICROPYTHON_VERSION: 97a7cc243b

@@ -36,7 +36,7 @@ def generate():
       id: download-zephyr
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
-      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == false
+      if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
       run: |
         mkdir -p job-artifacts/prepare-zephyr-{zephyr_commit}
         mv zephyr.tar.gz job-artifacts/prepare-zephyr-{zephyr_commit}/
@@ -47,7 +47,7 @@ def generate():
     container: ubuntu:{UBUNTU_VERSION}
     runs-on: [self-hosted, Linux, X64]
     needs: [prepare-zephyr-{zephyr_commit}]
-    if: needs.prepare-zephyr-{zephyr_commit}.outputs.COMMIT_ALREADY_BUILT == false
+    if: needs.prepare-zephyr-{zephyr_commit}.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: {sample}
       MICROPYTHON_VERSION: 97a7cc243b

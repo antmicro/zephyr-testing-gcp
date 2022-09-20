@@ -1,0 +1,452 @@
+From bb7cb0c6d4bba983ce646bd9cd9c21eaff098613 Mon Sep 17 00:00:00 2001
+From: Filip Kokosinski <fkokosinski@antmicro.com>
+Date: Mon, 19 Sep 2022 11:25:43 +0200
+Subject: [PATCH] Add Fomu Zephyr port
+
+---
+ boards/arm/96b_avenger96/96b_avenger96.dts    |  2 +
+ .../arm/96b_avenger96/96b_avenger96_defconfig |  6 +-
+ boards/arm/hexiwear_kw40z/hexiwear_kw40z.dts  |  2 +
+ .../stm32h747i_disco/stm32h747i_disco_m4.dts  |  4 +-
+ .../stm32h747i_disco_m4_defconfig             |  4 +-
+ .../arm/stm32mp157c_dk2/stm32mp157c_dk2.dts   |  2 +
+ .../stm32mp157c_dk2/stm32mp157c_dk2_defconfig |  6 +-
+ boards/riscv/fomu/Kconfig.board               |  6 ++
+ boards/riscv/fomu/Kconfig.defconfig           |  6 ++
+ boards/riscv/fomu/fomu.dts                    | 81 +++++++++++++++++++
+ boards/riscv/fomu/fomu.yaml                   | 10 +++
+ boards/riscv/fomu/fomu_defconfig              | 22 +++++
+ soc/riscv/fomu/CMakeLists.txt                 | 10 +++
+ soc/riscv/fomu/Kconfig.defconfig              | 27 +++++++
+ soc/riscv/fomu/Kconfig.soc                    | 11 +++
+ soc/riscv/fomu/linker.ld                      |  7 ++
+ soc/riscv/fomu/soc.h                          | 12 +++
+ soc/riscv/fomu/vector.S                       | 40 +++++++++
+ 18 files changed, 249 insertions(+), 9 deletions(-)
+ create mode 100644 boards/riscv/fomu/Kconfig.board
+ create mode 100644 boards/riscv/fomu/Kconfig.defconfig
+ create mode 100644 boards/riscv/fomu/fomu.dts
+ create mode 100644 boards/riscv/fomu/fomu.yaml
+ create mode 100644 boards/riscv/fomu/fomu_defconfig
+ create mode 100644 soc/riscv/fomu/CMakeLists.txt
+ create mode 100644 soc/riscv/fomu/Kconfig.defconfig
+ create mode 100644 soc/riscv/fomu/Kconfig.soc
+ create mode 100644 soc/riscv/fomu/linker.ld
+ create mode 100644 soc/riscv/fomu/soc.h
+ create mode 100644 soc/riscv/fomu/vector.S
+
+diff --git a/boards/arm/96b_avenger96/96b_avenger96.dts b/boards/arm/96b_avenger96/96b_avenger96.dts
+index 3accaae12a..533f174d25 100644
+--- a/boards/arm/96b_avenger96/96b_avenger96.dts
++++ b/boards/arm/96b_avenger96/96b_avenger96.dts
+@@ -22,6 +22,8 @@
+ 		 * zephyr,console = &uart7;
+ 		 * zephyr,shell-uart = &uart7;
+ 		 */
++		zephyr,console = &uart7;
++		zephyr,shell-uart = &uart7;
+ 		zephyr,flash = &retram;
+ 		zephyr,sram = &mcusram;
+ 	};
+diff --git a/boards/arm/96b_avenger96/96b_avenger96_defconfig b/boards/arm/96b_avenger96/96b_avenger96_defconfig
+index 05be01fbb3..d48a8dbae6 100644
+--- a/boards/arm/96b_avenger96/96b_avenger96_defconfig
++++ b/boards/arm/96b_avenger96/96b_avenger96_defconfig
+@@ -19,11 +19,11 @@ CONFIG_CLOCK_CONTROL=y
+ 
+ # console (remote proc console by default)
+ CONFIG_CONSOLE=y
+-CONFIG_RAM_CONSOLE=y
+-CONFIG_RAM_CONSOLE_BUFFER_SIZE=1024
++#CONFIG_RAM_CONSOLE=y
++#CONFIG_RAM_CONSOLE_BUFFER_SIZE=1024
+ 
+ # uart console (overrides remote proc console)
+-CONFIG_UART_CONSOLE=n
++CONFIG_UART_CONSOLE=y
+ 
+ # enable pin controller
+ CONFIG_PINCTRL=y
+diff --git a/boards/arm/hexiwear_kw40z/hexiwear_kw40z.dts b/boards/arm/hexiwear_kw40z/hexiwear_kw40z.dts
+index 2b64e0bafd..9ef32696bd 100644
+--- a/boards/arm/hexiwear_kw40z/hexiwear_kw40z.dts
++++ b/boards/arm/hexiwear_kw40z/hexiwear_kw40z.dts
+@@ -10,6 +10,8 @@
+ 	compatible = "nxp,kw40z", "nxp,mkw40z4";
+ 
+ 	chosen {
++        zephyr,console = &lpuart0;
++		zephyr,shell-uart = &lpuart0;
+ 		zephyr,sram = &sram0;
+ 		zephyr,flash = &flash0;
+ 	};
+diff --git a/boards/arm/stm32h747i_disco/stm32h747i_disco_m4.dts b/boards/arm/stm32h747i_disco/stm32h747i_disco_m4.dts
+index 74681a8829..00078ec23b 100644
+--- a/boards/arm/stm32h747i_disco/stm32h747i_disco_m4.dts
++++ b/boards/arm/stm32h747i_disco/stm32h747i_disco_m4.dts
+@@ -17,6 +17,8 @@
+ 	chosen {
+ 		/* zephyr,console = &usart1; */
+ 		/* zephyr,shell-uart = &usart1; */
++		zephyr,console = &usart1;
++		zephyr,shell-uart = &usart1;
+ 		zephyr,sram = &sram1;
+ 		zephyr,flash = &flash1;
+ 	};
+@@ -48,7 +50,7 @@
+ };
+ 
+ &usart1 {
+-	/* status = "okay"; */
++	status = "okay";
+ };
+ 
+ &uart8 {
+diff --git a/boards/arm/stm32h747i_disco/stm32h747i_disco_m4_defconfig b/boards/arm/stm32h747i_disco/stm32h747i_disco_m4_defconfig
+index 2f437301c8..045743dfb3 100644
+--- a/boards/arm/stm32h747i_disco/stm32h747i_disco_m4_defconfig
++++ b/boards/arm/stm32h747i_disco/stm32h747i_disco_m4_defconfig
+@@ -22,8 +22,8 @@ CONFIG_HW_STACK_PROTECTION=y
+ CONFIG_SERIAL=y
+ 
+ # By default CONSOLE is assigned to m7
+-#CONFIG_CONSOLE=y
+-#CONFIG_UART_CONSOLE=y
++CONFIG_CONSOLE=y
++CONFIG_UART_CONSOLE=y
+ 
+ # enable pin controller
+ CONFIG_PINCTRL=y
+diff --git a/boards/arm/stm32mp157c_dk2/stm32mp157c_dk2.dts b/boards/arm/stm32mp157c_dk2/stm32mp157c_dk2.dts
+index 2704451697..339ed78d16 100644
+--- a/boards/arm/stm32mp157c_dk2/stm32mp157c_dk2.dts
++++ b/boards/arm/stm32mp157c_dk2/stm32mp157c_dk2.dts
+@@ -22,6 +22,8 @@
+ 		 * zephyr,console = &usart3;
+ 		 * zephyr,shell-uart = &usart3;
+ 		 */
++		zephyr,console = &usart3;
++		zephyr,shell-uart = &usart3;
+ 		zephyr,flash = &retram;
+ 		zephyr,sram = &mcusram;
+ 	};
+diff --git a/boards/arm/stm32mp157c_dk2/stm32mp157c_dk2_defconfig b/boards/arm/stm32mp157c_dk2/stm32mp157c_dk2_defconfig
+index 66503dc240..7962e99399 100644
+--- a/boards/arm/stm32mp157c_dk2/stm32mp157c_dk2_defconfig
++++ b/boards/arm/stm32mp157c_dk2/stm32mp157c_dk2_defconfig
+@@ -19,11 +19,11 @@ CONFIG_CLOCK_CONTROL=y
+ 
+ # console (remote proc console by default)
+ CONFIG_CONSOLE=y
+-CONFIG_RAM_CONSOLE=y
+-CONFIG_RAM_CONSOLE_BUFFER_SIZE=1024
++#CONFIG_RAM_CONSOLE=y
++#CONFIG_RAM_CONSOLE_BUFFER_SIZE=1024
+ 
+ # uart console (overrides remote proc console)
+-CONFIG_UART_CONSOLE=n
++CONFIG_UART_CONSOLE=y
+ 
+ # enable pin controller
+ CONFIG_PINCTRL=y
+diff --git a/boards/riscv/fomu/Kconfig.board b/boards/riscv/fomu/Kconfig.board
+new file mode 100644
+index 0000000000..3b34c7b697
+--- /dev/null
++++ b/boards/riscv/fomu/Kconfig.board
+@@ -0,0 +1,6 @@
++# Copyright (c) 2022 Antmicro <www.antmicro.com>
++# SPDX-License-Identifier: Apache-2.0
++
++config BOARD_FOMU
++	bool "Kosagi FOMU board with LiteX/VexRiscv CPU"
++	depends on SOC_RISCV32_FOMU
+diff --git a/boards/riscv/fomu/Kconfig.defconfig b/boards/riscv/fomu/Kconfig.defconfig
+new file mode 100644
+index 0000000000..23cfd861c9
+--- /dev/null
++++ b/boards/riscv/fomu/Kconfig.defconfig
+@@ -0,0 +1,6 @@
++# Copyright (c) 2022 Antmicro <www.antmicro.com>
++# SPDX-License-Identifier: Apache-2.0
++
++config BOARD
++	default "fomu"
++	depends on BOARD_FOMU
+diff --git a/boards/riscv/fomu/fomu.dts b/boards/riscv/fomu/fomu.dts
+new file mode 100644
+index 0000000000..54c10aa4a7
+--- /dev/null
++++ b/boards/riscv/fomu/fomu.dts
+@@ -0,0 +1,81 @@
++/*
++ * Copyright (c) 2022 Antmicro <www.antmicro.com>
++ *
++ * SPDX-License-Identifier: Apache-2.0
++ */
++
++/dts-v1/;
++#include <riscv32-litex-vexriscv.dtsi>
++
++/{
++	model = "Fomu ICE40UP5K with LiteX Vexriscv";
++	compatible = "kosagi,fomu";
++
++	chosen {
++		zephyr,console = &uart0;
++		zephyr,shell-uart = &uart0;
++		zephyr,sram = &ram0;
++		zephyr,flash = &flash0;
++	};
++
++	cpus {
++		cpu@0 {
++			clock-frequency = <12000000>;
++			riscv,isa = "rv32im";
++		};
++	};
++
++	ram0: memory@10000000 {
++		device_type = "memory";
++		compatible = "memory";
++		reg = <0x10002000 0x0001f000>;
++	};
++
++
++	fake_spi: spi@dead {
++		reg = <0xdead 0xdead 0x20040000 0x00100000>;
++		reg-names = "dummy", "mem";
++		label = "fake-spi";
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		flash0: flash@20040000 {
++			compatible = "jedec,spi-nor";
++			label = "memory mapped spiflash";
++			reg = <0x20040000>;
++			size = <0x00100000>;
++			status = "okay";
++		};
++	};
++};
++
++&uart0 {
++	status = "okay";
++	current-speed = <115200>;
++	interrupts = <1 0>;
++};
++
++&timer0 {
++	reg = <0xe0002800 0x10
++		0xe0002810 0x10
++		0xe0002820 0x4
++		0xe0002824 0x4
++		0xe0002828 0x10
++		0xe0002838 0x4
++		0xe000283c 0x4
++		0xe0002840 0x4
++		0xe0002844 0x4
++		0xe0002848 0x20>;
++	reg-names = "load",
++		"reload",
++		"en",
++		"update_value",
++		"value",
++		"ev_status",
++		"ev_pending",
++		"ev_enable",
++		"uptime_latch",
++		"uptime_cycles";
++	interrupts = <2 0>; // v1: <0 0>, v2: <2 0>
++	status = "okay";
++};
+diff --git a/boards/riscv/fomu/fomu.yaml b/boards/riscv/fomu/fomu.yaml
+new file mode 100644
+index 0000000000..c61808393f
+--- /dev/null
++++ b/boards/riscv/fomu/fomu.yaml
+@@ -0,0 +1,10 @@
++identifier: fomu
++name: Fomu - The FPGA-based Tomu
++type: fpga
++arch: riscv32
++toolchain:
++  - zephyr
++testing:
++  ignore_tags:
++    - net
++    - bluetooth
+diff --git a/boards/riscv/fomu/fomu_defconfig b/boards/riscv/fomu/fomu_defconfig
+new file mode 100644
+index 0000000000..f37da7b144
+--- /dev/null
++++ b/boards/riscv/fomu/fomu_defconfig
+@@ -0,0 +1,22 @@
++#
++# Copyright (c) 2022 Antmicro <www.antmicro.com>
++#
++# SPDX-License-Identifier: Apache-2.0
++#
++
++CONFIG_BOARD_FOMU=y
++CONFIG_SOC_RISCV32_FOMU=y
++
++CONFIG_VEXRISCV_LITEX_IRQ=y
++CONFIG_LITEX_TIMER=y
++
++CONFIG_SERIAL=y
++CONFIG_UART_LITEUART=y
++CONFIG_CONSOLE=y
++CONFIG_UART_CONSOLE=y
++
++CONFIG_PRINTK=y
++CONFIG_EARLY_CONSOLE=n
++CONFIG_BOOT_BANNER=n
++
++CONFIG_XIP=y
+diff --git a/soc/riscv/fomu/CMakeLists.txt b/soc/riscv/fomu/CMakeLists.txt
+new file mode 100644
+index 0000000000..34add02a42
+--- /dev/null
++++ b/soc/riscv/fomu/CMakeLists.txt
+@@ -0,0 +1,10 @@
++#
++# Copyright (c) 2022 Antmicro <www.antmicro.com>
++#
++# SPDX-License-Identifier: Apache-2.0
++#
++
++zephyr_sources(
++    ../riscv-privilege/common/soc_irq.S
++    vector.S
++)
+diff --git a/soc/riscv/fomu/Kconfig.defconfig b/soc/riscv/fomu/Kconfig.defconfig
+new file mode 100644
+index 0000000000..1eee7d61dc
+--- /dev/null
++++ b/soc/riscv/fomu/Kconfig.defconfig
+@@ -0,0 +1,27 @@
++# Copyright (c) 2022 Antmicro <www.antmicro.com>
++# SPDX-License-Identifier: Apache-2.0
++
++if SOC_RISCV32_FOMU
++
++config SOC
++	default "fomu"
++
++config SYS_CLOCK_HW_CYCLES_PER_SEC
++	default 12000000
++
++config RISCV_HAS_CPU_IDLE
++	bool
++
++config RISCV_HAS_PLIC
++	bool
++
++config NUM_IRQS
++	default 12
++
++config RISCV_ISA_EXT_A
++	default n
++
++config LITEX_CSR_DATA_WIDTH
++	default 8
++
++endif # SOC_RISCV32_FOMU
+diff --git a/soc/riscv/fomu/Kconfig.soc b/soc/riscv/fomu/Kconfig.soc
+new file mode 100644
+index 0000000000..209bbe2a21
+--- /dev/null
++++ b/soc/riscv/fomu/Kconfig.soc
+@@ -0,0 +1,11 @@
++# Copyright (c) 2022 Antmicro <www.antmicro.com>
++# SPDX-License-Identifier: Apache-2.0
++
++config SOC_RISCV32_FOMU
++	bool "Fomu system implementation"
++	select RISCV
++	select ATOMIC_OPERATIONS_C
++	select INCLUDE_RESET_VECTOR
++	select RISCV_ISA_RV32I
++	select RISCV_ISA_EXT_A
++	select RISCV_ISA_EXT_ZICSR
+diff --git a/soc/riscv/fomu/linker.ld b/soc/riscv/fomu/linker.ld
+new file mode 100644
+index 0000000000..dcb2388102
+--- /dev/null
++++ b/soc/riscv/fomu/linker.ld
+@@ -0,0 +1,7 @@
++/*
++ * Copyright (c) 2022 Antmicro <www.antmicro.com>
++ *
++ * SPDX-License-Identifier: Apache-2.0
++ */
++
++#include <zephyr/arch/riscv/common/linker.ld>
+diff --git a/soc/riscv/fomu/soc.h b/soc/riscv/fomu/soc.h
+new file mode 100644
+index 0000000000..5285b32635
+--- /dev/null
++++ b/soc/riscv/fomu/soc.h
+@@ -0,0 +1,12 @@
++/*
++ * Copyright (c) 2022 Antmicro <www.antmicro.com>
++ *
++ * SPDX-License-Identifier: Apache-2.0
++ */
++
++#ifndef __RISCV32_FOMU_SOC_H_
++#define __RISCV32_FOMU_SOC_H_
++
++#include "../litex-vexriscv/soc.h"
++
++#endif /* __RISCV32_FOMU_SOC_H_ */
+diff --git a/soc/riscv/fomu/vector.S b/soc/riscv/fomu/vector.S
+new file mode 100644
+index 0000000000..fe4fb930a2
+--- /dev/null
++++ b/soc/riscv/fomu/vector.S
+@@ -0,0 +1,40 @@
++/*
++ * Copyright (c) 2017 Jean-Paul Etienne <fractalclone@gmail.com>
++ * Contributors: 2018-2022 Antmicro <www.antmicro.com>
++ *
++ * SPDX-License-Identifier: Apache-2.0
++ */
++
++#include <zephyr/toolchain.h>
++
++/* exports */
++GTEXT(__start)
++
++/* imports */
++GTEXT(__initialize)
++GTEXT(_isr_wrapper)
++
++SECTION_FUNC(vectors, __start)
++#if defined(CONFIG_RISCV_GP)
++	/* Initialize global pointer */
++	.option push
++	.option norelax
++	la gp, __global_pointer$
++	.option pop
++#endif
++
++	.option norvc;
++
++	/*
++	 * Set mtvec (Machine Trap-Vector Base-Address Register)
++	 * to _isr_wrapper.
++	 */
++	la t0, _isr_wrapper
++	csrw mtvec, t0
++
++	/* Jump to __reset */
++	tail __reset
++#ifndef CONFIG_XIP
++    .word 0x17ab0f23
++    .word 0x10002000
++#endif
+-- 
+2.30.2
+

@@ -16,3 +16,6 @@ monitor.txt*
 /src
 micropython.build.log
 Makefile
+/node_modules
+/package.json
+/package-lock.json

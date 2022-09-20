@@ -1,4 +1,4 @@
-From d4512b0425ae182a0763a0ab0a2995a832b6e6ab Mon Sep 17 00:00:00 2001
+From b26080f10ae4a653182a7149e7907bc27d111ba3 Mon Sep 17 00:00:00 2001
 From: Michal Sieron <msieron@antmicro.com>
 Date: Mon, 11 Jul 2022 14:49:40 +0200
 Subject: [PATCH 3/4] soc: arm: eos_s3: Use frequency from Kconfig to configure
@@ -26,5 +26,5 @@ index 821324ec93..ddf99ac54f 100644
  	while (!OSC_CLK_LOCKED()) {
  		;
 -- 
-2.35.1
+2.30.2
 

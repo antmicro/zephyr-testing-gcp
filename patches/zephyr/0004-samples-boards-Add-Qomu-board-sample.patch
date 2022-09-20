@@ -1,4 +1,4 @@
-From 620b028c5731615b0796fa5f6ff5e21951022584 Mon Sep 17 00:00:00 2001
+From 5a0235c6a7e87ebc5061a10786415a2674fd1314 Mon Sep 17 00:00:00 2001
 From: Michal Sieron <msieron@antmicro.com>
 Date: Mon, 11 Jul 2022 14:45:16 +0200
 Subject: [PATCH 4/4] samples: boards: Add Qomu board sample
@@ -3968,5 +3968,5 @@ index 0000000000..a32a318bc2
 +};
 +uint32_t  axFPGABitStream_length = sizeof(axFPGABitStream);
 -- 
-2.35.1
+2.30.2
 

@@ -1,4 +1,4 @@
-From a4c200282efdb65f2e7dee621c4d68203d5fc83c Mon Sep 17 00:00:00 2001
+From 7bd39db453f085b73993872836381aabd9e3228b Mon Sep 17 00:00:00 2001
 From: Michal Sieron <msieron@antmicro.com>
 Date: Mon, 6 Jun 2022 17:03:06 +0200
 Subject: [PATCH 2/4] boards: arm: Add Qomu board
@@ -283,5 +283,5 @@ index 0000000000..4f16984128
 +# GPIO
 +CONFIG_GPIO=y
 -- 
-2.35.1
+2.30.2
 

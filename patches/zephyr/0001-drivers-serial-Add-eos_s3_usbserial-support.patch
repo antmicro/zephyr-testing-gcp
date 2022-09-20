@@ -1,4 +1,4 @@
-From 38c4276c20d40ce72e2959f99c6bb35655d81532 Mon Sep 17 00:00:00 2001
+From 9b14dfb12824f037d38b5a752103d14c540572bf Mon Sep 17 00:00:00 2001
 From: Michal Sieron <msieron@antmicro.com>
 Date: Mon, 6 Jun 2022 17:02:36 +0200
 Subject: [PATCH 1/4] drivers: serial: Add eos_s3_usbserial support
@@ -22,7 +22,7 @@ Signed-off-by: Michal Sieron <msieron@antmicro.com>
  create mode 100644 dts/bindings/serial/quicklogic,eos-s3-usbserial.yaml
 
 diff --git a/drivers/serial/CMakeLists.txt b/drivers/serial/CMakeLists.txt
-index 9f1dba615b..b2ed20cab3 100644
+index 8fac82f7a8..9bc1df695d 100644
 --- a/drivers/serial/CMakeLists.txt
 +++ b/drivers/serial/CMakeLists.txt
 @@ -32,6 +32,7 @@ zephyr_library_sources_ifdef(CONFIG_UART_STM32 uart_stm32.c)
@@ -34,7 +34,7 @@ index 9f1dba615b..b2ed20cab3 100644
  zephyr_library_sources_ifdef(CONFIG_UART_RPI_PICO uart_rpi_pico.c)
  zephyr_library_sources_ifdef(CONFIG_UART_LITEUART uart_liteuart.c)
 diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
-index ba117b1636..3676bb150c 100644
+index 5cb2d10f0c..6b8bbaff98 100644
 --- a/drivers/serial/Kconfig
 +++ b/drivers/serial/Kconfig
 @@ -170,6 +170,8 @@ source "drivers/serial/Kconfig.psoc6"
@@ -66,7 +66,7 @@ index 0000000000..a780f0fc79
 +	  This option enables USBserialport_S3B serial driver.
 diff --git a/drivers/serial/uart_eos_s3_usbserial.c b/drivers/serial/uart_eos_s3_usbserial.c
 new file mode 100644
-index 0000000000..d1117982c3
+index 0000000000..8a700d4cd9
 --- /dev/null
 +++ b/drivers/serial/uart_eos_s3_usbserial.c
 @@ -0,0 +1,92 @@
@@ -78,7 +78,7 @@ index 0000000000..d1117982c3
 +
 +#define DT_DRV_COMPAT quicklogic_eos_s3_usbserial
 +
-+#include <zephyr/zephyr.h>
++#include <zephyr/kernel.h>
 +#include <zephyr/drivers/uart.h>
 +#include <eoss3_dev.h>
 +
@@ -231,7 +231,7 @@ index 0000000000..3578ba036f
 +
 +#endif /*  ZEPHYR_DRIVERS_SERIAL_UART_USBSERIAL_H_ */
 diff --git a/dts/arm/quicklogic/quicklogic_eos_s3.dtsi b/dts/arm/quicklogic/quicklogic_eos_s3.dtsi
-index ff2350a38e..d5044d9ca0 100644
+index e06115bf9a..66557a78ad 100644
 --- a/dts/arm/quicklogic/quicklogic_eos_s3.dtsi
 +++ b/dts/arm/quicklogic/quicklogic_eos_s3.dtsi
 @@ -48,6 +48,12 @@
@@ -269,5 +269,5 @@ index 0000000000..81d9288870
 +    interrupts:
 +      required: false
 -- 
-2.35.1
+2.30.2
 

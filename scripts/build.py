@@ -254,7 +254,7 @@ if __name__ == '__main__':
     omit_arch = ('arc', 'posix')
     boards_to_run = filter(lambda x: all(map(lambda y: y != x.arch, omit_arch)), boards_to_run)
     omit_board = ('acrn', 'qemu', 'native', 'nsim', 'xenvm', 'xt-sim')
-    boards_to_run = list(filter(lambda x: all(map(lambda y: y not in x.name, omit_board)), boards_to_run))[:4]
+    boards_to_run = list(filter(lambda x: all(map(lambda y: y not in x.name, omit_board)), boards_to_run))
     total_boards = len(boards_to_run)
     thread_number = int(os.getenv("NUMBER_OF_THREADS", 1))
 

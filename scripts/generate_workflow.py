@@ -5,7 +5,6 @@ WORKFLOW_FILE = 'workflow.yaml'
 WORKFLOW_NAME = 'workflow'
 SAMPLES = ['hello_world', 'shell_module', 'philosophers', 'micropython', 'tensorflow_lite_micro']
 NUMBER_OF_THREADS_BUILD = 32
-NUMBER_OF_THREADS_SIMULATE = 28
 MAX_NUMBER_OF_COMMITS = 30
 UBUNTU_VERSION = 'jammy'
 ZEPHYR_SDK_VERSION = '0.15.0'
@@ -89,9 +88,7 @@ def generate():
     env:
       SAMPLE_NAME: {sample}
       RENODE_VERSION: {RENODE_VERSION}
-      NUMBER_OF_THREADS: {NUMBER_OF_THREADS_SIMULATE}
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:

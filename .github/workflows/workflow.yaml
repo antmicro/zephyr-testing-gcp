@@ -773,9 +773,7 @@ jobs:
     env:
       SAMPLE_NAME: hello_world
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -848,9 +846,7 @@ jobs:
     env:
       SAMPLE_NAME: shell_module
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -923,9 +919,7 @@ jobs:
     env:
       SAMPLE_NAME: philosophers
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -998,9 +992,7 @@ jobs:
     env:
       SAMPLE_NAME: micropython
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -1073,9 +1065,7 @@ jobs:
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -1148,9 +1138,7 @@ jobs:
     env:
       SAMPLE_NAME: hello_world
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -1223,9 +1211,7 @@ jobs:
     env:
       SAMPLE_NAME: shell_module
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -1298,9 +1284,7 @@ jobs:
     env:
       SAMPLE_NAME: philosophers
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -1373,9 +1357,7 @@ jobs:
     env:
       SAMPLE_NAME: micropython
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -1448,9 +1430,7 @@ jobs:
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -1523,9 +1503,7 @@ jobs:
     env:
       SAMPLE_NAME: hello_world
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -1598,9 +1576,7 @@ jobs:
     env:
       SAMPLE_NAME: shell_module
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -1673,9 +1649,7 @@ jobs:
     env:
       SAMPLE_NAME: philosophers
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -1748,9 +1722,7 @@ jobs:
     env:
       SAMPLE_NAME: micropython
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -1823,9 +1795,7 @@ jobs:
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -1898,9 +1868,7 @@ jobs:
     env:
       SAMPLE_NAME: hello_world
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -1973,9 +1941,7 @@ jobs:
     env:
       SAMPLE_NAME: shell_module
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -2048,9 +2014,7 @@ jobs:
     env:
       SAMPLE_NAME: philosophers
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -2123,9 +2087,7 @@ jobs:
     env:
       SAMPLE_NAME: micropython
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -2198,9 +2160,7 @@ jobs:
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -2273,9 +2233,7 @@ jobs:
     env:
       SAMPLE_NAME: hello_world
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -2348,9 +2306,7 @@ jobs:
     env:
       SAMPLE_NAME: shell_module
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -2423,9 +2379,7 @@ jobs:
     env:
       SAMPLE_NAME: philosophers
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -2498,9 +2452,7 @@ jobs:
     env:
       SAMPLE_NAME: micropython
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -2573,9 +2525,7 @@ jobs:
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -2648,9 +2598,7 @@ jobs:
     env:
       SAMPLE_NAME: hello_world
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -2723,9 +2671,7 @@ jobs:
     env:
       SAMPLE_NAME: shell_module
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -2798,9 +2744,7 @@ jobs:
     env:
       SAMPLE_NAME: philosophers
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -2873,9 +2817,7 @@ jobs:
     env:
       SAMPLE_NAME: micropython
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -2948,9 +2890,7 @@ jobs:
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -3023,9 +2963,7 @@ jobs:
     env:
       SAMPLE_NAME: hello_world
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -3098,9 +3036,7 @@ jobs:
     env:
       SAMPLE_NAME: shell_module
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -3173,9 +3109,7 @@ jobs:
     env:
       SAMPLE_NAME: philosophers
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -3248,9 +3182,7 @@ jobs:
     env:
       SAMPLE_NAME: micropython
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -3323,9 +3255,7 @@ jobs:
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -3398,9 +3328,7 @@ jobs:
     env:
       SAMPLE_NAME: hello_world
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -3473,9 +3401,7 @@ jobs:
     env:
       SAMPLE_NAME: shell_module
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -3548,9 +3474,7 @@ jobs:
     env:
       SAMPLE_NAME: philosophers
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -3623,9 +3547,7 @@ jobs:
     env:
       SAMPLE_NAME: micropython
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -3698,9 +3620,7 @@ jobs:
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -3773,9 +3693,7 @@ jobs:
     env:
       SAMPLE_NAME: hello_world
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -3848,9 +3766,7 @@ jobs:
     env:
       SAMPLE_NAME: shell_module
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -3923,9 +3839,7 @@ jobs:
     env:
       SAMPLE_NAME: philosophers
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -3998,9 +3912,7 @@ jobs:
     env:
       SAMPLE_NAME: micropython
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -4073,9 +3985,7 @@ jobs:
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -4148,9 +4058,7 @@ jobs:
     env:
       SAMPLE_NAME: hello_world
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -4223,9 +4131,7 @@ jobs:
     env:
       SAMPLE_NAME: shell_module
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -4298,9 +4204,7 @@ jobs:
     env:
       SAMPLE_NAME: philosophers
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -4373,9 +4277,7 @@ jobs:
     env:
       SAMPLE_NAME: micropython
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -4448,9 +4350,7 @@ jobs:
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -4523,9 +4423,7 @@ jobs:
     env:
       SAMPLE_NAME: hello_world
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -4598,9 +4496,7 @@ jobs:
     env:
       SAMPLE_NAME: shell_module
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -4673,9 +4569,7 @@ jobs:
     env:
       SAMPLE_NAME: philosophers
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -4748,9 +4642,7 @@ jobs:
     env:
       SAMPLE_NAME: micropython
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -4823,9 +4715,7 @@ jobs:
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -4898,9 +4788,7 @@ jobs:
     env:
       SAMPLE_NAME: hello_world
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -4973,9 +4861,7 @@ jobs:
     env:
       SAMPLE_NAME: shell_module
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -5048,9 +4934,7 @@ jobs:
     env:
       SAMPLE_NAME: philosophers
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -5123,9 +5007,7 @@ jobs:
     env:
       SAMPLE_NAME: micropython
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -5198,9 +5080,7 @@ jobs:
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -5273,9 +5153,7 @@ jobs:
     env:
       SAMPLE_NAME: hello_world
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -5348,9 +5226,7 @@ jobs:
     env:
       SAMPLE_NAME: shell_module
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -5423,9 +5299,7 @@ jobs:
     env:
       SAMPLE_NAME: philosophers
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -5498,9 +5372,7 @@ jobs:
     env:
       SAMPLE_NAME: micropython
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -5573,9 +5445,7 @@ jobs:
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -5648,9 +5518,7 @@ jobs:
     env:
       SAMPLE_NAME: hello_world
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -5723,9 +5591,7 @@ jobs:
     env:
       SAMPLE_NAME: shell_module
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -5798,9 +5664,7 @@ jobs:
     env:
       SAMPLE_NAME: philosophers
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -5873,9 +5737,7 @@ jobs:
     env:
       SAMPLE_NAME: micropython
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -5948,9 +5810,7 @@ jobs:
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -6023,9 +5883,7 @@ jobs:
     env:
       SAMPLE_NAME: hello_world
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -6098,9 +5956,7 @@ jobs:
     env:
       SAMPLE_NAME: shell_module
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -6173,9 +6029,7 @@ jobs:
     env:
       SAMPLE_NAME: philosophers
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -6248,9 +6102,7 @@ jobs:
     env:
       SAMPLE_NAME: micropython
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -6323,9 +6175,7 @@ jobs:
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -6398,9 +6248,7 @@ jobs:
     env:
       SAMPLE_NAME: hello_world
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -6473,9 +6321,7 @@ jobs:
     env:
       SAMPLE_NAME: shell_module
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -6548,9 +6394,7 @@ jobs:
     env:
       SAMPLE_NAME: philosophers
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -6623,9 +6467,7 @@ jobs:
     env:
       SAMPLE_NAME: micropython
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -6698,9 +6540,7 @@ jobs:
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -6773,9 +6613,7 @@ jobs:
     env:
       SAMPLE_NAME: hello_world
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -6848,9 +6686,7 @@ jobs:
     env:
       SAMPLE_NAME: shell_module
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -6923,9 +6759,7 @@ jobs:
     env:
       SAMPLE_NAME: philosophers
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -6998,9 +6832,7 @@ jobs:
     env:
       SAMPLE_NAME: micropython
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -7073,9 +6905,7 @@ jobs:
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -7148,9 +6978,7 @@ jobs:
     env:
       SAMPLE_NAME: hello_world
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -7223,9 +7051,7 @@ jobs:
     env:
       SAMPLE_NAME: shell_module
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -7298,9 +7124,7 @@ jobs:
     env:
       SAMPLE_NAME: philosophers
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -7373,9 +7197,7 @@ jobs:
     env:
       SAMPLE_NAME: micropython
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -7448,9 +7270,7 @@ jobs:
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -7523,9 +7343,7 @@ jobs:
     env:
       SAMPLE_NAME: hello_world
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -7598,9 +7416,7 @@ jobs:
     env:
       SAMPLE_NAME: shell_module
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -7673,9 +7489,7 @@ jobs:
     env:
       SAMPLE_NAME: philosophers
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -7748,9 +7562,7 @@ jobs:
     env:
       SAMPLE_NAME: micropython
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -7823,9 +7635,7 @@ jobs:
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -7898,9 +7708,7 @@ jobs:
     env:
       SAMPLE_NAME: hello_world
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -7973,9 +7781,7 @@ jobs:
     env:
       SAMPLE_NAME: shell_module
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -8048,9 +7854,7 @@ jobs:
     env:
       SAMPLE_NAME: philosophers
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -8123,9 +7927,7 @@ jobs:
     env:
       SAMPLE_NAME: micropython
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -8198,9 +8000,7 @@ jobs:
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -8273,9 +8073,7 @@ jobs:
     env:
       SAMPLE_NAME: hello_world
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -8348,9 +8146,7 @@ jobs:
     env:
       SAMPLE_NAME: shell_module
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -8423,9 +8219,7 @@ jobs:
     env:
       SAMPLE_NAME: philosophers
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -8498,9 +8292,7 @@ jobs:
     env:
       SAMPLE_NAME: micropython
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -8573,9 +8365,7 @@ jobs:
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -8648,9 +8438,7 @@ jobs:
     env:
       SAMPLE_NAME: hello_world
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -8723,9 +8511,7 @@ jobs:
     env:
       SAMPLE_NAME: shell_module
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -8798,9 +8584,7 @@ jobs:
     env:
       SAMPLE_NAME: philosophers
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -8873,9 +8657,7 @@ jobs:
     env:
       SAMPLE_NAME: micropython
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -8948,9 +8730,7 @@ jobs:
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -9023,9 +8803,7 @@ jobs:
     env:
       SAMPLE_NAME: hello_world
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -9098,9 +8876,7 @@ jobs:
     env:
       SAMPLE_NAME: shell_module
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -9173,9 +8949,7 @@ jobs:
     env:
       SAMPLE_NAME: philosophers
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -9248,9 +9022,7 @@ jobs:
     env:
       SAMPLE_NAME: micropython
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -9323,9 +9095,7 @@ jobs:
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -9398,9 +9168,7 @@ jobs:
     env:
       SAMPLE_NAME: hello_world
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -9473,9 +9241,7 @@ jobs:
     env:
       SAMPLE_NAME: shell_module
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -9548,9 +9314,7 @@ jobs:
     env:
       SAMPLE_NAME: philosophers
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -9623,9 +9387,7 @@ jobs:
     env:
       SAMPLE_NAME: micropython
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -9698,9 +9460,7 @@ jobs:
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -9773,9 +9533,7 @@ jobs:
     env:
       SAMPLE_NAME: hello_world
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -9848,9 +9606,7 @@ jobs:
     env:
       SAMPLE_NAME: shell_module
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -9923,9 +9679,7 @@ jobs:
     env:
       SAMPLE_NAME: philosophers
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -9998,9 +9752,7 @@ jobs:
     env:
       SAMPLE_NAME: micropython
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -10073,9 +9825,7 @@ jobs:
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -10148,9 +9898,7 @@ jobs:
     env:
       SAMPLE_NAME: hello_world
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -10223,9 +9971,7 @@ jobs:
     env:
       SAMPLE_NAME: shell_module
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -10298,9 +10044,7 @@ jobs:
     env:
       SAMPLE_NAME: philosophers
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -10373,9 +10117,7 @@ jobs:
     env:
       SAMPLE_NAME: micropython
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -10448,9 +10190,7 @@ jobs:
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -10523,9 +10263,7 @@ jobs:
     env:
       SAMPLE_NAME: hello_world
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -10598,9 +10336,7 @@ jobs:
     env:
       SAMPLE_NAME: shell_module
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -10673,9 +10409,7 @@ jobs:
     env:
       SAMPLE_NAME: philosophers
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -10748,9 +10482,7 @@ jobs:
     env:
       SAMPLE_NAME: micropython
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -10823,9 +10555,7 @@ jobs:
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -10898,9 +10628,7 @@ jobs:
     env:
       SAMPLE_NAME: hello_world
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -10973,9 +10701,7 @@ jobs:
     env:
       SAMPLE_NAME: shell_module
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -11048,9 +10774,7 @@ jobs:
     env:
       SAMPLE_NAME: philosophers
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -11123,9 +10847,7 @@ jobs:
     env:
       SAMPLE_NAME: micropython
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -11198,9 +10920,7 @@ jobs:
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -11273,9 +10993,7 @@ jobs:
     env:
       SAMPLE_NAME: hello_world
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -11348,9 +11066,7 @@ jobs:
     env:
       SAMPLE_NAME: shell_module
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -11423,9 +11139,7 @@ jobs:
     env:
       SAMPLE_NAME: philosophers
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -11498,9 +11212,7 @@ jobs:
     env:
       SAMPLE_NAME: micropython
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -11573,9 +11285,7 @@ jobs:
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -11648,9 +11358,7 @@ jobs:
     env:
       SAMPLE_NAME: hello_world
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -11723,9 +11431,7 @@ jobs:
     env:
       SAMPLE_NAME: shell_module
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -11798,9 +11504,7 @@ jobs:
     env:
       SAMPLE_NAME: philosophers
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -11873,9 +11577,7 @@ jobs:
     env:
       SAMPLE_NAME: micropython
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:
@@ -11948,9 +11650,7 @@ jobs:
     env:
       SAMPLE_NAME: tensorflow_lite_micro
       RENODE_VERSION: 1.13.1+20220918git57f09419
-      NUMBER_OF_THREADS: 28
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      GHA_MACHINE_TYPE: "n2-standard-32"
       DEBIAN_FRONTEND: noninteractive
       TZ: Europe/Warsaw
     steps:

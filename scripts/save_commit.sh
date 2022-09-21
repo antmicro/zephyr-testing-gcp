@@ -6,3 +6,4 @@ for commit in "$@"; do
 		break
 	fi
 done
+echo "::set-output name=LAST_ZEPHYR_COMMIT::$(cat last_zephyr_commit)"

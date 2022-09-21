@@ -236,7 +236,7 @@ def run_renode_simulation(board, sample_name):
     result['arch'] = board['arch']
     result['board_full_name'] = board['full_name']
 
-    dts_path = f'{zephyr_path}/{result["board_path"]}/{result["board_name"]}.dts'
+    dts_path = artifacts_dict['dts'].format(board_name=board['name'], sample_name=sample_name)
     result['cpu'] = get_cpu_name(result['arch'], dts_path)
     cpu_dep_chain = dts2repl.get_cpu_dep_chain(result['arch'], dts_path, zephyr_path, [])
 

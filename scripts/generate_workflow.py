@@ -135,11 +135,11 @@ def generate():
       run: ./scripts/prepare_gcp.sh
     - name: Delete artifacts
       run: gsutil -m rm -r gs://gcp-distributed-job-test-bucket/job-artifacts
+    - name: Gather results
+      run: ./scripts/gather_results.py {' '.join([f'${{{{ needs.simulate-{commit}-hello_world.outputs.ZEPHYR_COMMIT }}}}' for commit in range(MAX_NUMBER_OF_COMMITS)])}
     - name: Update latest Zephyr commit
       id: update-last-zephyr-commit
-      run: |
-        ./scripts/save_commit.sh {' '.join([f'${{{{ needs.simulate-{commit}-{sample}.outputs.ZEPHYR_COMMIT }}}}' for commit, sample in commit_sample_product])}
-        echo "::set-output name=LAST_ZEPHYR_COMMIT::$(cat last_zephyr_commit)"
+      run: ./scripts/save_commit.sh {' '.join([f'${{{{ needs.simulate-{commit}-hello_world.outputs.ZEPHYR_COMMIT }}}}' for commit in range(MAX_NUMBER_OF_COMMITS)])}
     - name: Commit latest Zephyr commit
       uses: stefanzweifel/git-auto-commit-action@v4
       with:

@@ -1,35 +1,44 @@
 #!/usr/bin/env python
-import matplotlib.pyplot as plt
 import subprocess
-import numpy as np
 import os
 import sys
 import json
 from colorama import init, Style
 
 sample_names = ['hello_world', 'shell_module', 'philosophers', 'micropython', 'tensorflow_lite_micro']
-zephyr_repo_path = "zephyrproject/zephyr"
-result_path = "artifacts/{commit}/results-{sample_name}_all.json"
-diff_file = 'artifacts/{commit}/diff-{sample_name}.json'
+zephyr_repo_path = "zephyr"
+results_path = "results/{commit}"
+results_sample_path = f"{results_path}/results-{{sample_name}}_all.json"
+diff_file = f'{results_path}/diff-{{sample_name}}.json'
+plot_data_file = f'{results_path}/plot-{{sample_name}}.json'
+gcp_bucket = "gs://gcp-distributed-job-test-bucket"
 color_map = ["#F0902B", "#688FF0", "#B3BAB5"]
 
 
 def bold(text):
     return Style.BRIGHT + (text or '') + Style.RESET_ALL
 
-
 def check_revision(commit, revision=1):
     return subprocess.check_output(f"git -C {zephyr_repo_path} rev-parse --short {commit}~{revision}".split(" ")).decode().strip()
 
-def sort_commits(commit):
-    return len(subprocess.check_output(f"git -C {zephyr_repo_path} log --format='%h' {commit}..HEAD".split(" ")).decode().split("\n"))
+def download_zephyr():
+    try:
+        subprocess.check_output(f"git clone https://github.com/zephyrproject-rtos/zephyr.git".split(" "))
+    except subprocess.CalledProcessError:
+        pass
 
-def list_revisions():
-    #revisions = [i for i in subprocess.check_output(f"gsutil ls gs://gcp-distributed-job-test-bucket".split(" ")).split("\n") if "job-artifacts" not in i]
-    #for rev in revisions:
-        #    subprocess.check_output(f"gsutil cp {rev} artifacts/".split(" "))
-    revisions = ['gs://gcp-distributed-job-test-bucket/b11ba9ddc8/', 'gs://gcp-distributed-job-test-bucket/0d4ff38fa2/', 'gs://gcp-distributed-job-test-bucket/79f864028d/', 'gs://gcp-distributed-job-test-bucket/bf845a273b/']
-    return sorted([i[-11:-1] for i in revisions], key=sort_commits, reverse=True)
+def download_revisions(commit):
+    os.makedirs(f"results/{commit}", exist_ok=True)
+    try:
+        subprocess.check_output(f"gsutil -m cp -r {gcp_bucket}/{commit}/results/* results/{commit}/".split(" "))
+    except subprocess.CalledProcessError:
+        pass
+
+def upload_file_to_gcp(file_to_upload, commit):
+    try:
+        subprocess.check_output(f"gsutil cp -r {file_to_upload} {gcp_bucket}/{commit}/results/".split(" "))
+    except subprocess.CalledProcessError:
+        pass
 
 def load_result_file(file_path):
     with open(file_path) as file:
@@ -43,8 +52,8 @@ def create_diff_file():
         for sample in sample_names:
             print(f"\nCommit: {commit}, Sample: {sample}")
             changed = 0
-            current_path = result_path.format(sample_name=sample, commit=current_rev)
-            previous_path = result_path.format(sample_name=sample, commit=previous_rev)
+            current_path = results_sample_path.format(sample_name=sample, commit=current_rev)
+            previous_path = results_sample_path.format(sample_name=sample, commit=previous_rev)
             if not os.path.exists(current_path) or not os.path.exists(previous_path):
                 print("------ SKIPPED ------")
                 continue
@@ -60,41 +69,23 @@ def create_diff_file():
             print(f"\nChanged: {changed}/{len(current_result)}")
             with open(diff_file.format(sample_name=sample, commit=commit), "w") as file:
                 file.write(json.dumps(diff))
+            upload_file_to_gcp(diff_file.format(sample_name=sample, commit=commit), commit)
 
-def create_plots():
+def create_plot_data():
     for sample in sample_names:
-        stats = {}
-        revisions = list_revisions()
-        for rev in revisions:
-            path = result_path.format(sample_name=sample, commit=rev)
+        for rev in sys.argv[1:]:
+            path = results_sample_path.format(sample_name=sample, commit=rev)
             if not os.path.exists(path):
                 continue
             result_file = load_result_file(path)
-            stats[rev] = {
+            stats = {
+                "all": len(result_file),
+                "built": len([1 for i in result_file if i['status'] == 'BUILT' or i['status'] == 'PASSED']),
                 "passed": len([1 for i in result_file if i['status'] == 'PASSED']),
-                "built": len([1 for i in result_file if i['status'] == 'BUILT']),
-                "all": len(result_file)
             }
-        if stats == {}:
-            continue
-        x = range(len(stats))
-        ay = [stats[i]['built'] for i in stats]
-        by = [stats[i]['passed'] for i in stats]
-        cy = [stats[i]['all'] - stats[i]['built'] - stats[i]['passed'] for i in stats]
-
-        ay = [250, 311, 315, 400]
-        by = [100, 90, 50, 11]
-        cy = [66, 10, 50, 0]
-
-        print(f"passed: {ay}\nbuilt: {by}")
-        _, ax = plt.subplots()
-        #ax.stackplot(x, ay, by, cy, colors=color_map, labels=["Passed", "Built", "Not built"])
-        ax.plot(x, ay, linewidth=2.0)
-        ax.plot(x, by, linewidth=2.0)
-        plt.xticks(range(len(revisions)), revisions, size='small', rotation='vertical')
-        #plt.legend(loc="lower left")
-        plt.legend(["Passed", "Built"], loc="lower left")
-        plt.savefig(f"artifacts/{sample}.png", bbox_inches="tight")
+            with open(plot_data_file.format(sample_name=sample, commit=rev), 'w') as file:
+                file.write(json.dumps(stats))
+            upload_file_to_gcp(plot_data_file.format(sample_name=sample, commit=rev), rev)
 
 
 if __name__ == '__main__':
@@ -102,6 +93,9 @@ if __name__ == '__main__':
         print("No commits passed!")
         exit(1)
     init()
+    download_zephyr()
+    for rev in sys.argv[1:]:
+        download_revisions(rev)
     create_diff_file()
-    create_plots()
+    create_plot_data()
 

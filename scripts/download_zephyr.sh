@@ -15,7 +15,7 @@ COMMITS=$(git -C zephyrproject/zephyr log --pretty=format:'%h' $LAST_COMMIT..HEA
 cd zephyrproject/zephyr
 CURRENT_COMMIT=$(git rev-parse --short HEAD~${ZEPHYR_COMMIT})
 if [[ ! " ${COMMITS[*]} " =~ $CURRENT_COMMIT ]]; then
-	echo "::warning title=${CURRENT_COMMIT}::Commit has already been built"
+	echo "::warning title=Commit ${ZEPHYR_COMMIT}: ${CURRENT_COMMIT}::Commit has already been built"
 	echo "::set-output name=COMMIT_ALREADY_BUILT::true"
 	exit 0
 fi

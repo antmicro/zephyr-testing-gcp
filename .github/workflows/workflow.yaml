@@ -6,6 +6,13 @@ on:
   schedule:
     - cron: '0 3 * * *'
   workflow_dispatch:
+env:
+  ZEPHYR_SDK_VERSION: 0.15.0
+  RENODE_VERSION: 1.13.1+20220918git57f09419
+  MICROPYTHON_VERSION: 97a7cc243b
+  GHA_SA: gh-sa-gcp-distributed-job-buck
+  DEBIAN_FRONTEND: noninteractive
+  TZ: Europe/Warsaw
 jobs:
 
   prepare-zephyr-0:
@@ -13,10 +20,6 @@ jobs:
     runs-on: [self-hosted, Linux, X64]
     env:
       ZEPHYR_COMMIT: 0
-      ZEPHYR_SDK_VERSION: 0.15.0
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     outputs:
       COMMIT_ALREADY_BUILT: ${{ steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT }}
     steps:
@@ -28,19 +31,12 @@ jobs:
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
       if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
-      run: |
-        mkdir -p job-artifacts/prepare-zephyr-0
-        mv zephyr.tar.gz job-artifacts/prepare-zephyr-0/
-        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
+      run: ./scripts/archive_zephyr.sh
   prepare-zephyr-1:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     env:
       ZEPHYR_COMMIT: 1
-      ZEPHYR_SDK_VERSION: 0.15.0
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     outputs:
       COMMIT_ALREADY_BUILT: ${{ steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT }}
     steps:
@@ -52,19 +48,12 @@ jobs:
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
       if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
-      run: |
-        mkdir -p job-artifacts/prepare-zephyr-1
-        mv zephyr.tar.gz job-artifacts/prepare-zephyr-1/
-        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
+      run: ./scripts/archive_zephyr.sh
   prepare-zephyr-2:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     env:
       ZEPHYR_COMMIT: 2
-      ZEPHYR_SDK_VERSION: 0.15.0
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     outputs:
       COMMIT_ALREADY_BUILT: ${{ steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT }}
     steps:
@@ -76,19 +65,12 @@ jobs:
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
       if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
-      run: |
-        mkdir -p job-artifacts/prepare-zephyr-2
-        mv zephyr.tar.gz job-artifacts/prepare-zephyr-2/
-        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
+      run: ./scripts/archive_zephyr.sh
   prepare-zephyr-3:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     env:
       ZEPHYR_COMMIT: 3
-      ZEPHYR_SDK_VERSION: 0.15.0
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     outputs:
       COMMIT_ALREADY_BUILT: ${{ steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT }}
     steps:
@@ -100,19 +82,12 @@ jobs:
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
       if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
-      run: |
-        mkdir -p job-artifacts/prepare-zephyr-3
-        mv zephyr.tar.gz job-artifacts/prepare-zephyr-3/
-        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
+      run: ./scripts/archive_zephyr.sh
   prepare-zephyr-4:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     env:
       ZEPHYR_COMMIT: 4
-      ZEPHYR_SDK_VERSION: 0.15.0
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     outputs:
       COMMIT_ALREADY_BUILT: ${{ steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT }}
     steps:
@@ -124,19 +99,12 @@ jobs:
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
       if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
-      run: |
-        mkdir -p job-artifacts/prepare-zephyr-4
-        mv zephyr.tar.gz job-artifacts/prepare-zephyr-4/
-        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
+      run: ./scripts/archive_zephyr.sh
   prepare-zephyr-5:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     env:
       ZEPHYR_COMMIT: 5
-      ZEPHYR_SDK_VERSION: 0.15.0
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     outputs:
       COMMIT_ALREADY_BUILT: ${{ steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT }}
     steps:
@@ -148,19 +116,12 @@ jobs:
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
       if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
-      run: |
-        mkdir -p job-artifacts/prepare-zephyr-5
-        mv zephyr.tar.gz job-artifacts/prepare-zephyr-5/
-        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
+      run: ./scripts/archive_zephyr.sh
   prepare-zephyr-6:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     env:
       ZEPHYR_COMMIT: 6
-      ZEPHYR_SDK_VERSION: 0.15.0
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     outputs:
       COMMIT_ALREADY_BUILT: ${{ steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT }}
     steps:
@@ -172,19 +133,12 @@ jobs:
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
       if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
-      run: |
-        mkdir -p job-artifacts/prepare-zephyr-6
-        mv zephyr.tar.gz job-artifacts/prepare-zephyr-6/
-        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
+      run: ./scripts/archive_zephyr.sh
   prepare-zephyr-7:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     env:
       ZEPHYR_COMMIT: 7
-      ZEPHYR_SDK_VERSION: 0.15.0
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     outputs:
       COMMIT_ALREADY_BUILT: ${{ steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT }}
     steps:
@@ -196,19 +150,12 @@ jobs:
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
       if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
-      run: |
-        mkdir -p job-artifacts/prepare-zephyr-7
-        mv zephyr.tar.gz job-artifacts/prepare-zephyr-7/
-        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
+      run: ./scripts/archive_zephyr.sh
   prepare-zephyr-8:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     env:
       ZEPHYR_COMMIT: 8
-      ZEPHYR_SDK_VERSION: 0.15.0
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     outputs:
       COMMIT_ALREADY_BUILT: ${{ steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT }}
     steps:
@@ -220,19 +167,12 @@ jobs:
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
       if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
-      run: |
-        mkdir -p job-artifacts/prepare-zephyr-8
-        mv zephyr.tar.gz job-artifacts/prepare-zephyr-8/
-        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
+      run: ./scripts/archive_zephyr.sh
   prepare-zephyr-9:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     env:
       ZEPHYR_COMMIT: 9
-      ZEPHYR_SDK_VERSION: 0.15.0
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     outputs:
       COMMIT_ALREADY_BUILT: ${{ steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT }}
     steps:
@@ -244,19 +184,12 @@ jobs:
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
       if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
-      run: |
-        mkdir -p job-artifacts/prepare-zephyr-9
-        mv zephyr.tar.gz job-artifacts/prepare-zephyr-9/
-        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
+      run: ./scripts/archive_zephyr.sh
   prepare-zephyr-10:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     env:
       ZEPHYR_COMMIT: 10
-      ZEPHYR_SDK_VERSION: 0.15.0
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     outputs:
       COMMIT_ALREADY_BUILT: ${{ steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT }}
     steps:
@@ -268,19 +201,12 @@ jobs:
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
       if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
-      run: |
-        mkdir -p job-artifacts/prepare-zephyr-10
-        mv zephyr.tar.gz job-artifacts/prepare-zephyr-10/
-        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
+      run: ./scripts/archive_zephyr.sh
   prepare-zephyr-11:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     env:
       ZEPHYR_COMMIT: 11
-      ZEPHYR_SDK_VERSION: 0.15.0
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     outputs:
       COMMIT_ALREADY_BUILT: ${{ steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT }}
     steps:
@@ -292,19 +218,12 @@ jobs:
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
       if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
-      run: |
-        mkdir -p job-artifacts/prepare-zephyr-11
-        mv zephyr.tar.gz job-artifacts/prepare-zephyr-11/
-        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
+      run: ./scripts/archive_zephyr.sh
   prepare-zephyr-12:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     env:
       ZEPHYR_COMMIT: 12
-      ZEPHYR_SDK_VERSION: 0.15.0
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     outputs:
       COMMIT_ALREADY_BUILT: ${{ steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT }}
     steps:
@@ -316,19 +235,12 @@ jobs:
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
       if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
-      run: |
-        mkdir -p job-artifacts/prepare-zephyr-12
-        mv zephyr.tar.gz job-artifacts/prepare-zephyr-12/
-        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
+      run: ./scripts/archive_zephyr.sh
   prepare-zephyr-13:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     env:
       ZEPHYR_COMMIT: 13
-      ZEPHYR_SDK_VERSION: 0.15.0
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     outputs:
       COMMIT_ALREADY_BUILT: ${{ steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT }}
     steps:
@@ -340,19 +252,12 @@ jobs:
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
       if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
-      run: |
-        mkdir -p job-artifacts/prepare-zephyr-13
-        mv zephyr.tar.gz job-artifacts/prepare-zephyr-13/
-        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
+      run: ./scripts/archive_zephyr.sh
   prepare-zephyr-14:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     env:
       ZEPHYR_COMMIT: 14
-      ZEPHYR_SDK_VERSION: 0.15.0
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     outputs:
       COMMIT_ALREADY_BUILT: ${{ steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT }}
     steps:
@@ -364,19 +269,12 @@ jobs:
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
       if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
-      run: |
-        mkdir -p job-artifacts/prepare-zephyr-14
-        mv zephyr.tar.gz job-artifacts/prepare-zephyr-14/
-        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
+      run: ./scripts/archive_zephyr.sh
   prepare-zephyr-15:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     env:
       ZEPHYR_COMMIT: 15
-      ZEPHYR_SDK_VERSION: 0.15.0
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     outputs:
       COMMIT_ALREADY_BUILT: ${{ steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT }}
     steps:
@@ -388,19 +286,12 @@ jobs:
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
       if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
-      run: |
-        mkdir -p job-artifacts/prepare-zephyr-15
-        mv zephyr.tar.gz job-artifacts/prepare-zephyr-15/
-        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
+      run: ./scripts/archive_zephyr.sh
   prepare-zephyr-16:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     env:
       ZEPHYR_COMMIT: 16
-      ZEPHYR_SDK_VERSION: 0.15.0
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     outputs:
       COMMIT_ALREADY_BUILT: ${{ steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT }}
     steps:
@@ -412,19 +303,12 @@ jobs:
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
       if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
-      run: |
-        mkdir -p job-artifacts/prepare-zephyr-16
-        mv zephyr.tar.gz job-artifacts/prepare-zephyr-16/
-        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
+      run: ./scripts/archive_zephyr.sh
   prepare-zephyr-17:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     env:
       ZEPHYR_COMMIT: 17
-      ZEPHYR_SDK_VERSION: 0.15.0
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     outputs:
       COMMIT_ALREADY_BUILT: ${{ steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT }}
     steps:
@@ -436,19 +320,12 @@ jobs:
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
       if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
-      run: |
-        mkdir -p job-artifacts/prepare-zephyr-17
-        mv zephyr.tar.gz job-artifacts/prepare-zephyr-17/
-        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
+      run: ./scripts/archive_zephyr.sh
   prepare-zephyr-18:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     env:
       ZEPHYR_COMMIT: 18
-      ZEPHYR_SDK_VERSION: 0.15.0
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     outputs:
       COMMIT_ALREADY_BUILT: ${{ steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT }}
     steps:
@@ -460,19 +337,12 @@ jobs:
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
       if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
-      run: |
-        mkdir -p job-artifacts/prepare-zephyr-18
-        mv zephyr.tar.gz job-artifacts/prepare-zephyr-18/
-        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
+      run: ./scripts/archive_zephyr.sh
   prepare-zephyr-19:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     env:
       ZEPHYR_COMMIT: 19
-      ZEPHYR_SDK_VERSION: 0.15.0
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     outputs:
       COMMIT_ALREADY_BUILT: ${{ steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT }}
     steps:
@@ -484,19 +354,12 @@ jobs:
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
       if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
-      run: |
-        mkdir -p job-artifacts/prepare-zephyr-19
-        mv zephyr.tar.gz job-artifacts/prepare-zephyr-19/
-        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
+      run: ./scripts/archive_zephyr.sh
   prepare-zephyr-20:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     env:
       ZEPHYR_COMMIT: 20
-      ZEPHYR_SDK_VERSION: 0.15.0
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     outputs:
       COMMIT_ALREADY_BUILT: ${{ steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT }}
     steps:
@@ -508,19 +371,12 @@ jobs:
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
       if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
-      run: |
-        mkdir -p job-artifacts/prepare-zephyr-20
-        mv zephyr.tar.gz job-artifacts/prepare-zephyr-20/
-        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
+      run: ./scripts/archive_zephyr.sh
   prepare-zephyr-21:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     env:
       ZEPHYR_COMMIT: 21
-      ZEPHYR_SDK_VERSION: 0.15.0
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     outputs:
       COMMIT_ALREADY_BUILT: ${{ steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT }}
     steps:
@@ -532,19 +388,12 @@ jobs:
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
       if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
-      run: |
-        mkdir -p job-artifacts/prepare-zephyr-21
-        mv zephyr.tar.gz job-artifacts/prepare-zephyr-21/
-        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
+      run: ./scripts/archive_zephyr.sh
   prepare-zephyr-22:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     env:
       ZEPHYR_COMMIT: 22
-      ZEPHYR_SDK_VERSION: 0.15.0
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     outputs:
       COMMIT_ALREADY_BUILT: ${{ steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT }}
     steps:
@@ -556,19 +405,12 @@ jobs:
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
       if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
-      run: |
-        mkdir -p job-artifacts/prepare-zephyr-22
-        mv zephyr.tar.gz job-artifacts/prepare-zephyr-22/
-        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
+      run: ./scripts/archive_zephyr.sh
   prepare-zephyr-23:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     env:
       ZEPHYR_COMMIT: 23
-      ZEPHYR_SDK_VERSION: 0.15.0
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     outputs:
       COMMIT_ALREADY_BUILT: ${{ steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT }}
     steps:
@@ -580,19 +422,12 @@ jobs:
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
       if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
-      run: |
-        mkdir -p job-artifacts/prepare-zephyr-23
-        mv zephyr.tar.gz job-artifacts/prepare-zephyr-23/
-        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
+      run: ./scripts/archive_zephyr.sh
   prepare-zephyr-24:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     env:
       ZEPHYR_COMMIT: 24
-      ZEPHYR_SDK_VERSION: 0.15.0
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     outputs:
       COMMIT_ALREADY_BUILT: ${{ steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT }}
     steps:
@@ -604,19 +439,12 @@ jobs:
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
       if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
-      run: |
-        mkdir -p job-artifacts/prepare-zephyr-24
-        mv zephyr.tar.gz job-artifacts/prepare-zephyr-24/
-        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
+      run: ./scripts/archive_zephyr.sh
   prepare-zephyr-25:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     env:
       ZEPHYR_COMMIT: 25
-      ZEPHYR_SDK_VERSION: 0.15.0
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     outputs:
       COMMIT_ALREADY_BUILT: ${{ steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT }}
     steps:
@@ -628,19 +456,12 @@ jobs:
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
       if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
-      run: |
-        mkdir -p job-artifacts/prepare-zephyr-25
-        mv zephyr.tar.gz job-artifacts/prepare-zephyr-25/
-        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
+      run: ./scripts/archive_zephyr.sh
   prepare-zephyr-26:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     env:
       ZEPHYR_COMMIT: 26
-      ZEPHYR_SDK_VERSION: 0.15.0
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     outputs:
       COMMIT_ALREADY_BUILT: ${{ steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT }}
     steps:
@@ -652,19 +473,12 @@ jobs:
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
       if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
-      run: |
-        mkdir -p job-artifacts/prepare-zephyr-26
-        mv zephyr.tar.gz job-artifacts/prepare-zephyr-26/
-        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
+      run: ./scripts/archive_zephyr.sh
   prepare-zephyr-27:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     env:
       ZEPHYR_COMMIT: 27
-      ZEPHYR_SDK_VERSION: 0.15.0
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     outputs:
       COMMIT_ALREADY_BUILT: ${{ steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT }}
     steps:
@@ -676,19 +490,12 @@ jobs:
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
       if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
-      run: |
-        mkdir -p job-artifacts/prepare-zephyr-27
-        mv zephyr.tar.gz job-artifacts/prepare-zephyr-27/
-        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
+      run: ./scripts/archive_zephyr.sh
   prepare-zephyr-28:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     env:
       ZEPHYR_COMMIT: 28
-      ZEPHYR_SDK_VERSION: 0.15.0
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     outputs:
       COMMIT_ALREADY_BUILT: ${{ steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT }}
     steps:
@@ -700,19 +507,12 @@ jobs:
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
       if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
-      run: |
-        mkdir -p job-artifacts/prepare-zephyr-28
-        mv zephyr.tar.gz job-artifacts/prepare-zephyr-28/
-        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
+      run: ./scripts/archive_zephyr.sh
   prepare-zephyr-29:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     env:
       ZEPHYR_COMMIT: 29
-      ZEPHYR_SDK_VERSION: 0.15.0
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     outputs:
       COMMIT_ALREADY_BUILT: ${{ steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT }}
     steps:
@@ -724,10 +524,7 @@ jobs:
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
       if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
-      run: |
-        mkdir -p job-artifacts/prepare-zephyr-29
-        mv zephyr.tar.gz job-artifacts/prepare-zephyr-29/
-        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket
+      run: ./scripts/archive_zephyr.sh
   build-0-hello_world:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
@@ -735,12 +532,8 @@ jobs:
     if: needs.prepare-zephyr-0.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -772,10 +565,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: hello_world
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -808,12 +597,8 @@ jobs:
     if: needs.prepare-zephyr-0.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -845,10 +630,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: shell_module
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -881,12 +662,8 @@ jobs:
     if: needs.prepare-zephyr-0.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -918,10 +695,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: philosophers
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -954,12 +727,8 @@ jobs:
     if: needs.prepare-zephyr-0.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -991,10 +760,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: micropython
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -1027,12 +792,8 @@ jobs:
     if: needs.prepare-zephyr-0.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -1064,10 +825,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -1100,12 +857,8 @@ jobs:
     if: needs.prepare-zephyr-1.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -1137,10 +890,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: hello_world
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -1173,12 +922,8 @@ jobs:
     if: needs.prepare-zephyr-1.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -1210,10 +955,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: shell_module
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -1246,12 +987,8 @@ jobs:
     if: needs.prepare-zephyr-1.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -1283,10 +1020,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: philosophers
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -1319,12 +1052,8 @@ jobs:
     if: needs.prepare-zephyr-1.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -1356,10 +1085,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: micropython
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -1392,12 +1117,8 @@ jobs:
     if: needs.prepare-zephyr-1.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -1429,10 +1150,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -1465,12 +1182,8 @@ jobs:
     if: needs.prepare-zephyr-2.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -1502,10 +1215,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: hello_world
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -1538,12 +1247,8 @@ jobs:
     if: needs.prepare-zephyr-2.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -1575,10 +1280,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: shell_module
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -1611,12 +1312,8 @@ jobs:
     if: needs.prepare-zephyr-2.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -1648,10 +1345,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: philosophers
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -1684,12 +1377,8 @@ jobs:
     if: needs.prepare-zephyr-2.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -1721,10 +1410,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: micropython
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -1757,12 +1442,8 @@ jobs:
     if: needs.prepare-zephyr-2.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -1794,10 +1475,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -1830,12 +1507,8 @@ jobs:
     if: needs.prepare-zephyr-3.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -1867,10 +1540,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: hello_world
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -1903,12 +1572,8 @@ jobs:
     if: needs.prepare-zephyr-3.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -1940,10 +1605,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: shell_module
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -1976,12 +1637,8 @@ jobs:
     if: needs.prepare-zephyr-3.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -2013,10 +1670,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: philosophers
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -2049,12 +1702,8 @@ jobs:
     if: needs.prepare-zephyr-3.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -2086,10 +1735,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: micropython
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -2122,12 +1767,8 @@ jobs:
     if: needs.prepare-zephyr-3.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -2159,10 +1800,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -2195,12 +1832,8 @@ jobs:
     if: needs.prepare-zephyr-4.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -2232,10 +1865,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: hello_world
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -2268,12 +1897,8 @@ jobs:
     if: needs.prepare-zephyr-4.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -2305,10 +1930,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: shell_module
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -2341,12 +1962,8 @@ jobs:
     if: needs.prepare-zephyr-4.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -2378,10 +1995,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: philosophers
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -2414,12 +2027,8 @@ jobs:
     if: needs.prepare-zephyr-4.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -2451,10 +2060,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: micropython
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -2487,12 +2092,8 @@ jobs:
     if: needs.prepare-zephyr-4.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -2524,10 +2125,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -2560,12 +2157,8 @@ jobs:
     if: needs.prepare-zephyr-5.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -2597,10 +2190,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: hello_world
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -2633,12 +2222,8 @@ jobs:
     if: needs.prepare-zephyr-5.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -2670,10 +2255,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: shell_module
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -2706,12 +2287,8 @@ jobs:
     if: needs.prepare-zephyr-5.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -2743,10 +2320,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: philosophers
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -2779,12 +2352,8 @@ jobs:
     if: needs.prepare-zephyr-5.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -2816,10 +2385,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: micropython
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -2852,12 +2417,8 @@ jobs:
     if: needs.prepare-zephyr-5.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -2889,10 +2450,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -2925,12 +2482,8 @@ jobs:
     if: needs.prepare-zephyr-6.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -2962,10 +2515,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: hello_world
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -2998,12 +2547,8 @@ jobs:
     if: needs.prepare-zephyr-6.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -3035,10 +2580,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: shell_module
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -3071,12 +2612,8 @@ jobs:
     if: needs.prepare-zephyr-6.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -3108,10 +2645,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: philosophers
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -3144,12 +2677,8 @@ jobs:
     if: needs.prepare-zephyr-6.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -3181,10 +2710,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: micropython
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -3217,12 +2742,8 @@ jobs:
     if: needs.prepare-zephyr-6.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -3254,10 +2775,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -3290,12 +2807,8 @@ jobs:
     if: needs.prepare-zephyr-7.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -3327,10 +2840,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: hello_world
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -3363,12 +2872,8 @@ jobs:
     if: needs.prepare-zephyr-7.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -3400,10 +2905,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: shell_module
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -3436,12 +2937,8 @@ jobs:
     if: needs.prepare-zephyr-7.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -3473,10 +2970,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: philosophers
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -3509,12 +3002,8 @@ jobs:
     if: needs.prepare-zephyr-7.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -3546,10 +3035,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: micropython
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -3582,12 +3067,8 @@ jobs:
     if: needs.prepare-zephyr-7.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -3619,10 +3100,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -3655,12 +3132,8 @@ jobs:
     if: needs.prepare-zephyr-8.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -3692,10 +3165,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: hello_world
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -3728,12 +3197,8 @@ jobs:
     if: needs.prepare-zephyr-8.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -3765,10 +3230,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: shell_module
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -3801,12 +3262,8 @@ jobs:
     if: needs.prepare-zephyr-8.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -3838,10 +3295,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: philosophers
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -3874,12 +3327,8 @@ jobs:
     if: needs.prepare-zephyr-8.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -3911,10 +3360,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: micropython
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -3947,12 +3392,8 @@ jobs:
     if: needs.prepare-zephyr-8.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -3984,10 +3425,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -4020,12 +3457,8 @@ jobs:
     if: needs.prepare-zephyr-9.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -4057,10 +3490,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: hello_world
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -4093,12 +3522,8 @@ jobs:
     if: needs.prepare-zephyr-9.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -4130,10 +3555,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: shell_module
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -4166,12 +3587,8 @@ jobs:
     if: needs.prepare-zephyr-9.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -4203,10 +3620,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: philosophers
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -4239,12 +3652,8 @@ jobs:
     if: needs.prepare-zephyr-9.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -4276,10 +3685,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: micropython
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -4312,12 +3717,8 @@ jobs:
     if: needs.prepare-zephyr-9.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -4349,10 +3750,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -4385,12 +3782,8 @@ jobs:
     if: needs.prepare-zephyr-10.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -4422,10 +3815,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: hello_world
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -4458,12 +3847,8 @@ jobs:
     if: needs.prepare-zephyr-10.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -4495,10 +3880,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: shell_module
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -4531,12 +3912,8 @@ jobs:
     if: needs.prepare-zephyr-10.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -4568,10 +3945,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: philosophers
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -4604,12 +3977,8 @@ jobs:
     if: needs.prepare-zephyr-10.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -4641,10 +4010,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: micropython
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -4677,12 +4042,8 @@ jobs:
     if: needs.prepare-zephyr-10.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -4714,10 +4075,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -4750,12 +4107,8 @@ jobs:
     if: needs.prepare-zephyr-11.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -4787,10 +4140,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: hello_world
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -4823,12 +4172,8 @@ jobs:
     if: needs.prepare-zephyr-11.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -4860,10 +4205,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: shell_module
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -4896,12 +4237,8 @@ jobs:
     if: needs.prepare-zephyr-11.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -4933,10 +4270,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: philosophers
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -4969,12 +4302,8 @@ jobs:
     if: needs.prepare-zephyr-11.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -5006,10 +4335,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: micropython
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -5042,12 +4367,8 @@ jobs:
     if: needs.prepare-zephyr-11.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -5079,10 +4400,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -5115,12 +4432,8 @@ jobs:
     if: needs.prepare-zephyr-12.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -5152,10 +4465,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: hello_world
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -5188,12 +4497,8 @@ jobs:
     if: needs.prepare-zephyr-12.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -5225,10 +4530,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: shell_module
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -5261,12 +4562,8 @@ jobs:
     if: needs.prepare-zephyr-12.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -5298,10 +4595,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: philosophers
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -5334,12 +4627,8 @@ jobs:
     if: needs.prepare-zephyr-12.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -5371,10 +4660,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: micropython
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -5407,12 +4692,8 @@ jobs:
     if: needs.prepare-zephyr-12.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -5444,10 +4725,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -5480,12 +4757,8 @@ jobs:
     if: needs.prepare-zephyr-13.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -5517,10 +4790,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: hello_world
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -5553,12 +4822,8 @@ jobs:
     if: needs.prepare-zephyr-13.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -5590,10 +4855,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: shell_module
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -5626,12 +4887,8 @@ jobs:
     if: needs.prepare-zephyr-13.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -5663,10 +4920,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: philosophers
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -5699,12 +4952,8 @@ jobs:
     if: needs.prepare-zephyr-13.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -5736,10 +4985,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: micropython
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -5772,12 +5017,8 @@ jobs:
     if: needs.prepare-zephyr-13.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -5809,10 +5050,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -5845,12 +5082,8 @@ jobs:
     if: needs.prepare-zephyr-14.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -5882,10 +5115,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: hello_world
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -5918,12 +5147,8 @@ jobs:
     if: needs.prepare-zephyr-14.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -5955,10 +5180,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: shell_module
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -5991,12 +5212,8 @@ jobs:
     if: needs.prepare-zephyr-14.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -6028,10 +5245,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: philosophers
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -6064,12 +5277,8 @@ jobs:
     if: needs.prepare-zephyr-14.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -6101,10 +5310,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: micropython
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -6137,12 +5342,8 @@ jobs:
     if: needs.prepare-zephyr-14.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -6174,10 +5375,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -6210,12 +5407,8 @@ jobs:
     if: needs.prepare-zephyr-15.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -6247,10 +5440,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: hello_world
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -6283,12 +5472,8 @@ jobs:
     if: needs.prepare-zephyr-15.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -6320,10 +5505,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: shell_module
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -6356,12 +5537,8 @@ jobs:
     if: needs.prepare-zephyr-15.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -6393,10 +5570,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: philosophers
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -6429,12 +5602,8 @@ jobs:
     if: needs.prepare-zephyr-15.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -6466,10 +5635,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: micropython
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -6502,12 +5667,8 @@ jobs:
     if: needs.prepare-zephyr-15.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -6539,10 +5700,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -6575,12 +5732,8 @@ jobs:
     if: needs.prepare-zephyr-16.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -6612,10 +5765,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: hello_world
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -6648,12 +5797,8 @@ jobs:
     if: needs.prepare-zephyr-16.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -6685,10 +5830,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: shell_module
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -6721,12 +5862,8 @@ jobs:
     if: needs.prepare-zephyr-16.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -6758,10 +5895,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: philosophers
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -6794,12 +5927,8 @@ jobs:
     if: needs.prepare-zephyr-16.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -6831,10 +5960,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: micropython
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -6867,12 +5992,8 @@ jobs:
     if: needs.prepare-zephyr-16.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -6904,10 +6025,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -6940,12 +6057,8 @@ jobs:
     if: needs.prepare-zephyr-17.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -6977,10 +6090,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: hello_world
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -7013,12 +6122,8 @@ jobs:
     if: needs.prepare-zephyr-17.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -7050,10 +6155,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: shell_module
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -7086,12 +6187,8 @@ jobs:
     if: needs.prepare-zephyr-17.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -7123,10 +6220,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: philosophers
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -7159,12 +6252,8 @@ jobs:
     if: needs.prepare-zephyr-17.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -7196,10 +6285,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: micropython
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -7232,12 +6317,8 @@ jobs:
     if: needs.prepare-zephyr-17.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -7269,10 +6350,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -7305,12 +6382,8 @@ jobs:
     if: needs.prepare-zephyr-18.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -7342,10 +6415,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: hello_world
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -7378,12 +6447,8 @@ jobs:
     if: needs.prepare-zephyr-18.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -7415,10 +6480,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: shell_module
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -7451,12 +6512,8 @@ jobs:
     if: needs.prepare-zephyr-18.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -7488,10 +6545,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: philosophers
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -7524,12 +6577,8 @@ jobs:
     if: needs.prepare-zephyr-18.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -7561,10 +6610,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: micropython
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -7597,12 +6642,8 @@ jobs:
     if: needs.prepare-zephyr-18.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -7634,10 +6675,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -7670,12 +6707,8 @@ jobs:
     if: needs.prepare-zephyr-19.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -7707,10 +6740,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: hello_world
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -7743,12 +6772,8 @@ jobs:
     if: needs.prepare-zephyr-19.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -7780,10 +6805,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: shell_module
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -7816,12 +6837,8 @@ jobs:
     if: needs.prepare-zephyr-19.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -7853,10 +6870,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: philosophers
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -7889,12 +6902,8 @@ jobs:
     if: needs.prepare-zephyr-19.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -7926,10 +6935,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: micropython
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -7962,12 +6967,8 @@ jobs:
     if: needs.prepare-zephyr-19.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -7999,10 +7000,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -8035,12 +7032,8 @@ jobs:
     if: needs.prepare-zephyr-20.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -8072,10 +7065,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: hello_world
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -8108,12 +7097,8 @@ jobs:
     if: needs.prepare-zephyr-20.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -8145,10 +7130,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: shell_module
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -8181,12 +7162,8 @@ jobs:
     if: needs.prepare-zephyr-20.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -8218,10 +7195,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: philosophers
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -8254,12 +7227,8 @@ jobs:
     if: needs.prepare-zephyr-20.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -8291,10 +7260,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: micropython
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -8327,12 +7292,8 @@ jobs:
     if: needs.prepare-zephyr-20.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -8364,10 +7325,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -8400,12 +7357,8 @@ jobs:
     if: needs.prepare-zephyr-21.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -8437,10 +7390,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: hello_world
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -8473,12 +7422,8 @@ jobs:
     if: needs.prepare-zephyr-21.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -8510,10 +7455,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: shell_module
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -8546,12 +7487,8 @@ jobs:
     if: needs.prepare-zephyr-21.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -8583,10 +7520,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: philosophers
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -8619,12 +7552,8 @@ jobs:
     if: needs.prepare-zephyr-21.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -8656,10 +7585,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: micropython
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -8692,12 +7617,8 @@ jobs:
     if: needs.prepare-zephyr-21.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -8729,10 +7650,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -8765,12 +7682,8 @@ jobs:
     if: needs.prepare-zephyr-22.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -8802,10 +7715,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: hello_world
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -8838,12 +7747,8 @@ jobs:
     if: needs.prepare-zephyr-22.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -8875,10 +7780,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: shell_module
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -8911,12 +7812,8 @@ jobs:
     if: needs.prepare-zephyr-22.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -8948,10 +7845,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: philosophers
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -8984,12 +7877,8 @@ jobs:
     if: needs.prepare-zephyr-22.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -9021,10 +7910,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: micropython
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -9057,12 +7942,8 @@ jobs:
     if: needs.prepare-zephyr-22.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -9094,10 +7975,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -9130,12 +8007,8 @@ jobs:
     if: needs.prepare-zephyr-23.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -9167,10 +8040,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: hello_world
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -9203,12 +8072,8 @@ jobs:
     if: needs.prepare-zephyr-23.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -9240,10 +8105,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: shell_module
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -9276,12 +8137,8 @@ jobs:
     if: needs.prepare-zephyr-23.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -9313,10 +8170,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: philosophers
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -9349,12 +8202,8 @@ jobs:
     if: needs.prepare-zephyr-23.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -9386,10 +8235,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: micropython
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -9422,12 +8267,8 @@ jobs:
     if: needs.prepare-zephyr-23.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -9459,10 +8300,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -9495,12 +8332,8 @@ jobs:
     if: needs.prepare-zephyr-24.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -9532,10 +8365,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: hello_world
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -9568,12 +8397,8 @@ jobs:
     if: needs.prepare-zephyr-24.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -9605,10 +8430,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: shell_module
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -9641,12 +8462,8 @@ jobs:
     if: needs.prepare-zephyr-24.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -9678,10 +8495,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: philosophers
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -9714,12 +8527,8 @@ jobs:
     if: needs.prepare-zephyr-24.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -9751,10 +8560,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: micropython
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -9787,12 +8592,8 @@ jobs:
     if: needs.prepare-zephyr-24.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -9824,10 +8625,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -9860,12 +8657,8 @@ jobs:
     if: needs.prepare-zephyr-25.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -9897,10 +8690,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: hello_world
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -9933,12 +8722,8 @@ jobs:
     if: needs.prepare-zephyr-25.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -9970,10 +8755,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: shell_module
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -10006,12 +8787,8 @@ jobs:
     if: needs.prepare-zephyr-25.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -10043,10 +8820,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: philosophers
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -10079,12 +8852,8 @@ jobs:
     if: needs.prepare-zephyr-25.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -10116,10 +8885,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: micropython
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -10152,12 +8917,8 @@ jobs:
     if: needs.prepare-zephyr-25.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -10189,10 +8950,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -10225,12 +8982,8 @@ jobs:
     if: needs.prepare-zephyr-26.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -10262,10 +9015,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: hello_world
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -10298,12 +9047,8 @@ jobs:
     if: needs.prepare-zephyr-26.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -10335,10 +9080,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: shell_module
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -10371,12 +9112,8 @@ jobs:
     if: needs.prepare-zephyr-26.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -10408,10 +9145,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: philosophers
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -10444,12 +9177,8 @@ jobs:
     if: needs.prepare-zephyr-26.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -10481,10 +9210,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: micropython
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -10517,12 +9242,8 @@ jobs:
     if: needs.prepare-zephyr-26.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -10554,10 +9275,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -10590,12 +9307,8 @@ jobs:
     if: needs.prepare-zephyr-27.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -10627,10 +9340,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: hello_world
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -10663,12 +9372,8 @@ jobs:
     if: needs.prepare-zephyr-27.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -10700,10 +9405,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: shell_module
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -10736,12 +9437,8 @@ jobs:
     if: needs.prepare-zephyr-27.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -10773,10 +9470,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: philosophers
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -10809,12 +9502,8 @@ jobs:
     if: needs.prepare-zephyr-27.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -10846,10 +9535,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: micropython
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -10882,12 +9567,8 @@ jobs:
     if: needs.prepare-zephyr-27.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -10919,10 +9600,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -10955,12 +9632,8 @@ jobs:
     if: needs.prepare-zephyr-28.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -10992,10 +9665,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: hello_world
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -11028,12 +9697,8 @@ jobs:
     if: needs.prepare-zephyr-28.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -11065,10 +9730,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: shell_module
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -11101,12 +9762,8 @@ jobs:
     if: needs.prepare-zephyr-28.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -11138,10 +9795,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: philosophers
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -11174,12 +9827,8 @@ jobs:
     if: needs.prepare-zephyr-28.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -11211,10 +9860,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: micropython
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -11247,12 +9892,8 @@ jobs:
     if: needs.prepare-zephyr-28.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -11284,10 +9925,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -11320,12 +9957,8 @@ jobs:
     if: needs.prepare-zephyr-29.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: hello_world
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -11357,10 +9990,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: hello_world
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -11393,12 +10022,8 @@ jobs:
     if: needs.prepare-zephyr-29.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: shell_module
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -11430,10 +10055,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: shell_module
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -11466,12 +10087,8 @@ jobs:
     if: needs.prepare-zephyr-29.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: philosophers
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -11503,10 +10120,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: philosophers
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -11539,12 +10152,8 @@ jobs:
     if: needs.prepare-zephyr-29.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: micropython
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -11576,10 +10185,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: micropython
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -11612,12 +10217,8 @@ jobs:
     if: needs.prepare-zephyr-29.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: 32
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -11649,10 +10250,6 @@ jobs:
       ZEPHYR_COMMIT: ${{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}
     env:
       SAMPLE_NAME: tensorflow_lite_micro
-      RENODE_VERSION: 1.13.1+20220918git57f09419
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -11682,15 +10279,11 @@ jobs:
     container: ubuntu:jammy
     runs-on: [self-hosted, Linux, X64]
     needs: [simulate-0-hello_world, simulate-0-shell_module, simulate-0-philosophers, simulate-0-micropython, simulate-0-tensorflow_lite_micro, simulate-1-hello_world, simulate-1-shell_module, simulate-1-philosophers, simulate-1-micropython, simulate-1-tensorflow_lite_micro, simulate-2-hello_world, simulate-2-shell_module, simulate-2-philosophers, simulate-2-micropython, simulate-2-tensorflow_lite_micro, simulate-3-hello_world, simulate-3-shell_module, simulate-3-philosophers, simulate-3-micropython, simulate-3-tensorflow_lite_micro, simulate-4-hello_world, simulate-4-shell_module, simulate-4-philosophers, simulate-4-micropython, simulate-4-tensorflow_lite_micro, simulate-5-hello_world, simulate-5-shell_module, simulate-5-philosophers, simulate-5-micropython, simulate-5-tensorflow_lite_micro, simulate-6-hello_world, simulate-6-shell_module, simulate-6-philosophers, simulate-6-micropython, simulate-6-tensorflow_lite_micro, simulate-7-hello_world, simulate-7-shell_module, simulate-7-philosophers, simulate-7-micropython, simulate-7-tensorflow_lite_micro, simulate-8-hello_world, simulate-8-shell_module, simulate-8-philosophers, simulate-8-micropython, simulate-8-tensorflow_lite_micro, simulate-9-hello_world, simulate-9-shell_module, simulate-9-philosophers, simulate-9-micropython, simulate-9-tensorflow_lite_micro, simulate-10-hello_world, simulate-10-shell_module, simulate-10-philosophers, simulate-10-micropython, simulate-10-tensorflow_lite_micro, simulate-11-hello_world, simulate-11-shell_module, simulate-11-philosophers, simulate-11-micropython, simulate-11-tensorflow_lite_micro, simulate-12-hello_world, simulate-12-shell_module, simulate-12-philosophers, simulate-12-micropython, simulate-12-tensorflow_lite_micro, simulate-13-hello_world, simulate-13-shell_module, simulate-13-philosophers, simulate-13-micropython, simulate-13-tensorflow_lite_micro, simulate-14-hello_world, simulate-14-shell_module, simulate-14-philosophers, simulate-14-micropython, simulate-14-tensorflow_lite_micro, simulate-15-hello_world, simulate-15-shell_module, simulate-15-philosophers, simulate-15-micropython, simulate-15-tensorflow_lite_micro, simulate-16-hello_world, simulate-16-shell_module, simulate-16-philosophers, simulate-16-micropython, simulate-16-tensorflow_lite_micro, simulate-17-hello_world, simulate-17-shell_module, simulate-17-philosophers, simulate-17-micropython, simulate-17-tensorflow_lite_micro, simulate-18-hello_world, simulate-18-shell_module, simulate-18-philosophers, simulate-18-micropython, simulate-18-tensorflow_lite_micro, simulate-19-hello_world, simulate-19-shell_module, simulate-19-philosophers, simulate-19-micropython, simulate-19-tensorflow_lite_micro, simulate-20-hello_world, simulate-20-shell_module, simulate-20-philosophers, simulate-20-micropython, simulate-20-tensorflow_lite_micro, simulate-21-hello_world, simulate-21-shell_module, simulate-21-philosophers, simulate-21-micropython, simulate-21-tensorflow_lite_micro, simulate-22-hello_world, simulate-22-shell_module, simulate-22-philosophers, simulate-22-micropython, simulate-22-tensorflow_lite_micro, simulate-23-hello_world, simulate-23-shell_module, simulate-23-philosophers, simulate-23-micropython, simulate-23-tensorflow_lite_micro, simulate-24-hello_world, simulate-24-shell_module, simulate-24-philosophers, simulate-24-micropython, simulate-24-tensorflow_lite_micro, simulate-25-hello_world, simulate-25-shell_module, simulate-25-philosophers, simulate-25-micropython, simulate-25-tensorflow_lite_micro, simulate-26-hello_world, simulate-26-shell_module, simulate-26-philosophers, simulate-26-micropython, simulate-26-tensorflow_lite_micro, simulate-27-hello_world, simulate-27-shell_module, simulate-27-philosophers, simulate-27-micropython, simulate-27-tensorflow_lite_micro, simulate-28-hello_world, simulate-28-shell_module, simulate-28-philosophers, simulate-28-micropython, simulate-28-tensorflow_lite_micro, simulate-29-hello_world, simulate-29-shell_module, simulate-29-philosophers, simulate-29-micropython, simulate-29-tensorflow_lite_micro]
-    env:
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     if: always()
     steps:
     - uses: actions/checkout@v2
-    - name: Install gcp
-      run: ./scripts/prepare_gcp.sh
+    - name: Prepare environment
+      run: ./scripts/environment_results.sh
     - name: Delete artifacts
       run: gsutil -m rm -r gs://gcp-distributed-job-test-bucket/job-artifacts
     - name: Gather results

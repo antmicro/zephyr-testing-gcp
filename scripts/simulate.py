@@ -12,56 +12,7 @@ import time
 import zipfile
 from argparse import Namespace
 from dts2repl import dts2repl
-
-from colorama import init
-init()
-
-from colorama import Fore, Style
-
-def bold(text):
-    return Style.BRIGHT + (text or '') + Style.RESET_ALL
-
-def red(text):
-    return Fore.RED + (text or '') + Style.RESET_ALL
-
-def green(text):
-    return Fore.GREEN + (text or '') + Style.RESET_ALL
-
-zephyr_path = 'zephyrproject/zephyr'
-artifacts_dict = {
-    'asciinema':    'artifacts/{board_name}-{sample_name}/{board_name}-{sample_name}-asciinema',
-    'config':       'artifacts/{board_name}-{sample_name}/{board_name}-{sample_name}-config',
-    'dts':          'artifacts/{board_name}-{sample_name}/{board_name}-{sample_name}.dts',
-    'elf':          'artifacts/{board_name}-{sample_name}/{board_name}-zephyr-{sample_name}.elf',
-    'log':          'artifacts/{board_name}-{sample_name}/{board_name}-{sample_name}.html',
-    'monitor':      'artifacts/{board_name}-{sample_name}/{board_name}-{sample_name}_monitor.txt',
-    'profiling':    'artifacts/{board_name}-{sample_name}/{board_name}-{sample_name}-profile',
-    'repl':         'artifacts/{board_name}-{sample_name}/{board_name}-{sample_name}.repl',
-    'resc':         'artifacts/{board_name}-{sample_name}/{board_name}-{sample_name}.resc',
-    'robot':        'artifacts/{board_name}-{sample_name}/{board_name}-{sample_name}.robot',
-    'save':         'artifacts/{board_name}-{sample_name}/{board_name}-{sample_name}.{sample_name}_on_{board_name}.fail.save',
-    'sbom-app':     'artifacts/{board_name}-{sample_name}/{board_name}-{sample_name}-app.spdx',
-    'sbom-build':   'artifacts/{board_name}-{sample_name}/{board_name}-{sample_name}-build.spdx',
-    'sbom-zephyr':  'artifacts/{board_name}-{sample_name}/{board_name}-{sample_name}-zephyr.spdx',
-    'zip':          'artifacts/{board_name}-{sample_name}/{board_name}-{sample_name}.zip',
-    'zip-sbom':     'artifacts/{board_name}-{sample_name}/{board_name}-{sample_name}-sbom.zip',
-    'zephyr-log':   'artifacts/{board_name}-{sample_name}/{board_name}-{sample_name}-zephyr.log',
-}
-
-def get_cpu_name(arch, dts_filename, verbose=False):
-    cpu_dep_chain = dts2repl.get_cpu_dep_chain(arch, dts_filename, zephyr_path, [])
-    verbose = os.getenv("VERBOSE", False) or verbose
-    cpu_dep_chain_string = ''
-    if not verbose:
-        if len(cpu_dep_chain) > 0:
-            for cpu in cpu_dep_chain:
-                if cpu[0] != '!':
-                    cpu_dep_chain_string = cpu
-                    break
-    else:
-        cpu_dep_chain_string = " -> ".join(cpu_dep_chain)
-
-    return cpu_dep_chain_string
+from common import *
 
 
 templateLoader = jinja2.FileSystemLoader(searchpath="./")
@@ -83,7 +34,7 @@ robot_templates = {
 }
 
 def run_in_renode(renode_platform, zephyr_platform, sample_name, uart_name, script=None):
-    rm_files = ('log.html', 'logs', 'monitor.txt')
+    rm_files = ('log.html', 'logs', 'renode.log')
     format_args = {
         'board_name': zephyr_platform,
         'sample_name': sample_name,
@@ -141,8 +92,8 @@ def run_in_renode(renode_platform, zephyr_platform, sample_name, uart_name, scri
     if os.path.exists(snapshot_path):
         shutil.copy2(snapshot_path, save_filename)
 
-    if os.path.exists("monitor.txt"):
-        with open("monitor.txt") as f:
+    if os.path.exists("renode.log"):
+        with open("renode.log") as f:
             monitor = f.read().split('\n')
 
         # save only the first 100 lines of logs
@@ -183,16 +134,6 @@ def conv_zephyr_mem_usage(val):
 
     return val
 
-
-def find_flash_size(dts_filename):
-    with open(dts_filename) as f:
-        dts = f.read()
-    flash_name = re.search(r"zephyr,flash = &(\w+);", dts).group(1)
-    flash_size = re.search(r"{}:(.*\n)*?.*reg = <(.*)>;".format(flash_name), dts).group(2)
-    flash_size = flash_size.split()
-
-    return flash_name, flash_size
-
 def create_zip_archive(platform, zip_name=None, files=[]):
     if zip_name is None:
         zip_filename = artifacts_dict['zip'].format(**platform)
@@ -216,8 +157,8 @@ def get_artifacts_list(platform):
 
 def run_renode_simulation(board, sample_name):
     result = {
-        'board_name': board['name'],
-        'board_path': board['path'],
+        'board_name': board['board_name'],
+        'board_path': board['board_path'],
         'sample_name': sample_name,
         'status': 'NOT BUILT',
         'uart_name': '',
@@ -231,14 +172,13 @@ def run_renode_simulation(board, sample_name):
     if os.path.exists(elf_filename):
         result['status'] = 'BUILT'
 
-    uart = try_match_board(board)
+    uart = get_uart_from_board(board)
 
     result['arch'] = board['arch']
-    result['board_full_name'] = board['full_name']
+    result['board_full_name'] = board['board_full_name']
 
-    dts_path = artifacts_dict['dts'].format(board_name=board['name'], sample_name=sample_name)
-    result['cpu'] = get_cpu_name(result['arch'], dts_path)
-    cpu_dep_chain = dts2repl.get_cpu_dep_chain(result['arch'], dts_path, zephyr_path, [])
+    result['cpu'] = board['cpu']
+    cpu_dep_chain = board['cpu_dep_chain']
 
     extra_cmd = None
 
@@ -250,20 +190,21 @@ def run_renode_simulation(board, sample_name):
     if uart is not None and result['status'] != 'NOT BUILT':
         passed = False
 
-        print(f"Autogenerating repl for {bold(board['name'])} using device tree.")
-        fake_args = Namespace(filename=dts_filename, overlays=",".join(cpu_dep_chain + [board['name']]))
+        print(f"Autogenerating repl for {bold(board['board_name'])} using device tree.")
+        fake_args = Namespace(filename=dts_filename, overlays=",".join(cpu_dep_chain + [board['board_name']]))
         repl = dts2repl.generate(fake_args)
         with open(repl_filename, 'w') as repl_file:
             repl_file.write(repl)
 
-        if "cortex-m" in repl:
-            extra_cmd = 'cpu0 VectorTableOffset `sysbus GetSymbolAddress "_vector_table"`'
-        elif "RiscV" in repl:
-            extra_cmd = f"cpu0 EnableProfiler true $ORIGIN/{board['name']}-{sample_name}-profile true"
+        extra_cmd = ''
+        if "CortexM" in repl:
+            extra_cmd += 'cpu0 VectorTableOffset `sysbus GetSymbolAddress "_vector_table"`\n'
+        if any(arch in repl for arch in ["RiscV", "CortexM"]):
+            extra_cmd += f'cpu0 EnableProfiler true $ORIGIN/{board["board_name"]}-{sample_name}-profile true\n'
 
-        passed = run_in_renode(repl_filename, board['name'], sample_name, uart, extra_cmd)
+        passed = run_in_renode(repl_filename, board['board_name'], sample_name, uart, extra_cmd)
         result['repl_type'] = 'AUTO'
-        result['repl_name'] = f"{board['name']}-{sample_name}.repl"
+        result['repl_name'] = f"{board['board_name']}-{sample_name}.repl"
         if passed:
             # state snapshot was created by the previously failed run (dict-matched)
             if os.path.exists(save_filename):
@@ -302,32 +243,16 @@ def run_renode_simulation(board, sample_name):
 
     return result
 
-def try_match_board(board):
+def get_uart_from_board(board):
     sample_name, _ = get_sample_name_path()
-    dts_filename = artifacts_dict['dts'].format(board_name=board['name'], sample_name=sample_name)
+    dts_filename = artifacts_dict['dts'].format(board_name=board['board_name'], sample_name=sample_name)
     uart = dts2repl.get_uart(dts_filename)
     return uart
 
-samples = (
-    # sample name and path of the samples that we support
-    ("hello_world", "hello_world"),
-    ("shell_module", "subsys/shell/shell_module"),
-    ("philosophers", "philosophers"),
-    ("micropython", "../../../micropython/ports/zephyr"),
-    ("tensorflow_lite_micro", "modules/tflite-micro/hello_world"),
-)
-
-def get_sample_name_path():
-    # make it possible for the user to choose which sample to build
-    sample_name = os.getenv('SAMPLE_NAME')
-    idx = list(map(lambda x: x[0], samples)).index(sample_name) if sample_name is not None else 0
-    return samples[idx]
-
 def loop_wrapper(b, i, total_boards, sample_name):
-    board_name = b if isinstance(b, str) else b["name"]
+    board_name = b["board_name"]
     if total_boards > 1:
         print(f">> [{i} / {total_boards}] -- {board_name} --")
-    out = None
 
     out = run_renode_simulation(b, sample_name)
     if total_boards > 1:
@@ -350,7 +275,7 @@ if __name__ == '__main__':
     with open('artifacts/renode.version', 'w') as f:
         renode_ver = get_renode_version()
         if renode_ver is None:
-           print('error: renode not found')
+           print('error: Renode not found')
            sys.exit(1)
 
         renode_commit = renode_ver[0]

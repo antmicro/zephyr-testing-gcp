@@ -1,4 +1,4 @@
-logFile $ORIGIN/../../monitor.txt True
+logFile $ORIGIN/../../renode.log True
 
 using sysbus
 $name?="{{zephyr_platform}}"

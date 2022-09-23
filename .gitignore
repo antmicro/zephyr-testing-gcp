@@ -12,10 +12,12 @@ xtensa-esp32-elf/
 *.xml
 *.overlay
 __pycache__
-monitor.txt*
+renode.log*
 /src
 micropython.build.log
 Makefile
 /node_modules
 /package.json
 /package-lock.json
+/results
+/zephyr

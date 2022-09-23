@@ -1,8 +1,10 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import subprocess
 import os
 import sys
 import json
+import matplotlib.pyplot as plt
+import numpy as np
 from colorama import init, Style
 
 sample_names = ['hello_world', 'shell_module', 'philosophers', 'micropython', 'tensorflow_lite_micro']
@@ -34,9 +36,18 @@ def download_revisions(commit):
     except subprocess.CalledProcessError:
         pass
 
-def upload_file_to_gcp(file_to_upload, commit):
+def sort_commits(commit):
+    return len(subprocess.check_output(f"git -C {zephyr_repo_path} log --format='%h' {commit}..HEAD".split(" ")).decode().split("\n"))
+
+def list_revisions():
+    revisions = [i for i in subprocess.check_output(f"gsutil ls gs://gcp-distributed-job-test-bucket".split(" ")).decode().split("\n") if "job-artifacts" not in i]
+    for rev in revisions:
+        subprocess.check_output(f"gsutil cp {rev} artifacts/".split(" "))
+    return sorted([i[-11:-1] for i in revisions], key=sort_commits, reverse=True)
+
+def upload_file_to_gcp(file_to_upload, destination):
     try:
-        subprocess.check_output(f"gsutil cp -r {file_to_upload} {gcp_bucket}/{commit}/results/".split(" "))
+        subprocess.check_output(f"gsutil cp -r {file_to_upload} {gcp_bucket}/{destination}".split(" "))
     except subprocess.CalledProcessError:
         pass
 
@@ -69,7 +80,7 @@ def create_diff_file():
             print(f"\nChanged: {changed}/{len(current_result)}")
             with open(diff_file.format(sample_name=sample, commit=commit), "w") as file:
                 file.write(json.dumps(diff))
-            upload_file_to_gcp(diff_file.format(sample_name=sample, commit=commit), commit)
+            upload_file_to_gcp(diff_file.format(sample_name=sample, commit=commit), f'{commit}/results/')
 
 def create_plot_data():
     for sample in sample_names:
@@ -85,7 +96,36 @@ def create_plot_data():
             }
             with open(plot_data_file.format(sample_name=sample, commit=rev), 'w') as file:
                 file.write(json.dumps(stats))
-            upload_file_to_gcp(plot_data_file.format(sample_name=sample, commit=rev), rev)
+            upload_file_to_gcp(plot_data_file.format(sample_name=sample, commit=rev), f'{rev}/results/')
+
+def create_plot():
+    for sample in sample_names:
+        stats = {}
+        revisions = list_revisions()
+        for rev in revisions:
+            path = results_sample_path.format(sample_name=sample, commit=rev)
+            if not os.path.exists(path):
+                continue
+            result_file = load_result_file(path)
+            stats[rev] = {
+                "passed": len([1 for i in result_file if i['status'] == 'PASSED']),
+                "built": len([1 for i in result_file if i['status'] == 'BUILT']),
+                "all": len(result_file)
+            }
+        if stats == {}:
+            continue
+        ay = np.array([stats[i]['built'] for i in stats])
+        by = np.array([stats[i]['passed'] for i in stats])
+        cy = np.array([stats[i]['all'] - stats[i]['built'] - stats[i]['passed'] for i in stats])
+
+        _, ax = plt.subplots()
+        ax.bar(revisions, ay, 0.35, color=color_map[0])
+        ax.bar(revisions, by, 0.35, bottom=ay, color=color_map[1])
+        ax.bar(revisions, cy, 0.35, bottom=ay+by, color=color_map[2])
+        plt.xticks(range(len(revisions)), revisions, size='small', rotation='vertical')
+        plt.legend(["Built", "Passed", "Not built"], loc="lower left")
+        plt.savefig(f"results/{revisions[-1]}-{sample}.png", bbox_inches="tight")
+        upload_file_to_gcp(f"results/{revisions[-1]}-{sample}.png", f"")
 
 
 if __name__ == '__main__':
@@ -98,4 +138,5 @@ if __name__ == '__main__':
         download_revisions(rev)
     create_diff_file()
     create_plot_data()
+    create_plot()
 

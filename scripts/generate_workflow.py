@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import itertools
 
 WORKFLOW_FILE = 'workflow.yaml'
@@ -11,6 +11,14 @@ ZEPHYR_SDK_VERSION = '0.15.0'
 RENODE_VERSION = '1.13.1+20220918git57f09419'
 LAST_ZEPHYR_COMMIT_FILE = 'last_zephyr_commit'
 
+ENV = f'''
+  ZEPHYR_SDK_VERSION: {ZEPHYR_SDK_VERSION}
+  RENODE_VERSION: {RENODE_VERSION}
+  MICROPYTHON_VERSION: 97a7cc243b
+  GHA_SA: gh-sa-gcp-distributed-job-buck
+  DEBIAN_FRONTEND: noninteractive
+  TZ: Europe/Warsaw'''
+
 def generate():
     commit_sample_product = list(itertools.product(range(MAX_NUMBER_OF_COMMITS), SAMPLES))
     tasks = []
@@ -21,10 +29,6 @@ def generate():
     runs-on: [self-hosted, Linux, X64]
     env:
       ZEPHYR_COMMIT: {zephyr_commit}
-      ZEPHYR_SDK_VERSION: {ZEPHYR_SDK_VERSION}
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     outputs:
       COMMIT_ALREADY_BUILT: ${{{{ steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT }}}}
     steps:
@@ -36,10 +40,7 @@ def generate():
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
       if: steps.download-zephyr.outputs.COMMIT_ALREADY_BUILT == 'false'
-      run: |
-        mkdir -p job-artifacts/prepare-zephyr-{zephyr_commit}
-        mv zephyr.tar.gz job-artifacts/prepare-zephyr-{zephyr_commit}/
-        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket''')
+      run: ./scripts/archive_zephyr.sh''')
     for zephyr_commit, sample in commit_sample_product:
         tasks.append(f'''
   build-{zephyr_commit}-{sample}:
@@ -49,12 +50,8 @@ def generate():
     if: needs.prepare-zephyr-{zephyr_commit}.outputs.COMMIT_ALREADY_BUILT == 'false'
     env:
       SAMPLE_NAME: {sample}
-      MICROPYTHON_VERSION: 97a7cc243b
       NUMBER_OF_THREADS: {NUMBER_OF_THREADS_BUILD}
       GHA_MACHINE_TYPE: "n2-standard-32"
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -87,10 +84,6 @@ def generate():
       ZEPHYR_COMMIT: ${{{{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}}}
     env:
       SAMPLE_NAME: {sample}
-      RENODE_VERSION: {RENODE_VERSION}
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -121,15 +114,11 @@ def generate():
     container: ubuntu:{UBUNTU_VERSION}
     runs-on: [self-hosted, Linux, X64]
     needs: [{", ".join([f'simulate-{zephyr_commit}-{sample}' for zephyr_commit, sample in commit_sample_product])}]
-    env:
-      GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     if: always()
     steps:
     - uses: actions/checkout@v2
-    - name: Install gcp
-      run: ./scripts/prepare_gcp.sh
+    - name: Prepare environment
+      run: ./scripts/environment_results.sh
     - name: Delete artifacts
       run: gsutil -m rm -r gs://gcp-distributed-job-test-bucket/job-artifacts
     - name: Gather results
@@ -150,6 +139,7 @@ on:
   schedule:
     - cron: '0 3 * * *'
   workflow_dispatch:
+env:{ENV}
 jobs:''')
     print("".join(tasks))
 

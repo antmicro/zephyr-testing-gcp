@@ -12,20 +12,9 @@ import sys
 import tempfile
 import yaml
 from joblib import Parallel, delayed, parallel_backend
+from dts2repl import dts2repl
+from common import *
 
-from colorama import init
-init()
-
-from colorama import Fore, Style
-
-def bold(text):
-    return Style.BRIGHT + (text or '') + Style.RESET_ALL
-
-def red(text):
-    return Fore.RED + (text or '') + Style.RESET_ALL
-
-def green(text):
-    return Fore.GREEN + (text or '') + Style.RESET_ALL
 
 zephyr_path = 'zephyrproject/zephyr'
 
@@ -39,16 +28,21 @@ templateEnv = jinja2.Environment(loader=templateLoader)
 
 dts_flash_template = templateEnv.get_template('templates/flash_override.dts')
 
-def find_flash_size(dts_filename):
-    with open(dts_filename) as f:
-        dts = f.read()
-    try:
-        flash_name = re.search(r"zephyr,flash = &(\w+);", dts).group(1)
-        flash_size = re.search(r"{}:(.*\n)*?.*reg = <(.*)>;".format(flash_name), dts).group(2)
-        flash_size = flash_size.split()
-    except AttributeError:
-        return None
-    return flash_name, flash_size
+
+def get_cpu_name(arch, dts_filename, verbose=False):
+    cpu_dep_chain = dts2repl.get_cpu_dep_chain(arch, dts_filename, zephyr_path, [])
+    verbose = os.getenv("VERBOSE", False) or verbose
+    cpu_dep_chain_string = ''
+    if not verbose:
+        if len(cpu_dep_chain) > 0:
+            for cpu in cpu_dep_chain:
+                if cpu[0] != '!':
+                    cpu_dep_chain_string = cpu
+                    break
+    else:
+        cpu_dep_chain_string = " -> ".join(cpu_dep_chain)
+
+    return cpu_dep_chain_string
 
 def build_and_copy_bin(zephyr_platform, sample_path, args, sample_name, env):
     zephyr_sample_name = f"{zephyr_platform}-{sample_name}"
@@ -158,18 +152,12 @@ def get_boards():
     sys.argv = [sys.argv[0]]
     sys.path.append(f'{zephyr_path}/scripts')
     from list_boards import find_arch2boards
-    import argparse
     from pathlib import Path
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--arch-root", dest='arch_roots', default=[Path(zephyr_path)],
-                        type=Path, action='append',
-                        help='''add an architecture root (ZEPHYR_BASE is
-                        always present), may be given more than once''')
-    parser.add_argument("--board-root", dest='board_roots', default=[Path(zephyr_path)],
-                        type=Path, action='append',
-                        help='''add a board root (ZEPHYR_BASE is always
-                        present), may be given more than once''')
-    return find_arch2boards(parser.parse_args())
+    class Args:
+        def __init__(self):
+            self.arch_roots = [Path(zephyr_path)]
+            self.board_roots = [Path(zephyr_path)]
+    return find_arch2boards(Args())
 
 def get_full_name(yaml_filename):
     if os.path.exists(yaml_filename):
@@ -206,32 +194,15 @@ def flatten(zephyr_boards):
             flat_boards[board.name] = board
     return flat_boards
 
-samples = (
-    # sample name and path of the samples that we support
-    ("hello_world", "hello_world"),
-    ("shell_module", "subsys/shell/shell_module"),
-    ("philosophers", "philosophers"),
-    ("micropython", "../../../micropython/ports/zephyr"),
-    ("tensorflow_lite_micro", "modules/tflite-micro/hello_world"),
-)
-
-def get_sample_name_path():
-    sample_name = os.getenv('SAMPLE_NAME')
-    idx = list(map(lambda x: x[0], samples)).index(sample_name) if sample_name is not None else 0
-    return samples[idx]
 
 def loop_wrapper(b, i, total_boards, sample_name, sample_path):
-    board_name = b if isinstance(b, str) else b.name
+    board_name = b.name
     if total_boards > 1:
         print(f">> [{i} / {total_boards}] -- {board_name} --")
-    remote_board = filter(lambda x: x['board_name'] == board_name, [])
-    remote_board = next(remote_board, None)
-    out = None
 
     try_build(board_name, get_board_path(flat_boards[board_name]), sample_name, sample_path)
     if total_boards > 1:
         print(f"<< [{i} / {total_boards}] -- {board_name} --")
-    return out
 
 
 if __name__ == '__main__':
@@ -242,7 +213,7 @@ if __name__ == '__main__':
             zephyr_commit = zephyr_repo.git.rev_parse('HEAD', short=True)
             f.write(zephyr_commit)
         except git.exc.NoSuchPathError:
-            print("error: zephyr not found")
+            print("error: Zephyr not found")
             sys.exit(1)
 
     sample_name, sample_path = get_sample_name_path()
@@ -263,11 +234,15 @@ if __name__ == '__main__':
 
     boards_to_serialize = []
     for board in boards_to_run:
+        board_path = get_board_path(board)
+        dts_path = f'{zephyr_path}/{board_path}/{board.name}.dts'
         boards_to_serialize.append({
-            "name": board.name,
-            "full_name": get_full_name(get_board_yaml_path(board.name, get_board_path(board))),
+            "board_name": board.name,
+            "board_full_name": get_full_name(get_board_yaml_path(board.name, get_board_path(board))),
             "arch": board.arch,
-            "path": get_board_path(board)
+            "cpu_dep_chain": dts2repl.get_cpu_dep_chain(board.arch, dts_path, zephyr_path, []),
+            "cpu": get_cpu_name(board.arch, dts_path),
+            "board_path": board_path
             })
     with open("artifacts/built_boards.json", "w") as file:
         json.dump(boards_to_serialize, file)

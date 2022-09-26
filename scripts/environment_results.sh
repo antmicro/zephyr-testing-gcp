@@ -9,3 +9,4 @@ apt -qqy install curl gnupg git cmake wget python3-dev python3-pip python3-setup
 pip3 install --upgrade pip
 pip3 install -r requirements_results.txt
 ${BASH_SOURCE%/*}/prepare_gcp.sh
+mkdir plots

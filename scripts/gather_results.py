@@ -40,7 +40,7 @@ def sort_commits(commit):
     return len(subprocess.check_output(f"git -C {zephyr_repo_path} log --format='%h' {commit}..HEAD".split(" ")).decode().split("\n"))
 
 def list_revisions():
-    revisions = [i for i in subprocess.check_output(f"gsutil ls gs://gcp-distributed-job-test-bucket".split(" ")).decode().split("\n") if "job-artifacts" not in i]
+    revisions = [i for i in subprocess.check_output(f"gsutil ls gs://gcp-distributed-job-test-bucket".split(" ")).decode().split("\n") if "job-artifacts" not in i and "plots" not in i and i != '']
     revisions = sorted([i[-11:-1] for i in revisions], key=sort_commits, reverse=True)
     for rev in revisions:
         download_revisions(rev)
@@ -103,6 +103,7 @@ def create_plot():
     revisions = list_revisions()
     for sample in sample_names:
         stats = {}
+        current_revisions = []
         for rev in revisions:
             path = results_sample_path.format(sample_name=sample, commit=rev)
             if not os.path.exists(path):
@@ -113,9 +114,9 @@ def create_plot():
                 "built": len([1 for i in result_file if i['status'] == 'BUILT']),
                 "all": len(result_file)
             }
+            current_revisions.append(rev)
         if stats == {}:
             continue
-        current_revisions = list(stats.keys())
         ay = np.array([stats[i]['built'] for i in stats])
         by = np.array([stats[i]['passed'] for i in stats])
         cy = np.array([stats[i]['all'] - stats[i]['built'] - stats[i]['passed'] for i in stats])
@@ -126,8 +127,8 @@ def create_plot():
         ax.bar(current_revisions, cy, 0.35, bottom=ay+by, color=color_map[2])
         plt.xticks(range(len(revisions)), revisions, size='small', rotation='vertical')
         plt.legend(["Built", "Passed", "Not built"], loc="lower left")
-        plt.savefig(f"results/{revisions[-1]}-{sample}.png", bbox_inches="tight")
-        upload_file_to_gcp(f"results/{revisions[-1]}-{sample}.png", f"")
+        plt.savefig(f"plots/{current_revisions[-1]}-{sample}.png", bbox_inches="tight")
+    upload_file_to_gcp("plots/", "")
 
 
 if __name__ == '__main__':

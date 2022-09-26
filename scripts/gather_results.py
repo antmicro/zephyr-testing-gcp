@@ -32,7 +32,7 @@ def download_zephyr():
 def download_revisions(commit):
     os.makedirs(f"results/{commit}", exist_ok=True)
     try:
-        subprocess.check_output(f"gsutil -m cp -r {gcp_bucket}/{commit}/results/* results/{commit}/".split(" "))
+        subprocess.check_output(f"gsutil -q -m cp -r {gcp_bucket}/{commit}/results/* results/{commit}/".split(" "))
     except subprocess.CalledProcessError:
         pass
 
@@ -41,13 +41,14 @@ def sort_commits(commit):
 
 def list_revisions():
     revisions = [i for i in subprocess.check_output(f"gsutil ls gs://gcp-distributed-job-test-bucket".split(" ")).decode().split("\n") if "job-artifacts" not in i]
+    revisions = sorted([i[-11:-1] for i in revisions], key=sort_commits, reverse=True)
     for rev in revisions:
-        subprocess.check_output(f"gsutil cp {rev} artifacts/".split(" "))
-    return sorted([i[-11:-1] for i in revisions], key=sort_commits, reverse=True)
+        download_revisions(rev)
+    return revisions
 
 def upload_file_to_gcp(file_to_upload, destination):
     try:
-        subprocess.check_output(f"gsutil cp -r {file_to_upload} {gcp_bucket}/{destination}".split(" "))
+        subprocess.check_output(f"gsutil -q -m cp -r {file_to_upload} {gcp_bucket}/{destination}".split(" "))
     except subprocess.CalledProcessError:
         pass
 
@@ -99,9 +100,9 @@ def create_plot_data():
             upload_file_to_gcp(plot_data_file.format(sample_name=sample, commit=rev), f'{rev}/results/')
 
 def create_plot():
+    revisions = list_revisions()
     for sample in sample_names:
         stats = {}
-        revisions = list_revisions()
         for rev in revisions:
             path = results_sample_path.format(sample_name=sample, commit=rev)
             if not os.path.exists(path):
@@ -114,14 +115,15 @@ def create_plot():
             }
         if stats == {}:
             continue
+        current_revisions = list(stats.keys())
         ay = np.array([stats[i]['built'] for i in stats])
         by = np.array([stats[i]['passed'] for i in stats])
         cy = np.array([stats[i]['all'] - stats[i]['built'] - stats[i]['passed'] for i in stats])
 
         _, ax = plt.subplots()
-        ax.bar(revisions, ay, 0.35, color=color_map[0])
-        ax.bar(revisions, by, 0.35, bottom=ay, color=color_map[1])
-        ax.bar(revisions, cy, 0.35, bottom=ay+by, color=color_map[2])
+        ax.bar(current_revisions, ay, 0.35, color=color_map[0])
+        ax.bar(current_revisions, by, 0.35, bottom=ay, color=color_map[1])
+        ax.bar(current_revisions, cy, 0.35, bottom=ay+by, color=color_map[2])
         plt.xticks(range(len(revisions)), revisions, size='small', rotation='vertical')
         plt.legend(["Built", "Passed", "Not built"], loc="lower left")
         plt.savefig(f"results/{revisions[-1]}-{sample}.png", bbox_inches="tight")

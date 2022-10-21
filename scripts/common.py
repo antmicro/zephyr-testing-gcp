@@ -48,9 +48,12 @@ def get_sample_name_path():
 def find_flash_size(dts_filename):
     with open(dts_filename) as f:
         dts = f.read()
-    flash_name = re.search(r"zephyr,flash = &(\w+);", dts).group(1)
-    flash_size = re.search(r"{}:(.*\n)*?.*reg = <(.*)>;".format(flash_name), dts).group(2)
-    flash_size = flash_size.split()
+    try:
+        flash_name = re.search(r"zephyr,flash = &(\w+);", dts).group(1)
+        flash_size = re.search(r"{}:(.*\n)*?.*reg = <(.*)>;".format(flash_name), dts).group(2)
+        flash_size = flash_size.split()
+    except AttributeError:
+        return None
     return flash_name, flash_size
 
 init()

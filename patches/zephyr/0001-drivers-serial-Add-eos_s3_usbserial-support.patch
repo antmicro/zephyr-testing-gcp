@@ -1,7 +1,7 @@
 From 9b14dfb12824f037d38b5a752103d14c540572bf Mon Sep 17 00:00:00 2001
 From: Michal Sieron <msieron@antmicro.com>
 Date: Mon, 6 Jun 2022 17:02:36 +0200
-Subject: [PATCH 1/4] drivers: serial: Add eos_s3_usbserial support
+Subject: [PATCH] drivers: serial: Add eos_s3_usbserial support
 
 USB interface that may be used to send messages from a USB host to
 the M4 processor in the S3B, and vice-versa.
@@ -13,7 +13,6 @@ Signed-off-by: Michal Sieron <msieron@antmicro.com>
  drivers/serial/Kconfig.eos_s3_usbserial       | 12 +++
  drivers/serial/uart_eos_s3_usbserial.c        | 92 +++++++++++++++++++
  drivers/serial/uart_eos_s3_usbserial.h        | 62 +++++++++++++
- dts/arm/quicklogic/quicklogic_eos_s3.dtsi     |  6 ++
  .../serial/quicklogic,eos-s3-usbserial.yaml   | 15 +++
  7 files changed, 190 insertions(+)
  create mode 100644 drivers/serial/Kconfig.eos_s3_usbserial
@@ -22,13 +21,13 @@ Signed-off-by: Michal Sieron <msieron@antmicro.com>
  create mode 100644 dts/bindings/serial/quicklogic,eos-s3-usbserial.yaml
 
 diff --git a/drivers/serial/CMakeLists.txt b/drivers/serial/CMakeLists.txt
-index 8fac82f7a8..9bc1df695d 100644
+index 2458611a6b..eb6eea46f1 100644
 --- a/drivers/serial/CMakeLists.txt
 +++ b/drivers/serial/CMakeLists.txt
-@@ -32,6 +32,7 @@ zephyr_library_sources_ifdef(CONFIG_UART_STM32 uart_stm32.c)
- zephyr_library_sources_ifdef(CONFIG_UART_SAM0 uart_sam0.c)
+@@ -33,6 +33,7 @@ zephyr_library_sources_ifdef(CONFIG_UART_SAM0 uart_sam0.c)
  zephyr_library_sources_ifdef(CONFIG_UART_PSOC6 uart_psoc6.c)
  zephyr_library_sources_ifdef(CONFIG_UART_PL011 uart_pl011.c)
+ zephyr_library_sources_ifdef(CONFIG_UART_QUICKLOGIC_USBSERIALPORT_S3B uart_ql_usbserialport_s3b.c)
 +zephyr_library_sources_ifdef(CONFIG_UART_EOS_S3_USBSERIAL uart_eos_s3_usbserial.c)
  zephyr_library_sources_ifdef(CONFIG_UART_RV32M1_LPUART uart_rv32m1_lpuart.c)
  zephyr_library_sources_ifdef(CONFIG_UART_RPI_PICO uart_rpi_pico.c)
@@ -43,9 +42,9 @@ index 5cb2d10f0c..6b8bbaff98 100644
  
 +source "drivers/serial/Kconfig.eos_s3_usbserial"
 +
+ source "drivers/serial/Kconfig.ql_usbserialport_s3b"
+
  source "drivers/serial/Kconfig.rv32m1_lpuart"
- 
- source "drivers/serial/Kconfig.rpi_pico"
 diff --git a/drivers/serial/Kconfig.eos_s3_usbserial b/drivers/serial/Kconfig.eos_s3_usbserial
 new file mode 100644
 index 0000000000..a780f0fc79
@@ -230,23 +229,6 @@ index 0000000000..3578ba036f
 +};
 +
 +#endif /*  ZEPHYR_DRIVERS_SERIAL_UART_USBSERIAL_H_ */
-diff --git a/dts/arm/quicklogic/quicklogic_eos_s3.dtsi b/dts/arm/quicklogic/quicklogic_eos_s3.dtsi
-index e06115bf9a..66557a78ad 100644
---- a/dts/arm/quicklogic/quicklogic_eos_s3.dtsi
-+++ b/dts/arm/quicklogic/quicklogic_eos_s3.dtsi
-@@ -48,6 +48,12 @@
- 			interrupt-names = "rx";
- 		};
- 
-+		uart1: uart@40020000 {
-+			compatible = "quicklogic,eos-s3-usbserial";
-+			reg = <0x40020000 DT_SIZE_K(4)>;
-+			status = "disabled";
-+		};
-+
- 		gpio: gpio@40005000 {
- 			compatible = "quicklogic,eos-s3-gpio";
- 			reg = <0x40005000 DT_SIZE_K(4)>;
 diff --git a/dts/bindings/serial/quicklogic,eos-s3-usbserial.yaml b/dts/bindings/serial/quicklogic,eos-s3-usbserial.yaml
 new file mode 100644
 index 0000000000..81d9288870

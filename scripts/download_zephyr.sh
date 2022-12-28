@@ -15,8 +15,12 @@ COMMITS=$(git -C zephyrproject/zephyr log --pretty=format:'%h' $LAST_COMMIT..HEA
 cd zephyrproject/zephyr
 CURRENT_COMMIT=$(git rev-parse --short HEAD~${ZEPHYR_COMMIT})
 if [[ ! " ${COMMITS[*]} " =~ $CURRENT_COMMIT ]]; then
-	echo "Commit has already been built"
-	exit 1
+    echo "skipping..."
+    mkdir -p skip-artifacts
+    touch skip-artifacts/commit_skipped-${ZEPHYR_COMMIT}
+    gsutil cp skip-artifacts/ gs://gcp-distributed-job-test-bucket
+    echo "SKIP=true" >> "$GITHUB_ENV"
+    exit 0
 fi
 git checkout $CURRENT_COMMIT
 git apply ../../patches/zephyr/*.patch

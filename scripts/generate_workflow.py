@@ -24,8 +24,6 @@ def generate():
       ZEPHYR_COMMIT: {zephyr_commit}
       ZEPHYR_SDK_VERSION: {ZEPHYR_SDK_VERSION}
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
@@ -33,10 +31,8 @@ def generate():
     - name: Download Zephyr
       run: ./scripts/download_zephyr.sh
     - name: Pass Zephyr as artifact
-      run: |
-        mkdir -p job-artifacts/prepare-zephyr-{zephyr_commit}
-        mv zephyr.tar.gz job-artifacts/prepare-zephyr-{zephyr_commit}/
-        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket''')
+      if: env.SKIP != 'true'
+      run: ./scripts/save_artifacts.sh zephyr.tar.gz job-artifacts/prepare-zephyr-{zephyr_commit}''')
     for zephyr_commit, sample in commit_sample_product:
         tasks.append(f'''
   build-{zephyr_commit}-{sample}:
@@ -49,31 +45,34 @@ def generate():
       NUMBER_OF_THREADS: {NUMBER_OF_THREADS_BUILD}
       GHA_MACHINE_TYPE: "n2-standard-32"
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
       run: ./scripts/environment_build.sh
+    - name: Check for skip
+      run: ./scripts/check_for_skip.sh {zephyr_commit}
     - name: Get Zephyr
+      if: env.SKIP != 'true'
       run: gsutil cp gs://gcp-distributed-job-test-bucket/job-artifacts/prepare-zephyr-{zephyr_commit}/zephyr.tar.gz .
     - name: Prepare Zephyr
+      if: env.SKIP != 'true'
       run: ./scripts/prepare_zephyr.sh
     - name: Prepare Micropython
+      if: env.SKIP != 'true'
       run: ./scripts/prepare_micropython.sh
     - name: Build boards
+      if: env.SKIP != 'true'
       run: ./scripts/build.py
     - name: Upload load graphs
+      if: env.SKIP != 'true'
       uses: actions/upload-artifact@v2
       with:
         name: plots
         path: |
           **/plot_*.svg
     - name: Upload artifacts
-      run: |
-        mkdir -p job-artifacts/build-{zephyr_commit}-{sample}
-        mv artifacts/ job-artifacts/build-{zephyr_commit}-{sample}
-        gsutil -m cp -r job-artifacts/ gs://gcp-distributed-job-test-bucket''')
+      if: env.SKIP != 'true'
+      run: ./scripts/save_artifacts.sh artifacts/ job-artifacts/build-{zephyr_commit}-{sample}''')
         tasks.append(f'''
   simulate-{zephyr_commit}-{sample}:
     container: ubuntu:{UBUNTU_VERSION}
@@ -87,33 +86,37 @@ def generate():
       NUMBER_OF_THREADS: {NUMBER_OF_THREADS_SIMULATE}
       GHA_SA: "gh-sa-gcp-distributed-job-buck"
       GHA_MACHINE_TYPE: "n2-standard-32"
-      DEBIAN_FRONTEND: noninteractive
-      TZ: Europe/Warsaw
     steps:
     - uses: actions/checkout@v2
     - name: Prepare environment
       run: ./scripts/environment_simulate.sh
+    - name: Check for skip
+      run: ./scripts/check_for_skip.sh {zephyr_commit}
     - name: Get artifacts
+      if: env.SKIP != 'true'
       run: gsutil -m cp -r gs://gcp-distributed-job-test-bucket/job-artifacts/build-{zephyr_commit}-{sample}/artifacts .
     - name: Prepare Renode
+      if: env.SKIP != 'true'
       run: ./scripts/download_renode.sh
     - name: Simulate
+      if: env.SKIP != 'true'
       run: ./scripts/simulate.py
     - name: Get Zephyr commit
+      if: env.SKIP != 'true'
       id: get-zephyr-commit
       run: |
         ZEPHYR_COMMIT=$(cat artifacts/zephyr.version)
         echo "::set-output name=ZEPHYR_COMMIT::$ZEPHYR_COMMIT"
     - name: Upload load graphs
+      if: env.SKIP != 'true'
       uses: actions/upload-artifact@v2
       with:
         name: plots
         path: |
           **/plot_*.svg
     - name: Upload artifacts
-      run: |
-        mv artifacts/ ${{{{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}}}
-        gsutil -m cp -r ${{{{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}}} gs://gcp-distributed-job-test-bucket''')
+      if: env.SKIP != 'true'
+      run: ./scripts/save_artifacts.sh artifacts/ ${{{{ steps.get-zephyr-commit.outputs.ZEPHYR_COMMIT }}}}''')
     tasks.append(f'''
   results:
     container: ubuntu:{UBUNTU_VERSION}
@@ -129,7 +132,7 @@ def generate():
     - name: Install gcp
       run: ./scripts/prepare_gcp.sh
     - name: Delete artifacts
-      run: gsutil -m rm -r gs://gcp-distributed-job-test-bucket/job-artifacts
+      run: ./scripts/delete_artifacts.sh
     - name: Update latest Zephyr commit
       id: update-last-zephyr-commit
       run: |

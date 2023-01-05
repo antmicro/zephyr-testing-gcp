@@ -18,7 +18,7 @@ if [[ ! " ${COMMITS[*]} " =~ $CURRENT_COMMIT ]]; then
     echo "skipping..."
     mkdir -p skip-artifacts
     touch skip-artifacts/commit_skipped-${ZEPHYR_COMMIT}
-    gsutil cp skip-artifacts/ gs://gcp-distributed-job-test-bucket
+    gsutil cp -r skip-artifacts/ gs://gcp-distributed-job-test-bucket
     echo "SKIP=true" >> "$GITHUB_ENV"
     exit 0
 fi
